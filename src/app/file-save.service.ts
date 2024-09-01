@@ -36,7 +36,7 @@ export class FileSaveService implements OnInit {
 
   ngOnInit(): void {
     this.loadTextFromLocalStorage();
-    if(this.useTestData === true){
+    if(this.useTestData){
       this.textContent = JSON.stringify(this.testData);
     }
   }
