@@ -6,6 +6,7 @@ import {EditEintragComponent} from "./app/edit-eintrag/edit-eintrag.component";
 import {provideRouter, Routes} from "@angular/router";
 import {CreateEintragComponent} from "./app/create-eintrag/create-eintrag.component";
 import {EintragDetailsComponent} from "./app/eintrag-details/eintrag-details.component";
+import {provideZoneChangeDetection} from "@angular/core";
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(routes) // Provide the router with routes
+    provideRouter(routes),
+    provideZoneChangeDetection({ eventCoalescing: true })// Provide the router with routes
   ]
 }).catch(err => console.error(err));

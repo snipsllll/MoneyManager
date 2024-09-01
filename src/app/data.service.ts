@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import {Eintrag} from "./Eintrag";
+import {FileSaveService} from "./file-save.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  eintraege: Eintrag[] = [
+  eintraege: Eintrag[] = []
+    /*
+
+    [
     { id: 1, title: 'Eintrag 1', beschreibung: 'Beschreibung 1', date: '01.01.2024', time: '08:00', betrag: 100 },
     { id: 2, title: 'Eintrag 2', beschreibung: 'Beschreibung 2', date: '02.01.2024', time: '09:15', betrag: 200 },
     { id: 3, title: 'Eintrag 3', beschreibung: 'Beschreibung 3', date: '03.01.2024', time: '10:30', betrag: 300 },
@@ -28,8 +32,15 @@ export class DataService {
     { id: 19, title: 'Eintrag 19', beschreibung: 'Beschreibung 19', date: '19.01.2024', time: '14:30', betrag: 1900 },
     { id: 20, title: 'Eintrag 20', beschreibung: 'Beschreibung 20', date: '20.01.2024', time: '15:45', betrag: 2000 }
   ];
-
-  constructor() { }
+*/
+  constructor(private fileSaver: FileSaveService) {
+    this.fileSaver.ngOnInit();
+    if(this.fileSaver.textContent === null){
+      this.fileSaver.textContent = JSON.stringify({});
+      this.fileSaver.downloadTextFile()
+    }
+    this.eintraege = JSON.parse(this.fileSaver.textContent);
+  }
 
   getEintreage() {
     return this.eintraege;
@@ -43,16 +54,19 @@ export class DataService {
   deleteEintrag(eintragId: number){
     const indexOfEintrag = this.eintraege.findIndex(x => x.id === eintragId);
     this.eintraege.splice(indexOfEintrag, 1);
+    this.fileSaver.save(this.eintraege);
   }
 
   addEintrag(eintrag: Eintrag) {
     eintrag.id = this.getFreeEintragId();
     this.eintraege.push(eintrag);
+    this.fileSaver.save(this.eintraege);
   }
 
   editEintrag(eintrag: Eintrag) {
     const eintragIndex = this.eintraege.findIndex(x => x.id === eintrag.id);
     this.eintraege[eintragIndex] = eintrag;
+    this.fileSaver.save(this.eintraege);
   }
 
   private getFreeEintragId(){
