@@ -5,6 +5,7 @@ import {FileSaveService} from "./file-save.service";
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataService {
 
   eintraege: Eintrag[] = [];
