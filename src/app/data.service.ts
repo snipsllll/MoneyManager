@@ -24,8 +24,7 @@ export class DataService {
   }
 
   getEintragById(eintragId: number): Eintrag | undefined {
-    const x = this.eintraege.find(x => x.id === eintragId);
-    return x;
+    return this.eintraege.find(x => x.id === eintragId);
   }
 
   deleteEintrag(eintragId: number){
