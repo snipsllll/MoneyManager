@@ -1,14 +1,14 @@
 <div class="time-filter-tb">
-  <div class="time-filter-tb_button" (click)="onHeuteClicked.emit()">
+  <div class="time-filter-tb_button" [ngClass]="{'time-filter-tb__active': activeClass === 'heute'}" (click)="onHeuteClicked()">
     heute
   </div>
-  <div class="time-filter-tb_button" (click)="onWocheClicked.emit()">
+  <div class="time-filter-tb_button" [ngClass]="{'time-filter-tb__active': activeClass === 'woche'}" (click)="onWocheClicked()">
     diese woche
   </div>
-  <div class="time-filter-tb_button" (click)="onMonatClicked.emit()">
+  <div class="time-filter-tb_button" [ngClass]="{'time-filter-tb__active': activeClass === 'monat'}" (click)="onMonatClicked()">
     diesen monat
   </div>
-  <div class="time-filter-tb_button" (click)="onAlleClicked.emit()">
+  <div class="time-filter-tb_button" [ngClass]="{'time-filter-tb__active': activeClass === 'alle'}" (click)="onAlleClicked()">
     alle
   </div>
 </div>

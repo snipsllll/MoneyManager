@@ -12,3 +12,7 @@
   align-items: center;
   padding: 5px;
 }
+
+.time-filter-tb__active {
+  background-color: lightgrey;
+}
