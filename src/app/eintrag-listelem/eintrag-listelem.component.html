@@ -1,11 +1,11 @@
 <div class="eintrag-listelem">
-  <div class="eintrag-listelem__betrag all-centered">
+  <div class="eintrag-listelem__betrag all-centered" (click)="onEintragClicked(eintrag.id)">
     {{eintrag.betrag}}
   </div>
-  <div class="eintrag-listelem__trennlinie">
+  <div class="eintrag-listelem__trennlinie" (click)="onEintragClicked(eintrag.id)">
     |
   </div>
-  <div class="eintrag-listelem__title all-centered">
+  <div class="eintrag-listelem__title all-centered" (click)="onEintragClicked(eintrag.id)">
     {{eintrag.title}}
   </div>
   <div class="eintrag-listelem__menu-button all-centered" (click)="onMenuButtonClicked()">
@@ -14,7 +14,7 @@
 
   @if(showMenu()){
     <div class="eintrag-listelem__menu">
-      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item" (click)="onEditButtonClicked()">
+      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item" (click)="onEditButtonClicked(eintrag.id)">
         edit
       </div>
       <hr>

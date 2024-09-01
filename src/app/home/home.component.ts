@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {EintraegeListComponent} from "../eintraege-list/eintraege-list.component";
 import {Router} from "@angular/router";
+import {Eintrag} from "../Eintrag";
+import {DataService} from "../data.service";
 
 @Component({
   selector: 'app-home',
@@ -13,7 +15,10 @@ import {Router} from "@angular/router";
 })
 export class HomeComponent {
 
-  constructor(private router: Router) {
+  eintraege!: Eintrag[];
+
+  constructor(private router: Router, private dataService: DataService) {
+    this.eintraege = this.dataService.getEintreage();
   }
 
   onPlusClicked() {

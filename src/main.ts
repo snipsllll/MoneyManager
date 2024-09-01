@@ -1,6 +1,6 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { AppComponent } from './app/app.component';
+import {bootstrapApplication} from '@angular/platform-browser';
+import {appConfig} from './app/app.config';
+import {AppComponent} from './app/app.component';
 import {HomeComponent} from "./app/home/home.component";
 import {EditEintragComponent} from "./app/edit-eintrag/edit-eintrag.component";
 import {provideRouter, Routes} from "@angular/router";
@@ -9,11 +9,13 @@ import {EintragDetailsComponent} from "./app/eintrag-details/eintrag-details.com
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'editEintrag', component: EditEintragComponent },
-    { path: 'createEintrag', component: CreateEintragComponent },
-    { path: 'eintragDetails', component: EintragDetailsComponent }
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'home', component: HomeComponent},
+  {path: 'eintragDetails/:eintragId', component: EintragDetailsComponent},
+  {path: 'editEintrag/:eintragId', component: EditEintragComponent},
+  {path: 'editEintrag', component: EditEintragComponent},
+  {path: 'createEintrag', component: CreateEintragComponent},
+  {path: 'eintragDetails', component: EintragDetailsComponent}
 ];
 
 bootstrapApplication(AppComponent, {

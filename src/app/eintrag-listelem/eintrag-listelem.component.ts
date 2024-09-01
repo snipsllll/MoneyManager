@@ -3,6 +3,7 @@ import {Eintrag} from "../Eintrag";
 import {NgIf} from "@angular/common";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-eintrag-listelem',
@@ -18,17 +19,20 @@ export class EintragListelemComponent {
   @Input() eintrag!: Eintrag;
   showMenu = signal<boolean>(false);
 
-  constructor(private dialogService: DialogService){
+  constructor(private router: Router, private dialogService: DialogService){
 
   }
 
   onMenuButtonClicked() {
     this.showMenu.set(!this.showMenu())
-    console.log(123);
   }
 
-  onEditButtonClicked() {
+  onEintragClicked(eintragId: number) {
+    this.router.navigate(['/eintragDetails', eintragId]);
+  }
 
+  onEditButtonClicked(eintragId: number) {
+    this.router.navigate(['/editEintrag', eintragId]);
   }
 
   onDeleteButtonClicked() {

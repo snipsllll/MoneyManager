@@ -1,65 +1,70 @@
 <div class="edit-eintrag">
   <div class="edit-eintrag__back-button-wrapper">
-    <div class="edit-eintrag__back-button">
+    <div class="edit-eintrag__back-button" (click)="onBackClicked()">
       <-
     </div>
   </div>
-  <div class="edit-eintrag__content" *ngIf="eintrag !== undefined; else noEintrag">
-    <div class="edit-eintrag__top-content">
-      <input type="text" [(ngModel)]="eintrag.title" class="edit-eintrag__title">
-      <div class="edit-eintrag__id-wrapper">
-        <div>
-          (ID:
+  @if(eintrag() !== undefined){
+    <div class="edit-eintrag__content">
+      <div class="edit-eintrag__top-content">
+        <input type="text" [(ngModel)]="eintrag()!.title" class="edit-eintrag__title">
+        <div class="edit-eintrag__id-wrapper">
+          <div>
+            (ID:
+          </div>
+          <div class="edit-eintrag__data eintrag-details__id-data">
+            {{ eintrag()!.id }})
+          </div>
         </div>
-        <div class="edit-eintrag__data eintrag-details__id-data">
-          {{ eintrag.id }})
+        <hr>
+        <div class="edit-eintrag__betrag-wrapper">
+          <div class="edit-eintrag__label">
+            Betrag:
+          </div>
+          <input type="number" [(ngModel)]="eintrag()!.betrag" class="edit-eintrag__data">
         </div>
-      </div>
-      <hr>
-      <div class="edit-eintrag__betrag-wrapper">
-        <div class="edit-eintrag__label">
-          Betrag:
+        <div class="edit-eintrag__datum-wrapper">
+          <div class="edit-eintrag__label">
+            Datum:
+          </div>
+          <input type="date" [(ngModel)]="eintrag()!.date" (change)="onDateChange($event)" class="edit-eintrag__data">
         </div>
-        <input type="number" [(ngModel)]="eintrag.betrag" class="edit-eintrag__data">
-      </div>
-      <div class="edit-eintrag__datum-wrapper">
-        <div class="edit-eintrag__label">
-          Datum:
+        <div class="edit-eintrag__uhrzeit-wrapper">
+          <div class="edit-eintrag__label">
+            Uhrzeit:
+          </div>
+          <input type="time" [(ngModel)]="eintrag()!.time" (change)="onTimeChange($event)" class="edit-eintrag__data">
         </div>
-        <input type="date" [(ngModel)]="eintrag.date" (change)="onDateChange($event)" class="edit-eintrag__data">
-      </div>
-      <div class="edit-eintrag__uhrzeit-wrapper">
-        <div class="edit-eintrag__label">
-          Uhrzeit:
-        </div>
-        <input type="time" [(ngModel)]="eintrag.time" (change)="onTimeChange($event)" class="edit-eintrag__data">
-      </div>
-      <div class="edit-eintrag__beschreibung-wrapper">
-        <div class="edit-eintrag__label edit-eintrag__beschreibung-label">
-          Beschreibung:
-        </div>
-        <textarea [(ngModel)]="eintrag.beschreibung" class="edit-eintrag__data edit-eintrag__beschreibung-data">
+        <div class="edit-eintrag__beschreibung-wrapper">
+          <div class="edit-eintrag__label edit-eintrag__beschreibung-label">
+            Beschreibung:
+          </div>
+          <textarea [(ngModel)]="eintrag()!.beschreibung" class="edit-eintrag__data edit-eintrag__beschreibung-data">
 
         </textarea>
-      </div>
-      <div class="edit-eintrag__spacer-bottom">
+        </div>
+        <div class="edit-eintrag__spacer-bottom">
 
+        </div>
+      </div>
+
+      <div class="edit-eintrag__buttons-wrapper">
+        <div class="edit-eintrag__button" (click)="onCancelClicked()">
+          cancel
+        </div>
+        <div class="edit-eintrag__button" (click)="onSaveClicked()">
+          save
+        </div>
       </div>
     </div>
-
-    <div class="edit-eintrag__buttons-wrapper">
-      <div class="edit-eintrag__button" (click)="onCancelClicked()">
-        cancel
-      </div>
-      <div class="edit-eintrag__button" (click)="onSaveClicked()">
-        save
-      </div>
+  } @else {
+    <div class="edit-eintrag__no-eintrag">
+      Error: No Eintrag provided!
     </div>
-  </div>
+  }
+
 </div>
 
 <ng-template #noEintrag>
-  <div class="edit-eintrag__no-eintrag">
-    Error: No Eintrag provided!
-  </div>
+
 </ng-template>
