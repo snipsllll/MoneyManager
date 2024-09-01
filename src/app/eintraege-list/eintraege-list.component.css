@@ -1,0 +1,10 @@
+.eintraege-list {
+  height: calc(100% - 24px);
+  width: calc(100% - 24px);
+  padding: 10px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: scroll;
+}

@@ -1,0 +1,26 @@
+<div class="eintrag-listelem">
+  <div class="eintrag-listelem__betrag all-centered">
+    {{eintrag.betrag}}
+  </div>
+  <div class="eintrag-listelem__trennlinie">
+    |
+  </div>
+  <div class="eintrag-listelem__title all-centered">
+    {{eintrag.title}}
+  </div>
+  <div class="eintrag-listelem__menu-button all-centered" (click)="onMenuButtonClicked()">
+    ...
+  </div>
+
+  @if(showMenu()){
+    <div class="eintrag-listelem__menu">
+      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item" (click)="onEditButtonClicked()">
+        edit
+      </div>
+      <hr>
+      <div class="eintrag-listelem__edit-delete all-centered eintrag-listelem__menu-item" (click)="onDeleteButtonClicked()">
+        delete
+      </div>
+    </div>
+  }
+</div>
