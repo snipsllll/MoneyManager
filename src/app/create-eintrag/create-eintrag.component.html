@@ -16,12 +16,18 @@
         </div>
       </div>
       <hr>
-      <div class="create-eintrag__betrag-wrapper">
-        <div class="create-eintrag__label">
-          Betrag:
+      <div class="create-eintrag__betrag">
+        <div class="create-eintrag__betrag-warnung" *ngIf="showBetragWarning">
+          der Betrag darf nicht 0 betragen!
         </div>
-        <input type="number" [(ngModel)]="eintrag.betrag" class="create-eintrag__data">
+        <div class="create-eintrag__betrag-wrapper">
+          <div class="create-eintrag__label">
+            Betrag:
+          </div>
+          <input type="number" [(ngModel)]="eintrag.betrag" class="create-eintrag__data">
+        </div>
       </div>
+
       <div class="create-eintrag__datum-wrapper">
         <div class="create-eintrag__label">
           Datum:

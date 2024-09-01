@@ -20,6 +20,7 @@ import {DataService} from "../data.service";
 })
 export class CreateEintragComponent {
   eintrag!: Eintrag;
+  showBetragWarning = false;
 
   constructor(private dataService: DataService, public dialogService: DialogService, private router: Router) {
     const date = new Date();
@@ -35,11 +36,19 @@ export class CreateEintragComponent {
   }
 
   onSaveClicked() {
-    this.dataService.addEintrag(this.eintrag);
-    this.router.navigate(['/home']);
+    if(this.eintrag.betrag !== 0) {
+      this.dataService.addEintrag(this.eintrag);
+      this.router.navigate(['/home']);
+    } else {
+      this.showBetragWarning = true;
+    }
   }
 
   onCancelClicked() {
+    if(this.isEintragEmpty()){
+      this.router.navigate(['/home']);
+      return;
+    }
     const confirmDialogViewModel: ConfirmDialogViewModel = {
       title: 'Cancel?',
       message: 'Do you really want to cancel? All changes will be lost!',
@@ -55,7 +64,10 @@ export class CreateEintragComponent {
   }
 
   onBackClicked() {
-    console.log(123)
+    if(this.isEintragEmpty()){
+      this.router.navigate(['/home']);
+      return;
+    }
     const confirmDialogViewModel: ConfirmDialogViewModel = {
       title: 'Cancel?',
       message: 'Do you really want to return to home? All changes will be lost!',
@@ -80,5 +92,12 @@ export class CreateEintragComponent {
     const date = new Date();
     date.setHours(+hours, +minutes);
     this.eintrag!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+  }
+
+  private isEintragEmpty() {
+    if(this.eintrag.betrag === 0 && this.eintrag.title === '' && this.eintrag.beschreibung === '') {
+      return true
+    }
+    return false
   }
 }
