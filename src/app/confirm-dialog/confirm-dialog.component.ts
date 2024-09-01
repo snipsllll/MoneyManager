@@ -13,7 +13,7 @@ export class ConfirmDialogComponent implements OnInit {
 
   viewModel?: ConfirmDialogViewModel;
 
-  constructor(private dialogService: DialogService){
+  constructor(private dialogService: DialogService) {
 
   }
 
@@ -28,5 +28,4 @@ export class ConfirmDialogComponent implements OnInit {
   onCanceluttonClicked() {
     this.viewModel?.onCancelClicked();
   }
-
 }

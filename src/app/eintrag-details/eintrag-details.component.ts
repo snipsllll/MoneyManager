@@ -1,7 +1,7 @@
-import {Component, Input, OnInit, signal} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {Eintrag} from "../Eintrag";
 import {NgIf} from "@angular/common";
-import {ActivatedRoute, Route, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {DialogService} from "../dialog.service";
@@ -15,7 +15,7 @@ import {DialogService} from "../dialog.service";
   templateUrl: './eintrag-details.component.html',
   styleUrl: './eintrag-details.component.css'
 })
-export class EintragDetailsComponent implements OnInit{
+export class EintragDetailsComponent implements OnInit {
 
   eintrag? = signal<Eintrag | undefined>(undefined);
 
@@ -25,7 +25,7 @@ export class EintragDetailsComponent implements OnInit{
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const eintragId = +params.get('eintragId')!; // `!` stellt sicher, dass `number` immer definiert ist
+      const eintragId = +params.get('eintragId')!;
       this.eintrag?.set(this.dataService.getEintragById(eintragId));
     });
   }
@@ -53,5 +53,4 @@ export class EintragDetailsComponent implements OnInit{
   onEditClicked() {
     this.router.navigate(['/editEintrag', this.eintrag!()!.id]);
   }
-
 }

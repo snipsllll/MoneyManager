@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, signal} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {Eintrag} from "../Eintrag";
 import {FormsModule} from "@angular/forms";
@@ -29,7 +29,6 @@ export class EditEintragComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const eintragId = +params.get('eintragId')!;
-      // `!` stellt sicher, dass `number` immer definiert ist
       this.eintrag?.set(this.dataService.getEintragById(eintragId));
       this.oldEintrag = this.eintrag();
     });
@@ -80,14 +79,5 @@ export class EditEintragComponent implements OnInit {
       }
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
-
   }
-
-  private hasEintragChanged() {
-    if (this.eintrag!()!.betrag === this.oldEintrag?.betrag && this.eintrag!()!.title === this.oldEintrag.title && this.eintrag!()!.beschreibung === this.oldEintrag.beschreibung && this.eintrag!()!.date === this.oldEintrag.date && this.eintrag!()!.time === this.oldEintrag.time) {
-      return false
-    }
-    return true
-  }
-
 }

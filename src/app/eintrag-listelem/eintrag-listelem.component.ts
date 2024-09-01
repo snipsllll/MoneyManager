@@ -20,7 +20,7 @@ export class EintragListelemComponent {
   @Input() eintrag!: Eintrag;
   showMenu = signal<boolean>(false);
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router, private dialogService: DialogService){
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router, private dialogService: DialogService) {
 
   }
 
@@ -51,5 +51,4 @@ export class EintragListelemComponent {
     };
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
   }
-
 }

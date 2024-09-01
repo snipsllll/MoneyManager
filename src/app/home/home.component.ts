@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {EintraegeListComponent} from "../eintraege-list/eintraege-list.component";
 import {Router} from "@angular/router";
 import {Eintrag} from "../Eintrag";
@@ -24,5 +24,4 @@ export class HomeComponent {
   onPlusClicked() {
     this.router.navigate(['/createEintrag']);
   }
-
 }

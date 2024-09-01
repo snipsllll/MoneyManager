@@ -1,20 +1,6 @@
 <router-outlet></router-outlet>
 
-<!--
-<label for="date">Datum:</label>
-<input type="date" id="date"  (change)="onDateChange($event)"  />
-
-<label for="time">Uhrzeit:</label>
-<input type="time" id="time" (change)="onTimeChange($event)" />
-
-<div>
-  <h3>Angezeigtes Datum und Uhrzeit</h3>
-  <p>Datum: {{ specificDateTime.date }}</p>
-  <p>Uhrzeit: {{ specificDateTime.time }}</p>
-</div>
--->
-
-@if(dialogService.isConfirmDialogVisible) {
+@if (dialogService.isConfirmDialogVisible) {
   <app-confirm-dialog>
 
   </app-confirm-dialog>

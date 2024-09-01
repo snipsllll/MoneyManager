@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Eintrag} from "../Eintrag";
@@ -30,13 +30,13 @@ export class CreateEintragComponent {
       title: '',
       betrag: 0,
       time: date.toLocaleDateString('de-DE'),
-      date: date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }),
+      date: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
       beschreibung: ''
     };
   }
 
   onSaveClicked() {
-    if(this.eintrag.betrag !== 0) {
+    if (this.eintrag.betrag !== 0) {
       this.dataService.addEintrag(this.eintrag);
       this.router.navigate(['/home']);
     } else {
@@ -45,7 +45,7 @@ export class CreateEintragComponent {
   }
 
   onCancelClicked() {
-    if(this.isEintragEmpty()){
+    if (this.isEintragEmpty()) {
       this.router.navigate(['/home']);
       return;
     }
@@ -64,7 +64,7 @@ export class CreateEintragComponent {
   }
 
   onBackClicked() {
-    if(this.isEintragEmpty()){
+    if (this.isEintragEmpty()) {
       this.router.navigate(['/home']);
       return;
     }
@@ -95,9 +95,6 @@ export class CreateEintragComponent {
   }
 
   private isEintragEmpty() {
-    if(this.eintrag.betrag === 0 && this.eintrag.title === '' && this.eintrag.beschreibung === '') {
-      return true
-    }
-    return false
+    return (this.eintrag.betrag === 0 && this.eintrag.title === '' && this.eintrag.beschreibung === '')
   }
 }
