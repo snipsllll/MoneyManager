@@ -1,13 +1,16 @@
 <div class="eintrag-listelem">
-  <div class="eintrag-listelem__betrag all-centered" (click)="onEintragClicked(eintrag.id)">
-    {{eintrag.betrag}}
+  <div class="eintrag-listelem__menu-button__left" (click)="onEintragClicked(eintrag.id)">
+    <div class="eintrag-listelem__betrag all-centered">
+      {{eintrag.betrag}}
+    </div>
+    <div class="eintrag-listelem__trennlinie">
+      |
+    </div>
+    <div class="eintrag-listelem__title all-centered">
+      {{eintrag.title}}
+    </div>
   </div>
-  <div class="eintrag-listelem__trennlinie" (click)="onEintragClicked(eintrag.id)">
-    |
-  </div>
-  <div class="eintrag-listelem__title all-centered" (click)="onEintragClicked(eintrag.id)">
-    {{eintrag.title}}
-  </div>
+
   <div class="eintrag-listelem__menu-button all-centered" (click)="onMenuButtonClicked()">
     ...
   </div>
