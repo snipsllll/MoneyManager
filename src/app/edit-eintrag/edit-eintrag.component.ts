@@ -41,26 +41,18 @@ export class EditEintragComponent implements OnInit {
   }
 
   onCancelClicked() {
-    console.log(this.eintrag!())
-    console.log(this.oldEintrag)
-    if(!this.hasEintragChanged()){
-      this.router.navigate(['/home']);
-      return;
-    }
-    if(this.oldEintrag != this.eintrag()){
-      const confirmDialogViewModel: ConfirmDialogViewModel = {
-        title: 'Cancel?',
-        message: 'Do you really want to cancel editing? All changes will be lost!',
-        onCancelClicked: () => {
-          this.dialogService.isConfirmDialogVisible = false;
-        },
-        onConfirmClicked: () => {
-          this.dialogService.isConfirmDialogVisible = false;
-          this.router.navigate(['/eintragDetails', this.eintrag!()!.id]);
-        }
+    const confirmDialogViewModel: ConfirmDialogViewModel = {
+      title: 'Cancel?',
+      message: 'Do you really want to cancel editing? All changes will be lost!',
+      onCancelClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+      },
+      onConfirmClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+        this.router.navigate(['/eintragDetails', this.eintrag!()!.id]);
       }
-      this.dialogService.showConfirmDialog(confirmDialogViewModel);
     }
+    this.dialogService.showConfirmDialog(confirmDialogViewModel);
   }
 
   onDateChange(event: any) {
@@ -72,28 +64,27 @@ export class EditEintragComponent implements OnInit {
     const [hours, minutes] = event.target.value.split(':');
     const date = new Date();
     date.setHours(+hours, +minutes);
-    this.eintrag()!.time = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    this.eintrag()!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
   }
 
   onBackClicked() {
-    if(this.oldEintrag != this.eintrag()){
-      const confirmDialogViewModel: ConfirmDialogViewModel = {
-        title: 'Cancel?',
-        message: 'Do you really want to return home? All changes will be lost!',
-        onCancelClicked: () => {
-          this.dialogService.isConfirmDialogVisible = false;
-        },
-        onConfirmClicked: () => {
-          this.dialogService.isConfirmDialogVisible = false;
-          this.router.navigate(['/home'])
-        }
+    const confirmDialogViewModel: ConfirmDialogViewModel = {
+      title: 'Cancel?',
+      message: 'Do you really want to return home? All changes will be lost!',
+      onCancelClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+      },
+      onConfirmClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+        this.router.navigate(['/home'])
       }
-      this.dialogService.showConfirmDialog(confirmDialogViewModel);
     }
+    this.dialogService.showConfirmDialog(confirmDialogViewModel);
+
   }
 
   private hasEintragChanged() {
-    if(this.eintrag!()!.betrag === this.oldEintrag?.betrag && this.eintrag!()!.title === this.oldEintrag.title && this.eintrag!()!.beschreibung === this.oldEintrag.beschreibung && this.eintrag!()!.date === this.oldEintrag.date && this.eintrag!()!.time === this.oldEintrag.time) {
+    if (this.eintrag!()!.betrag === this.oldEintrag?.betrag && this.eintrag!()!.title === this.oldEintrag.title && this.eintrag!()!.beschreibung === this.oldEintrag.beschreibung && this.eintrag!()!.date === this.oldEintrag.date && this.eintrag!()!.time === this.oldEintrag.time) {
       return false
     }
     return true
