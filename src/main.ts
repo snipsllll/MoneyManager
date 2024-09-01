@@ -9,8 +9,7 @@ import {provideZoneChangeDetection} from "@angular/core";
 
 
 const routes: Routes = [
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
+  {path: '', component: HomeComponent},
   {path: 'eintragDetails/:eintragId', component: EintragDetailsComponent},
   {path: 'editEintrag/:eintragId', component: EditEintragComponent},
   {path: 'createEintrag', component: CreateEintragComponent}
@@ -22,3 +21,12 @@ bootstrapApplication(AppComponent, {
     provideZoneChangeDetection({ eventCoalescing: true })// Provide the router with routes
   ]
 }).catch(err => console.error(err));
+
+function setRealViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Call this function on load and on resize
+setRealViewportHeight();
+window.addEventListener('resize', setRealViewportHeight);

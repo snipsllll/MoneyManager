@@ -1,5 +1,13 @@
 <div class="eintraege-list">
-  <app-eintrag-listelem *ngFor="let eintrag of eintraege" [eintrag]="eintrag">
-
-  </app-eintrag-listelem>
+  <div class="eintraege-list__topbar">
+    <app-time-filter-topbar
+      (onAlleClickedEvnt)="onAlleClicked()"
+      (onHeuteClickedEvnt)="onHeuteClicked()"
+      (onMonatClickedEvnt)="onMonatClicked()"
+      (onWocheClickedEvnt)="OnWocheClicked()"
+    ></app-time-filter-topbar>
+  </div>
+  <div class="eintraege-list__list">
+    <app-eintrag-listelem *ngFor="let eintrag of eintraege" [eintrag]="eintrag"></app-eintrag-listelem>
+  </div>
 </div>
