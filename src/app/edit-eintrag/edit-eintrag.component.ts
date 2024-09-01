@@ -36,7 +36,8 @@ export class EditEintragComponent implements OnInit {
   }
 
   onSaveClicked() {
-    console.log(this.eintrag);
+    this.dataService.editEintrag(this.eintrag!()!);
+    this.router.navigate(['/home'])
   }
 
   onCancelClicked() {

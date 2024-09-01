@@ -51,6 +51,11 @@ export class DataService {
     this.eintraege.push(eintrag);
   }
 
+  editEintrag(eintrag: Eintrag) {
+    const eintragIndex = this.eintraege.findIndex(x => x.id === eintrag.id);
+    this.eintraege[eintragIndex] = eintrag;
+  }
+
   private getFreeEintragId(){
     let freeId = 1;
     for(let i = 0; i<this.eintraege.length; i++){
