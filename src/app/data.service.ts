@@ -37,7 +37,6 @@ export class DataService {
 
   getEintragById(eintragId: number): Eintrag | undefined {
     const x = this.eintraege.find(x => x.id === eintragId);
-    console.log(x);
     return x;
   }
 

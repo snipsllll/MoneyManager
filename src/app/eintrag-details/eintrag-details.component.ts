@@ -26,7 +26,6 @@ export class EintragDetailsComponent implements OnInit{
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const eintragId = +params.get('eintragId')!; // `!` stellt sicher, dass `number` immer definiert ist
-      console.log(eintragId)
       this.eintrag?.set(this.dataService.getEintragById(eintragId));
     });
   }
@@ -52,7 +51,6 @@ export class EintragDetailsComponent implements OnInit{
   }
 
   onEditClicked() {
-    console.log(this.route)
     this.router.navigate(['/editEintrag', this.eintrag!()!.id]);
   }
 
