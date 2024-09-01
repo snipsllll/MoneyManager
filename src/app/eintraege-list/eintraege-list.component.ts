@@ -18,20 +18,23 @@ export class EintraegeListComponent implements OnInit{
   @Input() eintraege?: Eintrag[];
 
   ngOnInit() {
+    /*
     this.eintraege = [
       {
+        id: 123,
         title: 'titel 1',
         betrag: 20,
         beschreibung: 'hallo',
         dateTime: new Date()
       },
       {
+        id: 456,
         title: 'titel 2',
         betrag: -50.3,
         beschreibung: 'mist',
         dateTime: new Date()
       }
-    ]
+    ]*/
   }
 
 }

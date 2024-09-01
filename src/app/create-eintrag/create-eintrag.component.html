@@ -1,1 +1,60 @@
-<p>create-eintrag works!</p>
+<div class="create-eintrag">
+  <div class="create-eintrag__back-button-wrapper">
+    <div class="create-eintrag__back-button">
+      <-
+    </div>
+  </div>
+  <div class="create-eintrag__content">
+    <div class="create-eintrag__top-content">
+      <input type="text" [(ngModel)]="eintrag.title" class="create-eintrag__title">
+      <div class="create-eintrag__id-wrapper">
+        <div>
+          (ID:
+        </div>
+        <div class="create-eintrag__data eintrag-details__id-data">
+          {{ eintrag.id }})
+        </div>
+      </div>
+      <hr>
+      <div class="create-eintrag__betrag-wrapper">
+        <div class="create-eintrag__label">
+          Betrag:
+        </div>
+        <input type="number" [(ngModel)]="eintrag.betrag" class="create-eintrag__data">
+      </div>
+      <div class="create-eintrag__datum-wrapper">
+        <div class="create-eintrag__label">
+          Datum:
+        </div>
+        <input type="date" [(ngModel)]="eintrag.date" (change)="onDateChange($event)" class="create-eintrag__data">
+      </div>
+      <div class="create-eintrag__uhrzeit-wrapper">
+        <div class="create-eintrag__label">
+          Uhrzeit:
+        </div>
+        <input type="time" [(ngModel)]="eintrag.time" (change)="onTimeChange($event)" class="create-eintrag__data">
+      </div>
+      <div class="create-eintrag__beschreibung-wrapper">
+        <div class="create-eintrag__label create-eintrag__beschreibung-label">
+          Beschreibung:
+        </div>
+        <textarea [(ngModel)]="eintrag.beschreibung" class="create-eintrag__data create-eintrag__beschreibung-data">
+
+        </textarea>
+      </div>
+      <div class="create-eintrag__spacer-bottom">
+
+      </div>
+    </div>
+
+    <div class="create-eintrag__buttons-wrapper">
+      <div class="create-eintrag__button" (click)="onCancelClicked()">
+        cancel
+      </div>
+      <div class="create-eintrag__button" (click)="onSaveClicked()">
+        save
+      </div>
+    </div>
+  </div>
+
+</div>
