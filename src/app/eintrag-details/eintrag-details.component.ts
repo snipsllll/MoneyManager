@@ -3,6 +3,8 @@ import {Eintrag} from "../Eintrag";
 import {NgIf} from "@angular/common";
 import {ActivatedRoute, Route, Router} from "@angular/router";
 import {DataService} from "../data.service";
+import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
+import {DialogService} from "../dialog.service";
 
 @Component({
   selector: 'app-eintrag-details',
@@ -17,7 +19,7 @@ export class EintragDetailsComponent implements OnInit{
 
   eintrag? = signal<Eintrag | undefined>(undefined);
 
-  constructor(private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+  constructor(private dialogService: DialogService, private router: Router, private route: ActivatedRoute, private dataService: DataService) {
 
   }
 
@@ -31,6 +33,27 @@ export class EintragDetailsComponent implements OnInit{
 
   onBackClicked() {
     this.router.navigate(['/home']);
+  }
+
+  onDeleteButtonClicked() {
+    const confirmDialogViewModel: ConfirmDialogViewModel = {
+      title: 'Eintrag löschen?',
+      message: 'Willst du den Eintrag wirklich löschen? Er kann nicht wieder hergestellt werden!',
+      onConfirmClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+        this.dataService.deleteEintrag(this.eintrag!()!.id);
+        this.router.navigate(['/home'])
+      },
+      onCancelClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+      }
+    };
+    this.dialogService.showConfirmDialog(confirmDialogViewModel);
+  }
+
+  onEditClicked() {
+    console.log(this.route)
+    this.router.navigate(['/editEintrag', this.eintrag!()!.id]);
   }
 
 }

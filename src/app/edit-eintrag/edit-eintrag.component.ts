@@ -28,7 +28,8 @@ export class EditEintragComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const eintragId = +params.get('eintragId')!; // `!` stellt sicher, dass `number` immer definiert ist
+      const eintragId = +params.get('eintragId')!;
+      // `!` stellt sicher, dass `number` immer definiert ist
       this.eintrag?.set(this.dataService.getEintragById(eintragId));
     });
   }
@@ -47,7 +48,7 @@ export class EditEintragComponent implements OnInit {
         },
         onConfirmClicked: () => {
           this.dialogService.isConfirmDialogVisible = false;
-          console.log(this.eintrag)
+          this.router.navigate(['/eintragDetails', this.eintrag!()!.id]);
         }
       }
       this.dialogService.showConfirmDialog(confirmDialogViewModel);

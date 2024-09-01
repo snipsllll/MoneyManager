@@ -13,9 +13,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'eintragDetails/:eintragId', component: EintragDetailsComponent},
   {path: 'editEintrag/:eintragId', component: EditEintragComponent},
-  {path: 'editEintrag', component: EditEintragComponent},
-  {path: 'createEintrag', component: CreateEintragComponent},
-  {path: 'eintragDetails', component: EintragDetailsComponent}
+  {path: 'createEintrag', component: CreateEintragComponent}
 ];
 
 bootstrapApplication(AppComponent, {

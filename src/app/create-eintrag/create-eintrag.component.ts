@@ -5,6 +5,7 @@ import {Eintrag} from "../Eintrag";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {Router} from "@angular/router";
+import {DataService} from "../data.service";
 
 @Component({
   selector: 'app-create-eintrag',
@@ -20,7 +21,7 @@ import {Router} from "@angular/router";
 export class CreateEintragComponent {
   eintrag!: Eintrag;
 
-  constructor(public dialogService: DialogService, private router: Router) {
+  constructor(private dataService: DataService, public dialogService: DialogService, private router: Router) {
     const date = new Date();
 
     this.eintrag = {
@@ -34,7 +35,8 @@ export class CreateEintragComponent {
   }
 
   onSaveClicked() {
-    console.log(this.eintrag);
+    this.dataService.addEintrag(this.eintrag);
+    this.router.navigate(['/home']);
   }
 
   onCancelClicked() {

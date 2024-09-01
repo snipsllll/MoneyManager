@@ -40,4 +40,26 @@ export class DataService {
     console.log(x);
     return x;
   }
+
+  deleteEintrag(eintragId: number){
+    const indexOfEintrag = this.eintraege.findIndex(x => x.id === eintragId);
+    this.eintraege.splice(indexOfEintrag, 1);
+  }
+
+  addEintrag(eintrag: Eintrag) {
+    eintrag.id = this.getFreeEintragId();
+    this.eintraege.push(eintrag);
+  }
+
+  private getFreeEintragId(){
+    let freeId = 1;
+    for(let i = 0; i<this.eintraege.length; i++){
+      if(this.eintraege.find(x => x.id === freeId) === undefined) {
+        return freeId;
+      } else {
+        freeId++;
+      }
+    }
+    return freeId;
+  }
 }
