@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {EintraegeListComponent} from "../eintraege-list/eintraege-list.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -11,5 +12,12 @@ import {EintraegeListComponent} from "../eintraege-list/eintraege-list.component
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+
+  constructor(private router: Router) {
+  }
+
+  onPlusClicked() {
+    this.router.navigate(['/createEintrag']);
+  }
 
 }

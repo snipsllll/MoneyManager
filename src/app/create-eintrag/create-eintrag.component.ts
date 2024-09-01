@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Eintrag} from "../Eintrag";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-eintrag',
@@ -19,7 +20,7 @@ import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 export class CreateEintragComponent {
   eintrag!: Eintrag;
 
-  constructor(public dialogService: DialogService) {
+  constructor(public dialogService: DialogService, private router: Router) {
     const date = new Date();
 
     this.eintrag = {
@@ -45,7 +46,23 @@ export class CreateEintragComponent {
       },
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        console.log(this.eintrag)
+        this.router.navigate(['/home']);
+      }
+    }
+    this.dialogService.showConfirmDialog(confirmDialogViewModel);
+  }
+
+  onBackClicked() {
+    console.log(123)
+    const confirmDialogViewModel: ConfirmDialogViewModel = {
+      title: 'Cancel?',
+      message: 'Do you really want to return to home? All changes will be lost!',
+      onCancelClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+      },
+      onConfirmClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+        this.router.navigate(['/home']);
       }
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
