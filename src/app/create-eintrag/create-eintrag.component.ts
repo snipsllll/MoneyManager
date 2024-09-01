@@ -29,8 +29,8 @@ export class CreateEintragComponent {
       id: 123,
       title: '',
       betrag: null,
-      time: date.toLocaleDateString('de-DE'),
-      date: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
+      date: date.toLocaleDateString('de-DE'),
+      time: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
       beschreibung: ''
     };
   }

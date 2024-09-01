@@ -21,3 +21,12 @@ bootstrapApplication(AppComponent, {
     provideZoneChangeDetection({ eventCoalescing: true })// Provide the router with routes
   ]
 }).catch(err => console.error(err));
+
+function setRealViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Call this function on load and on resize
+setRealViewportHeight();
+window.addEventListener('resize', setRealViewportHeight);
