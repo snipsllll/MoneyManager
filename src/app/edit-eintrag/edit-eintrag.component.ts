@@ -36,7 +36,7 @@ export class EditEintragComponent implements OnInit {
 
   onSaveClicked() {
     this.dataService.editEintrag(this.eintrag!()!);
-    this.router.navigate(['/home'])
+    this.router.navigate(['/'])
   }
 
   onCancelClicked() {
@@ -75,7 +75,7 @@ export class EditEintragComponent implements OnInit {
       },
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.router.navigate(['/home'])
+        this.router.navigate(['/'])
       }
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);

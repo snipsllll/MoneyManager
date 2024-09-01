@@ -9,8 +9,7 @@ import {provideZoneChangeDetection} from "@angular/core";
 
 
 const routes: Routes = [
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
+  {path: '', component: HomeComponent},
   {path: 'eintragDetails/:eintragId', component: EintragDetailsComponent},
   {path: 'editEintrag/:eintragId', component: EditEintragComponent},
   {path: 'createEintrag', component: CreateEintragComponent}

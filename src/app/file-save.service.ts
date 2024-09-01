@@ -6,7 +6,7 @@ import {Injectable, OnInit} from '@angular/core';
 
 export class FileSaveService implements OnInit {
 
-  textContent: string = '';
+  textContent: string = '[]';
   fileName: string = 'savedText.txt';
 
   ngOnInit(): void {

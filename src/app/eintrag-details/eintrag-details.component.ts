@@ -31,7 +31,7 @@ export class EintragDetailsComponent implements OnInit {
   }
 
   onBackClicked() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   onDeleteButtonClicked() {
@@ -41,7 +41,7 @@ export class EintragDetailsComponent implements OnInit {
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
         this.dataService.deleteEintrag(this.eintrag!()!.id);
-        this.router.navigate(['/home'])
+        this.router.navigate(['/'])
       },
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;

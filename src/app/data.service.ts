@@ -13,8 +13,7 @@ export class DataService {
   constructor(private fileSaver: FileSaveService) {
     this.fileSaver.ngOnInit();
     if(this.fileSaver.textContent === null){
-      this.fileSaver.textContent = JSON.stringify({});
-      this.fileSaver.load()
+            this.fileSaver.load()
     }
     this.eintraege = JSON.parse(this.fileSaver.textContent);
   }

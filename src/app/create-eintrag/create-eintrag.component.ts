@@ -28,7 +28,7 @@ export class CreateEintragComponent {
     this.eintrag = {
       id: 123,
       title: '',
-      betrag: 0,
+      betrag: null,
       time: date.toLocaleDateString('de-DE'),
       date: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
       beschreibung: ''
@@ -38,7 +38,7 @@ export class CreateEintragComponent {
   onSaveClicked() {
     if (this.eintrag.betrag !== 0) {
       this.dataService.addEintrag(this.eintrag);
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
     } else {
       this.showBetragWarning = true;
     }
@@ -46,7 +46,7 @@ export class CreateEintragComponent {
 
   onCancelClicked() {
     if (this.isEintragEmpty()) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
       return;
     }
     const confirmDialogViewModel: ConfirmDialogViewModel = {
@@ -57,7 +57,7 @@ export class CreateEintragComponent {
       },
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       }
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
@@ -65,7 +65,7 @@ export class CreateEintragComponent {
 
   onBackClicked() {
     if (this.isEintragEmpty()) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
       return;
     }
     const confirmDialogViewModel: ConfirmDialogViewModel = {
@@ -76,7 +76,7 @@ export class CreateEintragComponent {
       },
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       }
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
