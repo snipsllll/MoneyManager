@@ -7,17 +7,17 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
 
 @Component({
-  selector: 'app-eintrag-listelem',
+  selector: 'app-buchung-listelem',
   standalone: true,
   imports: [
     NgIf
   ],
-  templateUrl: './eintrag-listelem.component.html',
-  styleUrl: './eintrag-listelem.component.css'
+  templateUrl: './buchung-listelem.component.html',
+  styleUrl: './buchung-listelem.component.css'
 })
-export class EintragListelemComponent {
+export class BuchungListelemComponent {
 
-  @Input() eintrag!: Buchung;
+  @Input() buchung!: Buchung;
   showMenu = signal<boolean>(false);
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router, private dialogService: DialogService) {
@@ -28,22 +28,22 @@ export class EintragListelemComponent {
     this.showMenu.set(!this.showMenu())
   }
 
-  onEintragClicked(eintragId: number) {
-    this.router.navigate(['/eintragDetails', eintragId]);
+  onBuchungClicked(buchungsId: number) {
+    this.router.navigate(['/buchungDetails', buchungsId]);
   }
 
-  onEditButtonClicked(eintragId: number) {
-    this.router.navigate(['/editEintrag', eintragId]);
+  onEditButtonClicked(buchungsId: number) {
+    this.router.navigate(['/editBuchung', buchungsId]);
   }
 
   onDeleteButtonClicked() {
     this.showMenu.set(false);
     const confirmDialogViewModel: ConfirmDialogViewModel = {
-      title: 'Eintrag löschen?',
-      message: 'Willst du den Eintrag wirklich löschen? Er kann nicht wieder hergestellt werden!',
+      title: 'Buchung löschen?',
+      message: 'Willst du die Buchung wirklich löschen? Sie kann nicht wieder hergestellt werden!',
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.dataService.deleteBuchung(this.eintrag.id);
+        this.dataService.deleteBuchung(this.buchung.id);
       },
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;

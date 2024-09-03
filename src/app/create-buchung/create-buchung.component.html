@@ -6,13 +6,13 @@
   </div>
   <div class="create-eintrag__content">
     <div class="create-eintrag__top-content">
-      <input type="text" [(ngModel)]="eintrag.title" class="create-eintrag__title" autofocus>
+      <input type="text" [(ngModel)]="buchung.title" class="create-eintrag__title" autofocus>
       <div class="create-eintrag__id-wrapper">
         <div>
           (ID:
         </div>
         <div class="create-eintrag__data eintrag-details__id-data">
-          {{ eintrag.id }})
+          {{ buchung.id }})
         </div>
       </div>
       <hr>
@@ -24,7 +24,7 @@
           <div class="create-eintrag__label">
             Betrag:
           </div>
-          <input type="number" [(ngModel)]="eintrag.betrag" class="create-eintrag__data">
+          <input type="number" [(ngModel)]="buchung.betrag" class="create-eintrag__data">
         </div>
       </div>
 
@@ -32,19 +32,19 @@
         <div class="create-eintrag__label">
           Datum:
         </div>
-        <input type="date" [(ngModel)]="eintrag.date" (change)="onDateChange($event)" class="create-eintrag__data">
+        <input type="date" [(ngModel)]="buchung.date" (change)="onDateChange($event)" class="create-eintrag__data">
       </div>
       <div class="create-eintrag__uhrzeit-wrapper">
         <div class="create-eintrag__label">
           Uhrzeit:
         </div>
-        <input type="time" [(ngModel)]="eintrag.time" (change)="onTimeChange($event)" class="create-eintrag__data">
+        <input type="time" [(ngModel)]="buchung.time" (change)="onTimeChange($event)" class="create-eintrag__data">
       </div>
       <div class="create-eintrag__beschreibung-wrapper">
         <div class="create-eintrag__label create-eintrag__beschreibung-label">
           Beschreibung:
         </div>
-        <textarea [(ngModel)]="eintrag.beschreibung" class="create-eintrag__data create-eintrag__beschreibung-data">
+        <textarea [(ngModel)]="buchung.beschreibung" class="create-eintrag__data create-eintrag__beschreibung-data">
 
         </textarea>
       </div>

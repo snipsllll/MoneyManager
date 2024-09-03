@@ -8,19 +8,19 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
 
 @Component({
-  selector: 'app-edit-eintrag',
+  selector: 'app-edit-buchung',
   standalone: true,
   imports: [
     NgIf,
     FormsModule
   ],
-  templateUrl: './edit-eintrag.component.html',
-  styleUrl: './edit-eintrag.component.css'
+  templateUrl: './edit-buchung.component.html',
+  styleUrl: './edit-buchung.component.css'
 })
-export class EditEintragComponent implements OnInit {
+export class EditBuchungComponent implements OnInit {
 
-  eintrag = signal<Buchung | undefined>(undefined);
-  oldEintrag?: Buchung;
+  buchung = signal<Buchung | undefined>(undefined);
+  oldBuchung?: Buchung;
 
   constructor(private router: Router, private dataService: DataService, private route: ActivatedRoute, public dialogService: DialogService) {
 
@@ -28,14 +28,14 @@ export class EditEintragComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const eintragId = +params.get('eintragId')!;
-      this.eintrag?.set(this.dataService.getBuchungById(eintragId));
-      this.oldEintrag = this.eintrag();
+      const buchungsId = +params.get('buchungsId')!;
+      this.buchung?.set(this.dataService.getBuchungById(buchungsId));
+      this.oldBuchung = this.buchung();
     });
   }
 
   onSaveClicked() {
-    this.dataService.editBuchung(this.eintrag!()!);
+    this.dataService.editBuchung(this.buchung!()!);
     this.router.navigate(['/'])
   }
 
@@ -48,7 +48,7 @@ export class EditEintragComponent implements OnInit {
       },
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.router.navigate(['/eintragDetails', this.eintrag!()!.id]);
+        this.router.navigate(['/buchungDetails', this.buchung!()!.id]);
       }
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
@@ -56,14 +56,14 @@ export class EditEintragComponent implements OnInit {
 
   onDateChange(event: any) {
     const date = new Date(event.target.value);
-    this.eintrag()!.date = date.toLocaleDateString('de-DE');
+    this.buchung()!.date = date.toLocaleDateString('de-DE');
   }
 
   onTimeChange(event: any) {
     const [hours, minutes] = event.target.value.split(':');
     const date = new Date();
     date.setHours(+hours, +minutes);
-    this.eintrag()!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+    this.buchung()!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
   }
 
   onBackClicked() {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditEintragComponent } from './edit-eintrag.component';
+import { ListDayComponent } from './list-day.component';
 
-describe('EditEintragComponent', () => {
-  let component: EditEintragComponent;
-  let fixture: ComponentFixture<EditEintragComponent>;
+describe('ListDayComponent', () => {
+  let component: ListDayComponent;
+  let fixture: ComponentFixture<ListDayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditEintragComponent]
+      imports: [ListDayComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditEintragComponent);
+    fixture = TestBed.createComponent(ListDayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

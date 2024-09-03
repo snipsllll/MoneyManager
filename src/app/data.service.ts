@@ -34,8 +34,8 @@ export class DataService {
   }
 
   deleteBuchung(buchungId: number){
-    const indexOfEintrag = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchungId);
-    this.userData.buchungen.alleBuchungen.splice(indexOfEintrag, 1);
+    const indexOfBuchung = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchungId);
+    this.userData.buchungen.alleBuchungen.splice(indexOfBuchung, 1);
     this.fileEngine.save(this.userData);
   }
 
@@ -46,8 +46,8 @@ export class DataService {
   }
 
   editBuchung(buchung: Buchung) {
-    const eintragIndex = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchung.id);
-    this.userData.buchungen.alleBuchungen[eintragIndex] = buchung;
+    const buchungIndex = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchung.id);
+    this.userData.buchungen.alleBuchungen[buchungIndex] = buchung;
     this.fileEngine.save(this.userData.buchungen.alleBuchungen);
   }
 
