@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import {Eintrag} from "./Eintrag";
-import {FileSaveService} from "./file-save.service";
+import {Injectable} from '@angular/core';
+import {Buchung} from "./Buchung";
+import {UserData} from "../UserData";
+import {FileEngine} from "../FileEngine";
 
 @Injectable({
   providedIn: 'root'
@@ -8,58 +9,64 @@ import {FileSaveService} from "./file-save.service";
 
 export class DataService {
 
-  eintraege: Eintrag[] = [];
+  userData: UserData;
+  useTestData: boolean = true;
+  download: boolean = false;
 
-  constructor(private fileSaver: FileSaveService) {
-    this.fileSaver.ngOnInit();
-    if(this.fileSaver.textContent === null){
-            this.fileSaver.load()
+  private fileEngine = new FileEngine(this.useTestData, this.download);
+
+  constructor() {
+    if(this.useTestData){
+      this.userData = this.fileEngine.getTestData();
+    } else {
+      this.userData = this.fileEngine.getSavedUserData();
     }
-    this.eintraege = JSON.parse(this.fileSaver.textContent);
+    console.log(this.userData);
+    this.fileEngine.test()
   }
 
-  getEintreage() {
-    return this.eintraege;
+  getAlleBuchungen() {
+    return this.userData.buchungen.alleBuchungen;
   }
 
-  getEintragById(eintragId: number): Eintrag | undefined {
-    return this.eintraege.find(x => x.id === eintragId);
+  getBuchungById(buchungId: number): Buchung | undefined {
+    return this.userData.buchungen.alleBuchungen.find(x => x.id === buchungId);
   }
 
-  deleteEintrag(eintragId: number){
-    const indexOfEintrag = this.eintraege.findIndex(x => x.id === eintragId);
-    this.eintraege.splice(indexOfEintrag, 1);
-    this.fileSaver.save(this.eintraege);
+  deleteBuchung(buchungId: number){
+    const indexOfBuchung = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchungId);
+    this.userData.buchungen.alleBuchungen.splice(indexOfBuchung, 1);
+    this.fileEngine.save(this.userData);
   }
 
-  addEintrag(eintrag: Eintrag) {
-    eintrag.id = this.getFreeEintragId();
-    this.eintraege.push(eintrag);
-    this.fileSaver.save(this.eintraege);
+  addBuchung(buchung: Buchung) {
+    buchung.id = this.getNextFreeBuchungsId();
+    this.userData.buchungen.alleBuchungen.push(buchung);
+    this.fileEngine.save(this.userData.buchungen.alleBuchungen);
   }
 
-  editEintrag(eintrag: Eintrag) {
-    const eintragIndex = this.eintraege.findIndex(x => x.id === eintrag.id);
-    this.eintraege[eintragIndex] = eintrag;
-    this.fileSaver.save(this.eintraege);
+  editBuchung(buchung: Buchung) {
+    const buchungIndex = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchung.id);
+    this.userData.buchungen.alleBuchungen[buchungIndex] = buchung;
+    this.fileEngine.save(this.userData.buchungen.alleBuchungen);
   }
 
-  getEintraegeByDay(date: string){
-    return this.eintraege.filter(x => x.date === date);
+  getBuchungenByDay(date: string){
+    return this.userData.buchungen.alleBuchungen.filter(x => x.date === date);
   }
 
-  getEintraegeByWeek(){
-    return this.filterThisWeek(this.eintraege)
+  getBuchungenForCurrentWeek(){
+    return this.filterThisWeek(this.userData.buchungen.alleBuchungen)
   }
 
-  getEintraegeByMonth() {
-    return this.filterThisMonth(this.eintraege);
+  getBuchungenForThisMonth() {
+    return this.filterThisMonth(this.userData.buchungen.alleBuchungen);
   }
 
-  private getFreeEintragId(){
+  private getNextFreeBuchungsId(){
     let freeId = 1;
-    for(let i = 0; i<this.eintraege.length; i++){
-      if(this.eintraege.find(x => x.id === freeId) === undefined) {
+    for(let i = 0; i<this.userData.buchungen.alleBuchungen.length; i++){
+      if(this.userData.buchungen.alleBuchungen.find(x => x.id === freeId) === undefined) {
         return freeId;
       } else {
         freeId++;
@@ -84,14 +91,14 @@ export class DataService {
     return endOfWeek;
   }
 
-  private filterThisWeek(eintraege: Eintrag[]): Eintrag[] {
+  private filterThisWeek(buchungen: Buchung[]): Buchung[] {
     const today = new Date();
     const startOfWeek = this.getStartOfWeek(today);
     const endOfWeek = this.getEndOfWeek(today);
 
-    return eintraege.filter(eintrag => {
-      const entryDate = this.parseDate(eintrag.date);
-      return entryDate !== null && entryDate >= startOfWeek && entryDate <= endOfWeek;
+    return buchungen.filter(buchung => {
+      const buchungDate = this.parseDate(buchung.date);
+      return buchungDate !== null && buchungDate >= startOfWeek && buchungDate <= endOfWeek;
     });
   }
 
@@ -103,14 +110,14 @@ export class DataService {
     return new Date(year, month - 1, day);
   }
 
-  private filterThisMonth(eintraege: Eintrag[]): Eintrag[] {
+  private filterThisMonth(buchungen: Buchung[]): Buchung[] {
     const today = new Date();
     const startOfMonth = this.getStartOfMonth(today);
     const endOfMonth = this.getEndOfMonth(today);
 
-    return eintraege.filter(eintrag => {
-      const entryDate = this.parseDate(eintrag.date);
-      return entryDate !== null && entryDate >= startOfMonth && entryDate <= endOfMonth;
+    return buchungen.filter(buchung => {
+      const buchungDate = this.parseDate(buchung.date);
+      return buchungDate !== null && buchungDate >= startOfMonth && buchungDate <= endOfMonth;
     });
   }
 

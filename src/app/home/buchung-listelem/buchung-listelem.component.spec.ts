@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EintragListelemComponent } from './eintrag-listelem.component';
+import { BuchungListelemComponent } from './buchung-listelem.component';
 
-describe('EintragListelemComponent', () => {
-  let component: EintragListelemComponent;
-  let fixture: ComponentFixture<EintragListelemComponent>;
+describe('BuchungListelemComponent', () => {
+  let component: BuchungListelemComponent;
+  let fixture: ComponentFixture<BuchungListelemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EintragListelemComponent]
+      imports: [BuchungListelemComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EintragListelemComponent);
+    fixture = TestBed.createComponent(BuchungListelemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

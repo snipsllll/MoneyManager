@@ -1,31 +1,31 @@
 import {Component} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {Eintrag} from "../Eintrag";
+import {Buchung} from "../Buchung";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {Router} from "@angular/router";
 import {DataService} from "../data.service";
 
 @Component({
-  selector: 'app-create-eintrag',
+  selector: 'app-create-buchung',
   standalone: true,
   imports: [
     NgIf,
     ReactiveFormsModule,
     FormsModule
   ],
-  templateUrl: './create-eintrag.component.html',
-  styleUrl: './create-eintrag.component.css'
+  templateUrl: './create-buchung.component.html',
+  styleUrl: './create-buchung.component.css'
 })
-export class CreateEintragComponent {
-  eintrag!: Eintrag;
+export class CreateBuchungComponent {
+  buchung!: Buchung;
   showBetragWarning = false;
 
   constructor(private dataService: DataService, public dialogService: DialogService, private router: Router) {
     const date = new Date();
 
-    this.eintrag = {
+    this.buchung = {
       id: 123,
       title: '',
       betrag: null,
@@ -36,8 +36,8 @@ export class CreateEintragComponent {
   }
 
   onSaveClicked() {
-    if (this.eintrag.betrag !== 0) {
-      this.dataService.addEintrag(this.eintrag);
+    if (this.buchung.betrag !== 0) {
+      this.dataService.addBuchung(this.buchung);
       this.router.navigate(['/']);
     } else {
       this.showBetragWarning = true;
@@ -45,7 +45,7 @@ export class CreateEintragComponent {
   }
 
   onCancelClicked() {
-    if (this.isEintragEmpty()) {
+    if (this.isBuchungEmpty()) {
       this.router.navigate(['/']);
       return;
     }
@@ -64,7 +64,7 @@ export class CreateEintragComponent {
   }
 
   onBackClicked() {
-    if (this.isEintragEmpty()) {
+    if (this.isBuchungEmpty()) {
       this.router.navigate(['/']);
       return;
     }
@@ -84,17 +84,17 @@ export class CreateEintragComponent {
 
   onDateChange(event: any) {
     const date = new Date(event.target.value);
-    this.eintrag!.date = date.toLocaleDateString('de-DE');
+    this.buchung!.date = date.toLocaleDateString('de-DE');
   }
 
   onTimeChange(event: any) {
     const [hours, minutes] = event.target.value.split(':');
     const date = new Date();
     date.setHours(+hours, +minutes);
-    this.eintrag!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+    this.buchung!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
   }
 
-  private isEintragEmpty() {
-    return (this.eintrag.betrag === 0 && this.eintrag.title === '' && this.eintrag.beschreibung === '')
+  private isBuchungEmpty() {
+    return (this.buchung.betrag === 0 && this.buchung.title === '' && this.buchung.beschreibung === '')
   }
 }

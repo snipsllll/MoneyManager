@@ -1,18 +1,18 @@
 import {bootstrapApplication} from '@angular/platform-browser';
 import {AppComponent} from './app/app.component';
 import {HomeComponent} from "./app/home/home.component";
-import {EditEintragComponent} from "./app/edit-eintrag/edit-eintrag.component";
+import {EditBuchungComponent} from "./app/edit-buchung/edit-buchung.component";
 import {provideRouter, Routes} from "@angular/router";
-import {CreateEintragComponent} from "./app/create-eintrag/create-eintrag.component";
-import {EintragDetailsComponent} from "./app/eintrag-details/eintrag-details.component";
+import {CreateBuchungComponent} from "./app/create-buchung/create-buchung.component";
+import {BuchungDetailsComponent} from "./app/buchung-details/buchung-details.component";
 import {provideZoneChangeDetection} from "@angular/core";
 
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'eintragDetails/:eintragId', component: EintragDetailsComponent},
-  {path: 'editEintrag/:eintragId', component: EditEintragComponent},
-  {path: 'createEintrag', component: CreateEintragComponent}
+  {path: 'buchungDetails/:buchungsId', component: BuchungDetailsComponent},
+  {path: 'editBuchung/:buchungsId', component: EditBuchungComponent},
+  {path: 'createBuchung', component: CreateBuchungComponent}
 ];
 
 bootstrapApplication(AppComponent, {
