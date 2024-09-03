@@ -1,5 +1,5 @@
 import {Component, Input, signal} from '@angular/core';
-import {Eintrag} from "../Eintrag";
+import {Buchung} from "../Buchung";
 import {NgIf} from "@angular/common";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
@@ -17,7 +17,7 @@ import {DataService} from "../data.service";
 })
 export class EintragListelemComponent {
 
-  @Input() eintrag!: Eintrag;
+  @Input() eintrag!: Buchung;
   showMenu = signal<boolean>(false);
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router, private dialogService: DialogService) {
@@ -43,7 +43,7 @@ export class EintragListelemComponent {
       message: 'Willst du den Eintrag wirklich löschen? Er kann nicht wieder hergestellt werden!',
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.dataService.deleteEintrag(this.eintrag.id);
+        this.dataService.deleteBuchung(this.eintrag.id);
       },
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;

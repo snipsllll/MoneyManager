@@ -1,5 +1,5 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {Eintrag} from "../Eintrag";
+import {Buchung} from "../Buchung";
 import {NgIf} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
@@ -17,7 +17,7 @@ import {DialogService} from "../dialog.service";
 })
 export class EintragDetailsComponent implements OnInit {
 
-  eintrag? = signal<Eintrag | undefined>(undefined);
+  eintrag? = signal<Buchung | undefined>(undefined);
 
   constructor(private dialogService: DialogService, private router: Router, private route: ActivatedRoute, private dataService: DataService) {
 
@@ -26,7 +26,7 @@ export class EintragDetailsComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const eintragId = +params.get('eintragId')!;
-      this.eintrag?.set(this.dataService.getEintragById(eintragId));
+      this.eintrag?.set(this.dataService.getBuchungById(eintragId));
     });
   }
 
@@ -40,7 +40,7 @@ export class EintragDetailsComponent implements OnInit {
       message: 'Willst du den Eintrag wirklich löschen? Er kann nicht wieder hergestellt werden!',
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.dataService.deleteEintrag(this.eintrag!()!.id);
+        this.dataService.deleteBuchung(this.eintrag!()!.id);
         this.router.navigate(['/'])
       },
       onCancelClicked: () => {

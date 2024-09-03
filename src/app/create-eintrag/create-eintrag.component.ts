@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {Eintrag} from "../Eintrag";
+import {Buchung} from "../Buchung";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {Router} from "@angular/router";
@@ -19,7 +19,7 @@ import {DataService} from "../data.service";
   styleUrl: './create-eintrag.component.css'
 })
 export class CreateEintragComponent {
-  eintrag!: Eintrag;
+  eintrag!: Buchung;
   showBetragWarning = false;
 
   constructor(private dataService: DataService, public dialogService: DialogService, private router: Router) {
@@ -37,7 +37,7 @@ export class CreateEintragComponent {
 
   onSaveClicked() {
     if (this.eintrag.betrag !== 0) {
-      this.dataService.addEintrag(this.eintrag);
+      this.dataService.addBuchung(this.eintrag);
       this.router.navigate(['/']);
     } else {
       this.showBetragWarning = true;

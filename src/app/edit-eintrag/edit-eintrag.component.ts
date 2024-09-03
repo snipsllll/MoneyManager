@@ -1,6 +1,6 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {NgIf} from "@angular/common";
-import {Eintrag} from "../Eintrag";
+import {Buchung} from "../Buchung";
 import {FormsModule} from "@angular/forms";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
@@ -19,8 +19,8 @@ import {DataService} from "../data.service";
 })
 export class EditEintragComponent implements OnInit {
 
-  eintrag = signal<Eintrag | undefined>(undefined);
-  oldEintrag?: Eintrag;
+  eintrag = signal<Buchung | undefined>(undefined);
+  oldEintrag?: Buchung;
 
   constructor(private router: Router, private dataService: DataService, private route: ActivatedRoute, public dialogService: DialogService) {
 
@@ -29,13 +29,13 @@ export class EditEintragComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const eintragId = +params.get('eintragId')!;
-      this.eintrag?.set(this.dataService.getEintragById(eintragId));
+      this.eintrag?.set(this.dataService.getBuchungById(eintragId));
       this.oldEintrag = this.eintrag();
     });
   }
 
   onSaveClicked() {
-    this.dataService.editEintrag(this.eintrag!()!);
+    this.dataService.editBuchung(this.eintrag!()!);
     this.router.navigate(['/'])
   }
 

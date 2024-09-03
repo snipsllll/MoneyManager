@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {EintraegeListComponent} from "../eintraege-list/eintraege-list.component";
 import {Router} from "@angular/router";
-import {Eintrag} from "../Eintrag";
+import {Buchung} from "../Buchung";
 import {DataService} from "../data.service";
 
 @Component({
@@ -15,10 +15,10 @@ import {DataService} from "../data.service";
 })
 export class HomeComponent {
 
-  eintraege!: Eintrag[];
+  eintraege!: Buchung[];
 
   constructor(private router: Router, private dataService: DataService) {
-    this.eintraege = this.dataService.getEintreage();
+    this.eintraege = this.dataService.getAlleBuchungen();
   }
 
   onPlusClicked() {
