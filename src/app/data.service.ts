@@ -11,7 +11,7 @@ export class DataService {
 
   userData: UserData;
   useTestData: boolean = true;
-  download: boolean = true;
+  download: boolean = false;
 
   private fileEngine = new FileEngine(this.useTestData, this.download);
 

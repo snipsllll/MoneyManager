@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {BuchungListelemComponent} from "../buchung-listelem/buchung-listelem.component";
-import {Buchung} from "../Buchung";
 import {NgForOf} from "@angular/common";
-import {TimeFilterTopbarComponent} from "../time-filter-topbar/time-filter-topbar.component";
-import {DataService} from "../data.service";
+import {TimeFilterTopbarComponent} from "../../time-filter-topbar/time-filter-topbar.component";
+import {Buchung} from "../../Buchung";
+import {DataService} from "../../data.service";
 
 @Component({
   selector: 'app-buchungen-list',

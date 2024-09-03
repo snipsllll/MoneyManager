@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {BuchungenListComponent} from "../buchungen-list/buchungen-list.component";
 import {Router} from "@angular/router";
 import {Buchung} from "../Buchung";
 import {DataService} from "../data.service";
+import {BuchungenListComponent} from "./buchungen-list/buchungen-list.component";
 
 @Component({
   selector: 'app-home',
