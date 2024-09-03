@@ -99,16 +99,6 @@ type Day = {
   budget?: number;
 }
 
-function toJsonString(input: any) {
-  return JSON.stringify(input, null, 4);
-}
-
-function formatTime(date: Date): string {
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
-}
-
 export enum Months {
   Januar,
   Februar,
