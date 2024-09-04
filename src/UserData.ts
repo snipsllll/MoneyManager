@@ -31,8 +31,6 @@ export class UserData {
 
     const budgetPerDay: number = +(budget / daysInMonth).toFixed(2);
 
-    console.log(budgetPerDay)
-
     let currentWeekStart = startDate;
 
     // Schleife durch die Wochen des Monats
