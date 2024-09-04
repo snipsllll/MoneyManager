@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import {Eintrag} from "./Eintrag";
-import {FileSaveService} from "./file-save.service";
+import {Injectable} from '@angular/core';
+import {UserData} from "../UserData";
+import {FileEngine} from "../FileEngine";
+import {Buchung} from "../ClassesInterfacesEnums";
 
 @Injectable({
   providedIn: 'root'
@@ -8,58 +9,61 @@ import {FileSaveService} from "./file-save.service";
 
 export class DataService {
 
-  eintraege: Eintrag[] = [];
+  userData: UserData;
+  selectedTimeFilter = 'alle';
+  useTestData: boolean = false;
+  download: boolean = true;
 
-  constructor(private fileSaver: FileSaveService) {
-    this.fileSaver.ngOnInit();
-    if(this.fileSaver.textContent === null){
-            this.fileSaver.load()
+  private _fileEngine = new FileEngine(this.useTestData, this.download);
+
+  constructor() {
+    this.useTestData
+      ? this.userData = this._fileEngine.userData
+      : this.userData = this._fileEngine.userData
+  }
+
+  public createNewBuchung(buchung: Buchung) {
+    this.createNewBuchungData(buchung);
+    this.update();
+  }
+
+  public editBuchung(buchung: Buchung) {
+    this.deleteBuchungData(buchung.id);
+    this.createNewBuchungData(buchung);
+    this.update();
+  }
+
+  public deleteBuchung(buchungsId?: number) {
+    if (buchungsId) {
+      this.deleteBuchungData(buchungsId)
     }
-    this.eintraege = JSON.parse(this.fileSaver.textContent);
+    this.update();
   }
 
-  getEintreage() {
-    return this.eintraege;
+  public getAlleBuchungen() {
+    return this.userData.buchungen.alleBuchungen;
   }
 
-  getEintragById(eintragId: number): Eintrag | undefined {
-    return this.eintraege.find(x => x.id === eintragId);
+  public getBuchungById(buchungId: number): Buchung | undefined {
+    return this.userData.buchungen.alleBuchungen.find(x => x.id === buchungId);
   }
 
-  deleteEintrag(eintragId: number){
-    const indexOfEintrag = this.eintraege.findIndex(x => x.id === eintragId);
-    this.eintraege.splice(indexOfEintrag, 1);
-    this.fileSaver.save(this.eintraege);
+  public getBuchungenByDay(date: Date) {
+    return this.userData.buchungen.alleBuchungen.filter(x => x.date.toLocaleDateString() === date.toLocaleDateString());
   }
 
-  addEintrag(eintrag: Eintrag) {
-    eintrag.id = this.getFreeEintragId();
-    this.eintraege.push(eintrag);
-    this.fileSaver.save(this.eintraege);
+  public getBuchungenForCurrentWeek() {
+    return this.filterThisWeek(this.userData.buchungen.alleBuchungen)
   }
 
-  editEintrag(eintrag: Eintrag) {
-    const eintragIndex = this.eintraege.findIndex(x => x.id === eintrag.id);
-    this.eintraege[eintragIndex] = eintrag;
-    this.fileSaver.save(this.eintraege);
+  public getBuchungenForThisMonth() {
+    return this.filterThisMonth(this.userData.buchungen.alleBuchungen);
   }
 
-  getEintraegeByDay(date: string){
-    return this.eintraege.filter(x => x.date === date);
-  }
-
-  getEintraegeByWeek(){
-    return this.filterThisWeek(this.eintraege)
-  }
-
-  getEintraegeByMonth() {
-    return this.filterThisMonth(this.eintraege);
-  }
-
-  private getFreeEintragId(){
+  private getNextFreeBuchungsId() {
     let freeId = 1;
-    for(let i = 0; i<this.eintraege.length; i++){
-      if(this.eintraege.find(x => x.id === freeId) === undefined) {
+    for (let i = 0; i < this.userData.buchungen.alleBuchungen.length; i++) {
+      if (this.userData.buchungen.alleBuchungen.find(x => x.id === freeId) === undefined) {
         return freeId;
       } else {
         freeId++;
@@ -84,33 +88,25 @@ export class DataService {
     return endOfWeek;
   }
 
-  private filterThisWeek(eintraege: Eintrag[]): Eintrag[] {
+  private filterThisWeek(buchungen: Buchung[]): Buchung[] {
     const today = new Date();
     const startOfWeek = this.getStartOfWeek(today);
     const endOfWeek = this.getEndOfWeek(today);
 
-    return eintraege.filter(eintrag => {
-      const entryDate = this.parseDate(eintrag.date);
-      return entryDate !== null && entryDate >= startOfWeek && entryDate <= endOfWeek;
+    return buchungen.filter(buchung => {
+      const buchungDate = buchung.date;
+      return buchungDate !== null && buchungDate >= startOfWeek && buchungDate <= endOfWeek;
     });
   }
 
-  private parseDate(dateStr: string): Date | null {
-    const [day, month, year] = dateStr.split('.').map(Number);
-    if (!day || !month || !year) {
-      return null; // Invalid date format
-    }
-    return new Date(year, month - 1, day);
-  }
-
-  private filterThisMonth(eintraege: Eintrag[]): Eintrag[] {
+  private filterThisMonth(buchungen: Buchung[]): Buchung[] {
     const today = new Date();
     const startOfMonth = this.getStartOfMonth(today);
     const endOfMonth = this.getEndOfMonth(today);
 
-    return eintraege.filter(eintrag => {
-      const entryDate = this.parseDate(eintrag.date);
-      return entryDate !== null && entryDate >= startOfMonth && entryDate <= endOfMonth;
+    return buchungen.filter(buchung => {
+      const buchungDate = buchung.date;
+      return buchungDate !== null && buchungDate >= startOfMonth && buchungDate <= endOfMonth;
     });
   }
 
@@ -120,5 +116,82 @@ export class DataService {
 
   private getEndOfMonth(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+  }
+
+  private deleteBuchungData(buchungsId?: number) {
+    if (!buchungsId) {
+      return;
+    }
+    const alleBuchungenBuchungIndex = this.userData.buchungen.alleBuchungen.findIndex(pBuchung => pBuchung.id === buchungsId);
+    if (alleBuchungenBuchungIndex === -1) {
+      return;
+    }
+    const buchungDate = this.userData.buchungen.alleBuchungen[alleBuchungenBuchungIndex].date;
+    this.userData.buchungen.alleBuchungen.splice(alleBuchungenBuchungIndex, 1);
+    const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchungDate.getFullYear(), buchungDate.getMonth()).toLocaleDateString());
+    const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
+      return week.days.find(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString());
+    });
+
+    const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString())
+    const buchungIndex = this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.findIndex(pBuchung => pBuchung.id === buchungsId) ?? -1;
+
+    if (this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen !== undefined && buchungIndex !== -1) {
+      this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen.splice(buchungIndex, 1);
+    }
+  }
+
+  private recalculateIstBudgets() {
+    this.userData.months.forEach(month => {
+      let monthAusgaben = 0;
+
+      month.weeks.forEach(week => {
+        let weekAusgaben = 0;
+
+        week.days.forEach(day => {
+          let dayAusgaben = 0;
+
+          day.buchungen?.forEach(buchung => {
+            dayAusgaben += buchung.betrag ?? 0;
+          });
+
+          // Calculate istBudget for the day
+          day.istBudget = (day.budget ?? 0) - dayAusgaben;
+
+          weekAusgaben += dayAusgaben; // Accumulate for the week
+        });
+
+        // Calculate istBudget for the week
+        week.istBudget = (week.budget ?? 0) - weekAusgaben;
+
+        monthAusgaben += weekAusgaben; // Accumulate for the month
+      });
+
+      // Calculate istBudget for the month
+      month.istBudget = (month.budget ?? 0) - monthAusgaben;
+    });
+  }
+
+  private createNewBuchungData(buchung: Buchung) {
+    this.userData.buchungen.alleBuchungen.push(buchung)
+    let monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
+    if (monthIndex === -1) {
+      this.userData.generateNewMonth(buchung.date, this.userData.months[0].budget);
+      monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
+    }
+    const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
+      return week.days.find(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString());
+    });
+
+    const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
+
+    buchung.id = this.getNextFreeBuchungsId();
+
+    this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.push(buchung);
+  }
+
+  private update() {
+    this.recalculateIstBudgets();
+    this._fileEngine.save();
   }
 }

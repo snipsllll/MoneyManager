@@ -4,16 +4,16 @@
       <-
     </div>
   </div>
-  @if(eintrag() !== undefined){
+  @if(buchung() !== undefined){
     <div class="edit-eintrag__content">
       <div class="edit-eintrag__top-content">
-        <input type="text" [(ngModel)]="eintrag()!.title" class="edit-eintrag__title">
+        <input type="text" [(ngModel)]="buchung()!.title" class="edit-eintrag__title">
         <div class="edit-eintrag__id-wrapper">
           <div>
             (ID:
           </div>
           <div class="edit-eintrag__data eintrag-details__id-data">
-            {{ eintrag()!.id }})
+            {{ buchung()!.id }})
           </div>
         </div>
         <hr>
@@ -21,25 +21,25 @@
           <div class="edit-eintrag__label">
             Betrag:
           </div>
-          <input type="number" [(ngModel)]="eintrag()!.betrag" class="edit-eintrag__data">
+          <input type="number" [(ngModel)]="buchung()!.betrag" class="edit-eintrag__data">
         </div>
         <div class="edit-eintrag__datum-wrapper">
           <div class="edit-eintrag__label">
             Datum:
           </div>
-          <input type="date" [(ngModel)]="eintrag()!.date" (change)="onDateChange($event)" class="edit-eintrag__data">
+          <input type="date" [value]="buchung()!.date.toLocaleDateString()" (change)="onDateChange($event)" class="edit-eintrag__data">
         </div>
         <div class="edit-eintrag__uhrzeit-wrapper">
           <div class="edit-eintrag__label">
             Uhrzeit:
           </div>
-          <input type="time" [(ngModel)]="eintrag()!.time" (change)="onTimeChange($event)" class="edit-eintrag__data">
+          <input type="time" [(ngModel)]="buchung()!.time" (change)="onTimeChange($event)" class="edit-eintrag__data">
         </div>
         <div class="edit-eintrag__beschreibung-wrapper">
           <div class="edit-eintrag__label edit-eintrag__beschreibung-label">
             Beschreibung:
           </div>
-          <textarea [(ngModel)]="eintrag()!.beschreibung" class="edit-eintrag__data edit-eintrag__beschreibung-data">
+          <textarea [(ngModel)]="buchung()!.beschreibung" class="edit-eintrag__data edit-eintrag__beschreibung-data">
 
         </textarea>
         </div>

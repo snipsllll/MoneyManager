@@ -4,17 +4,17 @@
       <-
     </div>
   </div>
-  <div class="eintrag-details__content" *ngIf="eintrag !== undefined; else noEintrag">
+  <div class="eintrag-details__content" *ngIf="buchung !== undefined; else noEintrag">
     <div class="eintrag-details__top-content">
       <div class="eintrag-details__title">
-        {{ eintrag()?.title }}
+        {{ buchung()?.title }}
       </div>
       <div class="eintrag-details__id-wrapper">
         <div>
           (ID:
         </div>
         <div class="eintrag-details__data eintrag-details__id-data">
-          {{ eintrag()?.id }})
+          {{ buchung()?.id }})
         </div>
       </div>
       <hr>
@@ -23,7 +23,7 @@
           Betrag:
         </div>
         <div class="eintrag-details__data">
-          {{ eintrag()?.betrag }}€
+          {{ buchung()?.betrag }}€
         </div>
       </div>
       <div class="eintrag-details__datum-wrapper">
@@ -31,7 +31,7 @@
           Datum:
         </div>
         <div class="eintrag-details__data">
-          {{ eintrag()?.date }}
+          {{ buchung()?.date!.toLocaleDateString() }}
         </div>
       </div>
       <div class="eintrag-details__uhrzeit-wrapper">
@@ -39,7 +39,7 @@
           Uhrzeit:
         </div>
         <div class="eintrag-details__data">
-          {{ eintrag()?.time }}
+          {{ buchung()?.time }}
         </div>
       </div>
       <div class="eintrag-details__beschreibung-wrapper">
@@ -47,7 +47,7 @@
           Beschreibung:
         </div>
         <div class="eintrag-details__data eintrag-details__beschreibung-data">
-          {{ eintrag()?.beschreibung }}
+          {{ buchung()?.beschreibung }}
         </div>
       </div>
       <div class="eintrag-details__spacer-bottom">

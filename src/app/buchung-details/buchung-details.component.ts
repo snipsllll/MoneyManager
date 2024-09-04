@@ -1,23 +1,23 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {Eintrag} from "../Eintrag";
 import {NgIf} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {DialogService} from "../dialog.service";
+import {Buchung} from "../../ClassesInterfacesEnums";
 
 @Component({
-  selector: 'app-eintrag-details',
+  selector: 'app-buchung-details',
   standalone: true,
   imports: [
     NgIf
   ],
-  templateUrl: './eintrag-details.component.html',
-  styleUrl: './eintrag-details.component.css'
+  templateUrl: './buchung-details.component.html',
+  styleUrl: './buchung-details.component.css'
 })
-export class EintragDetailsComponent implements OnInit {
+export class BuchungDetailsComponent implements OnInit {
 
-  eintrag? = signal<Eintrag | undefined>(undefined);
+  buchung? = signal<Buchung | undefined>(undefined);
 
   constructor(private dialogService: DialogService, private router: Router, private route: ActivatedRoute, private dataService: DataService) {
 
@@ -25,8 +25,8 @@ export class EintragDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const eintragId = +params.get('eintragId')!;
-      this.eintrag?.set(this.dataService.getEintragById(eintragId));
+      const buchungsId = +params.get('buchungsId')!;
+      this.buchung?.set(this.dataService.getBuchungById(buchungsId));
     });
   }
 
@@ -36,11 +36,12 @@ export class EintragDetailsComponent implements OnInit {
 
   onDeleteButtonClicked() {
     const confirmDialogViewModel: ConfirmDialogViewModel = {
-      title: 'Eintrag löschen?',
-      message: 'Willst du den Eintrag wirklich löschen? Er kann nicht wieder hergestellt werden!',
+      title: 'Buchung löschen?',
+      message: 'Willst du die Buchung wirklich löschen? Sie kann nicht wieder hergestellt werden!',
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.dataService.deleteEintrag(this.eintrag!()!.id);
+        this.dataService.deleteBuchung(this.buchung!()!.id);
+        console.log(this.dataService.userData)
         this.router.navigate(['/'])
       },
       onCancelClicked: () => {
@@ -51,6 +52,6 @@ export class EintragDetailsComponent implements OnInit {
   }
 
   onEditClicked() {
-    this.router.navigate(['/editEintrag', this.eintrag!()!.id]);
+    this.router.navigate(['/editBuchung', this.buchung!()!.id]);
   }
 }

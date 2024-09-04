@@ -1,13 +1,13 @@
 <div class="eintrag-listelem">
-  <div class="eintrag-listelem__menu-button__left" (click)="onEintragClicked(eintrag.id)">
+  <div class="eintrag-listelem__menu-button__left" (click)="onBuchungClicked(buchung.id!)">
     <div class="eintrag-listelem__betrag all-centered">
-      {{eintrag.betrag}}
+      -{{buchung.betrag}}€
     </div>
     <div class="eintrag-listelem__trennlinie">
       |
     </div>
     <div class="eintrag-listelem__title all-centered">
-      {{eintrag.title}}
+      {{buchung.title}} ({{buchung.date.toLocaleDateString()}})
     </div>
   </div>
 
@@ -17,13 +17,17 @@
 
   @if(showMenu()){
     <div class="eintrag-listelem__menu">
-      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item" (click)="onEditButtonClicked(eintrag.id)">
+      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item" (click)="onEditButtonClicked(buchung.id!)">
         edit
       </div>
       <hr>
       <div class="eintrag-listelem__edit-delete all-centered eintrag-listelem__menu-item" (click)="onDeleteButtonClicked()">
         delete
       </div>
+
+    </div>
+    <div class="eintrag-listelem__menu-background" (click)="onMenuButtonClicked()">
+
     </div>
   }
 </div>
