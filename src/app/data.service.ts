@@ -126,8 +126,8 @@ export class DataService {
     if (alleBuchungenBuchungIndex === -1) {
       return;
     }
-    this.userData.buchungen.alleBuchungen.splice(alleBuchungenBuchungIndex, 1);
     const buchungDate = this.userData.buchungen.alleBuchungen[alleBuchungenBuchungIndex].date;
+    this.userData.buchungen.alleBuchungen.splice(alleBuchungenBuchungIndex, 1);
     const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchungDate.getFullYear(), buchungDate.getMonth()).toLocaleDateString());
     const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
       return week.days.find(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString());
