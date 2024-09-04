@@ -1,5 +1,5 @@
 import {UserData} from "./UserData";
-import {Buchung, Months} from "./ClassesInterfacesEnums";
+import {Buchung} from "./ClassesInterfacesEnums";
 
 export class FileEngine {
 

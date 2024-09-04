@@ -1,6 +1,5 @@
-
 import {Buchungen} from "./Buchungen";
-import {Buchung, Day, ItfUserData, Month, Months, Week} from "./ClassesInterfacesEnums";
+import {Buchung, Day, Month, Week} from "./ClassesInterfacesEnums";
 
 export class UserData {
 

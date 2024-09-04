@@ -82,8 +82,7 @@ export class CreateBuchungComponent {
   }
 
   onDateChange(event: any) {
-    const date = new Date(event.target.value);
-    this.buchung!.date = date;
+    this.buchung!.date = new Date(event.target.value);
   }
 
   onTimeChange(event: any) {
