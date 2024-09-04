@@ -1,14 +1,10 @@
 <div class="eintraege-list">
   <div class="eintraege-list__topbar">
-    <app-time-filter-topbar
-      (onAlleClickedEvnt)="onAlleClicked()"
-      (onHeuteClickedEvnt)="onHeuteClicked()"
-      (onMonatClickedEvnt)="onMonatClicked()"
-      (onWocheClickedEvnt)="onWocheClicked()"
-    ></app-time-filter-topbar>
   </div>
   <div class="eintraege-list__list">
-    <app-buchung-listelem *ngFor="let buchung of buchungen" [buchung]="buchung" (onDelete)="onDelete()"></app-buchung-listelem>
+    <app-buchungen-list-day *ngFor="let day of days" [day]="day">
+
+    </app-buchungen-list-day>
     @if(buchungen?.length === 0){
       <div class="eintraege-list__keine-eintraege">
         noch keine Einträge vorhanden
