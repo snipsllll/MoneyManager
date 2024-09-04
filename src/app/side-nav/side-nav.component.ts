@@ -20,7 +20,7 @@ export class SideNavComponent {
   }
 
   onBudgetClicked(): void {
-    this.router.navigate(['createBuchung']);
+    this.router.navigate(['budget']);
     this.topbarService.isSidenavVisible.set(false);
   }
 
