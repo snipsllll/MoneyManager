@@ -1,4 +1,4 @@
-import {Component, Input, signal} from '@angular/core';
+import {Component, EventEmitter, Input, Output, signal} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConfirmDialogViewModel} from "../../ConfirmDialogViewModel";
@@ -18,6 +18,7 @@ import {Buchung} from "../../../ClassesInterfacesEnums";
 export class BuchungListelemComponent {
 
   @Input() buchung!: Buchung;
+  @Output() onDelete = new EventEmitter();
   showMenu = signal<boolean>(false);
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router, private dialogService: DialogService) {
@@ -44,6 +45,7 @@ export class BuchungListelemComponent {
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
         this.dataService.deleteBuchung(this.buchung.id);
+        this.onDelete.emit()
       },
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;

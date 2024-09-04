@@ -4,10 +4,10 @@
       (onAlleClickedEvnt)="onAlleClicked()"
       (onHeuteClickedEvnt)="onHeuteClicked()"
       (onMonatClickedEvnt)="onMonatClicked()"
-      (onWocheClickedEvnt)="OnWocheClicked()"
+      (onWocheClickedEvnt)="onWocheClicked()"
     ></app-time-filter-topbar>
   </div>
   <div class="eintraege-list__list">
-    <app-buchung-listelem *ngFor="let buchung of buchungen" [buchung]="buchung"></app-buchung-listelem>
+    <app-buchung-listelem *ngFor="let buchung of buchungen" [buchung]="buchung" (onDelete)="onDelete()"></app-buchung-listelem>
   </div>
 </div>

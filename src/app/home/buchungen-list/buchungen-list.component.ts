@@ -20,6 +20,7 @@ export class BuchungenListComponent implements OnInit{
 
   @Input() buchungen?: Buchung[];
   date = new Date();
+  activeFilter = '';
 
   constructor(private dataService: DataService){
     this.orderByDateDesc();
@@ -34,19 +35,41 @@ export class BuchungenListComponent implements OnInit{
   }
 
   onHeuteClicked() {
+    this.activeFilter = 'heute';
     this.buchungen = this.dataService.getBuchungenByDay(this.date);
   }
 
-  OnWocheClicked(){
+  onWocheClicked(){
+    this.activeFilter = 'woche';
     this.buchungen = this.dataService.getBuchungenForCurrentWeek();
   }
 
   onMonatClicked() {
+    this.activeFilter = 'monat';
     this.buchungen = this.dataService.getBuchungenForThisMonth();
   }
 
   onAlleClicked() {
+    this.activeFilter = 'alle';
     this.buchungen = this.dataService.getAlleBuchungen();
+  }
+
+  onDelete() {
+    switch(this.activeFilter) {
+      case 'alle':
+        this.onAlleClicked();
+        break;
+      case 'heute':
+        this.onHeuteClicked();
+        break;
+      case 'woche':
+        this.onWocheClicked();
+        break;
+      case 'monat':
+        this.onMonatClicked();
+        break;
+    }
+    this.orderByDateDesc();
   }
 
 }

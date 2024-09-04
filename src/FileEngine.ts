@@ -220,7 +220,9 @@ export class FileEngine {
         return savedText;
       }
     } catch (e) {
-      console.error('Fehler beim Laden aus localStorage:', e);
+      const x = JSON.stringify(new UserData(0, []));
+      console.log(x);
+      return x;
     }
     return '{}';
   }
