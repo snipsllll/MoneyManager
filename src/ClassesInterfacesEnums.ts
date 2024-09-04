@@ -24,7 +24,7 @@ export interface Day {
 }
 
 export interface Buchung {
-  id: number
+  id?: number
   title: string
   betrag: number | null
   beschreibung?: string

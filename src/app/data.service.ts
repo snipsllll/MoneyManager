@@ -30,6 +30,8 @@ export class DataService {
 
     const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
 
+    buchung.id = this.getNextFreeBuchungsId();
+
     this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.push(buchung);
     this.recalculateIstBudgets();
   }
@@ -40,7 +42,10 @@ export class DataService {
     this.recalculateIstBudgets();
   }
 
-  public deleteBuchung(buchungsId: number) {
+  public deleteBuchung(buchungsId?: number) {
+    if(!buchungsId){
+      return;
+    }
     const alleBuchungenBuchungIndex = this.userData.buchungen.alleBuchungen.findIndex(pBuchung => pBuchung.id === buchungsId);
     if(alleBuchungenBuchungIndex === -1){
       return;

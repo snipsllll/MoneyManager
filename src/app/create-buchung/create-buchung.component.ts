@@ -26,7 +26,6 @@ export class CreateBuchungComponent {
     const date = new Date();
 
     this.buchung = {
-      id: 123,
       title: '',
       betrag: null,
       date: date,
