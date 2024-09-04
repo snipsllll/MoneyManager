@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {Buchung} from "../Buchung";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {Router} from "@angular/router";
 import {DataService} from "../data.service";
+import {Buchung} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-create-buchung',
@@ -26,18 +26,17 @@ export class CreateBuchungComponent {
     const date = new Date();
 
     this.buchung = {
-      id: 123,
       title: '',
       betrag: null,
-      date: date.toLocaleDateString('de-DE'),
+      date: date,
       time: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
       beschreibung: ''
     };
   }
 
   onSaveClicked() {
-    if (this.buchung.betrag !== 0) {
-      this.dataService.addBuchung(this.buchung);
+    if (this.buchung.betrag !== 0 && this.buchung.betrag !== null) {
+      this.dataService.createNewBuchung(this.buchung);
       this.router.navigate(['/']);
     } else {
       this.showBetragWarning = true;
@@ -83,8 +82,7 @@ export class CreateBuchungComponent {
   }
 
   onDateChange(event: any) {
-    const date = new Date(event.target.value);
-    this.buchung!.date = date.toLocaleDateString('de-DE');
+    this.buchung!.date = new Date(event.target.value);
   }
 
   onTimeChange(event: any) {

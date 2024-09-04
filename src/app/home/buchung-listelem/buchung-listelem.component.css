@@ -1,5 +1,7 @@
 .eintrag-listelem {
   border: 2px solid black;
+  border-radius: 5px;
+  background-color: #dddddd;
   margin-bottom: 20px;
   height: 40px;
   display: flex;
@@ -56,4 +58,13 @@
 
 hr {
   margin: 0;
+}
+
+.eintrag-listelem__menu-background {
+  height: 100vh;
+  width: 100vh;
+  z-index: 98;
+  position: fixed;
+  top: 0;
+  left: 0;
 }

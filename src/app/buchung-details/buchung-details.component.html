@@ -31,7 +31,7 @@
           Datum:
         </div>
         <div class="eintrag-details__data">
-          {{ buchung()?.date }}
+          {{ buchung()?.date!.toLocaleDateString() }}
         </div>
       </div>
       <div class="eintrag-details__uhrzeit-wrapper">

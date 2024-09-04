@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Buchung} from "./Buchung";
 import {UserData} from "../UserData";
 import {FileEngine} from "../FileEngine";
+import {Buchung} from "../ClassesInterfacesEnums";
 
 @Injectable({
   providedIn: 'root'
@@ -10,63 +10,60 @@ import {FileEngine} from "../FileEngine";
 export class DataService {
 
   userData: UserData;
-  useTestData: boolean = true;
-  download: boolean = false;
+  selectedTimeFilter = 'alle';
+  useTestData: boolean = false;
+  download: boolean = true;
 
-  private fileEngine = new FileEngine(this.useTestData, this.download);
+  private _fileEngine = new FileEngine(this.useTestData, this.download);
 
   constructor() {
-    if(this.useTestData){
-      this.userData = this.fileEngine.getTestData();
-    } else {
-      this.userData = this.fileEngine.getSavedUserData();
-    }
-    console.log(this.userData);
-    this.fileEngine.test()
+    this.useTestData
+      ? this.userData = this._fileEngine.userData
+      : this.userData = this._fileEngine.userData
   }
 
-  getAlleBuchungen() {
+  public createNewBuchung(buchung: Buchung) {
+    this.createNewBuchungData(buchung);
+    this.update();
+  }
+
+  public editBuchung(buchung: Buchung) {
+    this.deleteBuchungData(buchung.id);
+    this.createNewBuchungData(buchung);
+    this.update();
+  }
+
+  public deleteBuchung(buchungsId?: number) {
+    if (buchungsId) {
+      this.deleteBuchungData(buchungsId)
+    }
+    this.update();
+  }
+
+  public getAlleBuchungen() {
     return this.userData.buchungen.alleBuchungen;
   }
 
-  getBuchungById(buchungId: number): Buchung | undefined {
+  public getBuchungById(buchungId: number): Buchung | undefined {
     return this.userData.buchungen.alleBuchungen.find(x => x.id === buchungId);
   }
 
-  deleteBuchung(buchungId: number){
-    const indexOfBuchung = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchungId);
-    this.userData.buchungen.alleBuchungen.splice(indexOfBuchung, 1);
-    this.fileEngine.save(this.userData);
+  public getBuchungenByDay(date: Date) {
+    return this.userData.buchungen.alleBuchungen.filter(x => x.date.toLocaleDateString() === date.toLocaleDateString());
   }
 
-  addBuchung(buchung: Buchung) {
-    buchung.id = this.getNextFreeBuchungsId();
-    this.userData.buchungen.alleBuchungen.push(buchung);
-    this.fileEngine.save(this.userData.buchungen.alleBuchungen);
-  }
-
-  editBuchung(buchung: Buchung) {
-    const buchungIndex = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchung.id);
-    this.userData.buchungen.alleBuchungen[buchungIndex] = buchung;
-    this.fileEngine.save(this.userData.buchungen.alleBuchungen);
-  }
-
-  getBuchungenByDay(date: string){
-    return this.userData.buchungen.alleBuchungen.filter(x => x.date === date);
-  }
-
-  getBuchungenForCurrentWeek(){
+  public getBuchungenForCurrentWeek() {
     return this.filterThisWeek(this.userData.buchungen.alleBuchungen)
   }
 
-  getBuchungenForThisMonth() {
+  public getBuchungenForThisMonth() {
     return this.filterThisMonth(this.userData.buchungen.alleBuchungen);
   }
 
-  private getNextFreeBuchungsId(){
+  private getNextFreeBuchungsId() {
     let freeId = 1;
-    for(let i = 0; i<this.userData.buchungen.alleBuchungen.length; i++){
-      if(this.userData.buchungen.alleBuchungen.find(x => x.id === freeId) === undefined) {
+    for (let i = 0; i < this.userData.buchungen.alleBuchungen.length; i++) {
+      if (this.userData.buchungen.alleBuchungen.find(x => x.id === freeId) === undefined) {
         return freeId;
       } else {
         freeId++;
@@ -97,17 +94,9 @@ export class DataService {
     const endOfWeek = this.getEndOfWeek(today);
 
     return buchungen.filter(buchung => {
-      const buchungDate = this.parseDate(buchung.date);
+      const buchungDate = buchung.date;
       return buchungDate !== null && buchungDate >= startOfWeek && buchungDate <= endOfWeek;
     });
-  }
-
-  private parseDate(dateStr: string): Date | null {
-    const [day, month, year] = dateStr.split('.').map(Number);
-    if (!day || !month || !year) {
-      return null; // Invalid date format
-    }
-    return new Date(year, month - 1, day);
   }
 
   private filterThisMonth(buchungen: Buchung[]): Buchung[] {
@@ -116,7 +105,7 @@ export class DataService {
     const endOfMonth = this.getEndOfMonth(today);
 
     return buchungen.filter(buchung => {
-      const buchungDate = this.parseDate(buchung.date);
+      const buchungDate = buchung.date;
       return buchungDate !== null && buchungDate >= startOfMonth && buchungDate <= endOfMonth;
     });
   }
@@ -127,5 +116,82 @@ export class DataService {
 
   private getEndOfMonth(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+  }
+
+  private deleteBuchungData(buchungsId?: number) {
+    if (!buchungsId) {
+      return;
+    }
+    const alleBuchungenBuchungIndex = this.userData.buchungen.alleBuchungen.findIndex(pBuchung => pBuchung.id === buchungsId);
+    if (alleBuchungenBuchungIndex === -1) {
+      return;
+    }
+    const buchungDate = this.userData.buchungen.alleBuchungen[alleBuchungenBuchungIndex].date;
+    this.userData.buchungen.alleBuchungen.splice(alleBuchungenBuchungIndex, 1);
+    const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchungDate.getFullYear(), buchungDate.getMonth()).toLocaleDateString());
+    const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
+      return week.days.find(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString());
+    });
+
+    const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString())
+    const buchungIndex = this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.findIndex(pBuchung => pBuchung.id === buchungsId) ?? -1;
+
+    if (this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen !== undefined && buchungIndex !== -1) {
+      this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen.splice(buchungIndex, 1);
+    }
+  }
+
+  private recalculateIstBudgets() {
+    this.userData.months.forEach(month => {
+      let monthAusgaben = 0;
+
+      month.weeks.forEach(week => {
+        let weekAusgaben = 0;
+
+        week.days.forEach(day => {
+          let dayAusgaben = 0;
+
+          day.buchungen?.forEach(buchung => {
+            dayAusgaben += buchung.betrag ?? 0;
+          });
+
+          // Calculate istBudget for the day
+          day.istBudget = (day.budget ?? 0) - dayAusgaben;
+
+          weekAusgaben += dayAusgaben; // Accumulate for the week
+        });
+
+        // Calculate istBudget for the week
+        week.istBudget = (week.budget ?? 0) - weekAusgaben;
+
+        monthAusgaben += weekAusgaben; // Accumulate for the month
+      });
+
+      // Calculate istBudget for the month
+      month.istBudget = (month.budget ?? 0) - monthAusgaben;
+    });
+  }
+
+  private createNewBuchungData(buchung: Buchung) {
+    this.userData.buchungen.alleBuchungen.push(buchung)
+    let monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
+    if (monthIndex === -1) {
+      this.userData.generateNewMonth(buchung.date, this.userData.months[0].budget);
+      monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
+    }
+    const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
+      return week.days.find(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString());
+    });
+
+    const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
+
+    buchung.id = this.getNextFreeBuchungsId();
+
+    this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.push(buchung);
+  }
+
+  private update() {
+    this.recalculateIstBudgets();
+    this._fileEngine.save();
   }
 }

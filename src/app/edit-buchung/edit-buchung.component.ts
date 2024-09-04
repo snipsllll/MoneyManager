@@ -1,11 +1,11 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {NgIf} from "@angular/common";
-import {Buchung} from "../Buchung";
 import {FormsModule} from "@angular/forms";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
+import {Buchung} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-edit-buchung',
@@ -55,8 +55,7 @@ export class EditBuchungComponent implements OnInit {
   }
 
   onDateChange(event: any) {
-    const date = new Date(event.target.value);
-    this.buchung()!.date = date.toLocaleDateString('de-DE');
+    this.buchung()!.date = new Date(event.target.value);
   }
 
   onTimeChange(event: any) {

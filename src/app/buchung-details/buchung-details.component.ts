@@ -1,10 +1,10 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {Buchung} from "../Buchung";
 import {NgIf} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {DialogService} from "../dialog.service";
+import {Buchung} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-buchung-details',
@@ -41,6 +41,7 @@ export class BuchungDetailsComponent implements OnInit {
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
         this.dataService.deleteBuchung(this.buchung!()!.id);
+        console.log(this.dataService.userData)
         this.router.navigate(['/'])
       },
       onCancelClicked: () => {
