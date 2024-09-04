@@ -1,9 +1,20 @@
-<div class="top-bar">
-  <div class="top-bar__nav-button">
-    ::
+<div class="top-bar-wrapper">
+  <div class="top-bar">
+    <div class="top-bar__nav-button" (click)="onMenuButtonClicked()">
+      ::
+    </div>
+    <div class="top-bar__title">
+      <b>{{ title }}</b>
+    </div>
   </div>
-  <div class="top-bar__title">
-    <b>{{ title }}</b>
+
+  <div *ngIf="topbarService.isSidenavVisible()">
+    <div class="side-nav-wrapper">
+      <app-side-nav></app-side-nav>
+    </div>
+    <div class="side-nav-wrapper__background" (click)="onMenuButtonClicked()">
+
+    </div>
   </div>
 </div>
 

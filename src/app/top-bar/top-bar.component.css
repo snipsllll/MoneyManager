@@ -1,3 +1,7 @@
+.top-bar-wrapper {
+  position: relative;
+}
+
 .top-bar {
   display: flex;
   background-color: #b1b1b1;
@@ -22,4 +26,22 @@
   justify-content: center;
   align-items: center;
   font-size: 30px;
+}
+
+.side-nav-wrapper {
+  position: absolute;
+  bottom: calc(-94vh + 70px);
+  left: 0;
+  height: calc(94vh - 70px);
+  width: 200px;
+  z-index: 20;
+}
+
+.side-nav-wrapper__background {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  z-index: 19;
 }
