@@ -1,4 +1,4 @@
-import {Buchung} from "./app/Buchung";
+import {Buchung} from "./ClassesInterfacesEnums";
 
 export class Buchungen {
 

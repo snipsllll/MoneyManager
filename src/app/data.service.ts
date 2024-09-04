@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Buchung} from "./Buchung";
 import {UserData} from "../UserData";
 import {FileEngine} from "../FileEngine";
+import {Buchung} from "../ClassesInterfacesEnums";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,6 @@ export class DataService {
     } else {
       this.userData = this.fileEngine.getSavedUserData();
     }
-    console.log(this.userData);
-    this.fileEngine.test()
   }
 
   getAlleBuchungen() {
@@ -52,7 +50,7 @@ export class DataService {
   }
 
   getBuchungenByDay(date: string){
-    return this.userData.buchungen.alleBuchungen.filter(x => x.date === date);
+    return this.userData.buchungen.alleBuchungen.filter(x => x.date === this.parseDate(date));
   }
 
   getBuchungenForCurrentWeek(){
@@ -97,7 +95,7 @@ export class DataService {
     const endOfWeek = this.getEndOfWeek(today);
 
     return buchungen.filter(buchung => {
-      const buchungDate = this.parseDate(buchung.date);
+      const buchungDate = buchung.date;
       return buchungDate !== null && buchungDate >= startOfWeek && buchungDate <= endOfWeek;
     });
   }
@@ -116,7 +114,7 @@ export class DataService {
     const endOfMonth = this.getEndOfMonth(today);
 
     return buchungen.filter(buchung => {
-      const buchungDate = this.parseDate(buchung.date);
+      const buchungDate = buchung.date;
       return buchungDate !== null && buchungDate >= startOfMonth && buchungDate <= endOfMonth;
     });
   }

@@ -7,6 +7,7 @@ import {BuchungDetailsComponent} from "./buchung-details/buchung-details.compone
 import {FormsModule} from "@angular/forms";
 import {EditBuchungComponent} from "./edit-buchung/edit-buchung.component";
 import {CreateBuchungComponent} from "./create-buchung/create-buchung.component";
+import {DataService} from "./data.service";
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,6 @@ import {CreateBuchungComponent} from "./create-buchung/create-buchung.component"
 export class AppComponent {
   title = 'MoneyManager';
 
-  constructor(public dialogService: DialogService) {
+  constructor(public dialogService: DialogService, public dataService: DataService) {
   }
 }

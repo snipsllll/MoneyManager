@@ -2,9 +2,9 @@ import {Component, Input, signal} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConfirmDialogViewModel} from "../../ConfirmDialogViewModel";
-import {Buchung} from "../../Buchung";
 import {DataService} from "../../data.service";
 import {DialogService} from "../../dialog.service";
+import {Buchung} from "../../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-buchung-listelem',
