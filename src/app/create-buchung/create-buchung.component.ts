@@ -37,7 +37,7 @@ export class CreateBuchungComponent {
 
   onSaveClicked() {
     if (this.buchung.betrag !== 0) {
-      this.dataService.addBuchung(this.buchung);
+      this.dataService.createNewBuchung(this.buchung);
       this.router.navigate(['/']);
     } else {
       this.showBetragWarning = true;

@@ -21,6 +21,75 @@ export class DataService {
     } else {
       this.userData = this.fileEngine.getSavedUserData();
     }
+  }public createNewBuchung(buchung: Buchung) {
+    this.userData.buchungen.alleBuchungen.push(buchung)
+    const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
+    const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
+      return week.days.find(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString());
+    });
+
+    const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
+
+    this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.push(buchung);
+    this.recalculateIstBudgets();
+  }
+
+  public editBuchung(buchung: Buchung) {
+    this.deleteBuchung(buchung.id);
+    this.createNewBuchung(buchung);
+    this.recalculateIstBudgets();
+  }
+
+  public deleteBuchung(buchungsId: number) {
+    const alleBuchungenBuchungIndex = this.userData.buchungen.alleBuchungen.findIndex(pBuchung => pBuchung.id === buchungsId);
+    if(alleBuchungenBuchungIndex === -1){
+      return;
+    }
+    const buchungDate = this.userData.buchungen.alleBuchungen[alleBuchungenBuchungIndex].date;
+    this.userData.buchungen.alleBuchungen.splice(alleBuchungenBuchungIndex, 1);
+    const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchungDate.getFullYear(), buchungDate.getMonth()).toLocaleDateString());
+    const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
+      return week.days.find(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString());
+    });
+
+    const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString())
+    const buchungIndex = this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.findIndex(pBuchung => pBuchung.id === buchungsId) ?? -1;
+
+    if(this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen !== undefined && buchungIndex !== -1){
+      this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen.splice(buchungIndex, 1);
+    }
+    this.recalculateIstBudgets();
+  }
+
+  private recalculateIstBudgets() {
+    this.userData.months.forEach(month => {
+      let monthAusgaben = 0;
+
+      month.weeks.forEach(week => {
+        let weekAusgaben = 0;
+
+        week.days.forEach(day => {
+          let dayAusgaben = 0;
+
+          day.buchungen?.forEach(buchung => {
+            dayAusgaben += buchung.betrag ?? 0;
+          });
+
+          // Calculate istBudget for the day
+          day.istBudget = (day.budget ?? 0) - dayAusgaben;
+
+          weekAusgaben += dayAusgaben; // Accumulate for the week
+        });
+
+        // Calculate istBudget for the week
+        week.istBudget = (week.budget ?? 0) - weekAusgaben;
+
+        monthAusgaben += weekAusgaben; // Accumulate for the month
+      });
+
+      // Calculate istBudget for the month
+      month.istBudget = (month.budget ?? 0) - monthAusgaben;
+    });
   }
 
   getAlleBuchungen() {
@@ -29,24 +98,6 @@ export class DataService {
 
   getBuchungById(buchungId: number): Buchung | undefined {
     return this.userData.buchungen.alleBuchungen.find(x => x.id === buchungId);
-  }
-
-  deleteBuchung(buchungId: number){
-    const indexOfBuchung = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchungId);
-    this.userData.buchungen.alleBuchungen.splice(indexOfBuchung, 1);
-    this.fileEngine.save(this.userData);
-  }
-
-  addBuchung(buchung: Buchung) {
-    buchung.id = this.getNextFreeBuchungsId();
-    this.userData.buchungen.alleBuchungen.push(buchung);
-    this.fileEngine.save(this.userData.buchungen.alleBuchungen);
-  }
-
-  editBuchung(buchung: Buchung) {
-    const buchungIndex = this.userData.buchungen.alleBuchungen.findIndex(x => x.id === buchung.id);
-    this.userData.buchungen.alleBuchungen[buchungIndex] = buchung;
-    this.fileEngine.save(this.userData.buchungen.alleBuchungen);
   }
 
   getBuchungenByDay(date: string){
