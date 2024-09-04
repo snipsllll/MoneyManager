@@ -2,6 +2,7 @@ import {UserData} from "./UserData";
 import {Buchung, Months} from "./ClassesInterfacesEnums";
 
 export class FileEngine {
+
   fileName: string = 'savedText.txt';
   useTestData = true;
   download = false;
@@ -10,16 +11,55 @@ export class FileEngine {
   constructor(useTestData: boolean, download: boolean) {
     this.useTestData = useTestData;
     this.download = download;
-    if(this.useTestData){
+    if (this.useTestData) {
       this.userData = this.getTestData();
-      this.downloadTextFile();
     } else {
       this.userData = this.getSavedUserData();
     }
   }
 
+  public save(): void {
+    if (this.download) {
+      const blob = new Blob([JSON.stringify(this.userData)], {type: 'text/plain'});
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = this.fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      try {
+        localStorage.setItem('savedText', JSON.stringify(this.userData));
+      } catch (e) {
+        console.error('Fehler beim Speichern in localStorage:', e);
+      }
+    }
+  }
+
+  private loadTextFromLocalStorage(): string {
+    try {
+      const savedText = localStorage.getItem('savedText');
+      if (savedText) {
+        return savedText;
+      }
+    } catch (e) {
+      const x = JSON.stringify(new UserData(0, []));
+      console.log(x);
+      return x;
+    }
+    return '{}';
+  }
+
+  private parseDate(dateStr: string): Date | null {
+    const [day, month, year] = dateStr.split('.').map(Number);
+    if (!day || !month || !year) {
+      return null; // Invalid date format
+    }
+    return new Date(year, month - 1, day);
+  }
+
   //NICHT ANPACKEN!!!
-  getSavedUserData() {
+  private getSavedUserData() {
     return JSON.parse(this.loadTextFromLocalStorage(), (key, value) => {
       // Prüfen, ob der Wert ein ISO-8601 Datum ist
       if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value)) {
@@ -29,7 +69,7 @@ export class FileEngine {
     });
   }
 
-  getTestData() {
+  private getTestData() {
     const testDataBuchungen: Buchung[] = [
       {
         id: 1,
@@ -194,45 +234,4 @@ export class FileEngine {
     ];
     return new UserData(400, testDataBuchungen);
   }
-
-  public downloadTextFile(): void {
-    if(this.download){
-      const blob = new Blob([JSON.stringify(this.userData)], {type: 'text/plain'});
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = this.fileName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-
-      try {
-        localStorage.setItem('savedText', JSON.stringify(this.userData));
-      } catch (e) {
-        console.error('Fehler beim Speichern in localStorage:', e);
-      }
-    }
-  }
-
-  private loadTextFromLocalStorage(): string {
-    try {
-      const savedText = localStorage.getItem('savedText');
-      if (savedText) {
-        return savedText;
-      }
-    } catch (e) {
-      const x = JSON.stringify(new UserData(0, []));
-      console.log(x);
-      return x;
-    }
-    return '{}';
-  }
-
-  private parseDate(dateStr: string): Date | null {
-    const [day, month, year] = dateStr.split('.').map(Number);
-    if (!day || !month || !year) {
-      return null; // Invalid date format
-    }
-    return new Date(year, month - 1, day);
-  }
-
 }

@@ -9,5 +9,10 @@
   </div>
   <div class="eintraege-list__list">
     <app-buchung-listelem *ngFor="let buchung of buchungen" [buchung]="buchung" (onDelete)="onDelete()"></app-buchung-listelem>
+    @if(buchungen?.length === 0){
+      <div class="eintraege-list__keine-eintraege">
+        noch keine Einträge vorhanden
+      </div>
+    }
   </div>
 </div>
