@@ -34,7 +34,7 @@ export class BuchungenListComponent implements OnInit{
   }
 
   onHeuteClicked() {
-    this.buchungen = this.dataService.getBuchungenByDay(this.date.toLocaleDateString('de-DE'));
+    this.buchungen = this.dataService.getBuchungenByDay(this.date);
   }
 
   OnWocheClicked(){

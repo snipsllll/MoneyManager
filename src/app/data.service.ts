@@ -112,8 +112,8 @@ export class DataService {
     return this.userData.buchungen.alleBuchungen.find(x => x.id === buchungId);
   }
 
-  getBuchungenByDay(date: string){
-    return this.userData.buchungen.alleBuchungen.filter(x => x.date === this.parseDate(date));
+  getBuchungenByDay(date: Date){
+    return this.userData.buchungen.alleBuchungen.filter(x => x.date.toLocaleDateString() === date.toLocaleDateString());
   }
 
   getBuchungenForCurrentWeek(){

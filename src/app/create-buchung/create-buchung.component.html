@@ -7,15 +7,6 @@
   <div class="create-eintrag__content">
     <div class="create-eintrag__top-content">
       <input type="text" [(ngModel)]="buchung.title" class="create-eintrag__title" autofocus placeholder="Titel">
-      <div class="create-eintrag__id-wrapper">
-        <div>
-          (ID:
-        </div>
-        <div class="create-eintrag__data eintrag-details__id-data">
-          {{ buchung.id }})
-        </div>
-      </div>
-      <hr>
       <div class="create-eintrag__betrag">
         <div class="create-eintrag__betrag-warnung" *ngIf="showBetragWarning">
           der Betrag darf nicht 0 betragen!

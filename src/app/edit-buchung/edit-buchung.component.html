@@ -27,7 +27,7 @@
           <div class="edit-eintrag__label">
             Datum:
           </div>
-          <input type="date" [(ngModel)]="buchung()!.date" (change)="onDateChange($event)" class="edit-eintrag__data">
+          <input type="date" [value]="buchung()!.date.toLocaleDateString()" (change)="onDateChange($event)" class="edit-eintrag__data">
         </div>
         <div class="edit-eintrag__uhrzeit-wrapper">
           <div class="edit-eintrag__label">
