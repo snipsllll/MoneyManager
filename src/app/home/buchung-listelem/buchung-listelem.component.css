@@ -1,5 +1,7 @@
 .eintrag-listelem {
   border: 2px solid black;
+  border-radius: 5px;
+  background-color: #dddddd;
   margin-bottom: 20px;
   height: 40px;
   display: flex;

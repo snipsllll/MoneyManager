@@ -10,6 +10,7 @@ import {Buchung} from "../ClassesInterfacesEnums";
 export class DataService {
 
   userData: UserData;
+  selectedTimeFilter = 'alle';
   useTestData: boolean = true;
   download: boolean = false;
 

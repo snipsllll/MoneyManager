@@ -1,7 +1,7 @@
 <div class="eintrag-listelem">
-  <div class="eintrag-listelem__menu-button__left" (click)="onBuchungClicked(buchung.id)">
+  <div class="eintrag-listelem__menu-button__left" (click)="onBuchungClicked(buchung.id!)">
     <div class="eintrag-listelem__betrag all-centered">
-      {{buchung.betrag}}
+      -{{buchung.betrag}}€
     </div>
     <div class="eintrag-listelem__trennlinie">
       |
@@ -17,7 +17,7 @@
 
   @if(showMenu()){
     <div class="eintrag-listelem__menu">
-      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item" (click)="onEditButtonClicked(buchung.id)">
+      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item" (click)="onEditButtonClicked(buchung.id!)">
         edit
       </div>
       <hr>
