@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {UserData} from "../UserData";
 import {FileEngine} from "../FileEngine";
 import {Buchung} from "../ClassesInterfacesEnums";
-import {DialogService} from "./dialog.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +11,16 @@ export class DataService {
 
   userData: UserData;
   selectedTimeFilter = 'alle';
-  useTestData: boolean = true;
-  download: boolean = false;
+  useTestData: boolean = false;
+  download: boolean = true;
 
   private fileEngine = new FileEngine(this.useTestData, this.download);
 
   constructor() {
     if(this.useTestData){
-      this.userData = this.fileEngine.getTestData();
+      this.userData = this.fileEngine.userData;
     } else {
-      this.userData = this.fileEngine.getSavedUserData();
+      this.userData = this.fileEngine.userData;
     }
   }
   public createNewBuchung(buchung: Buchung) {
@@ -41,6 +40,7 @@ export class DataService {
 
     this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.push(buchung);
     this.recalculateIstBudgets();
+    this.fileEngine.downloadTextFile();
   }
 
   public editBuchung(buchung: Buchung) {
@@ -71,6 +71,7 @@ export class DataService {
       this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen.splice(buchungIndex, 1);
     }
     this.recalculateIstBudgets();
+    this.fileEngine.downloadTextFile();
   }
 
   private recalculateIstBudgets() {
