@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {UserData} from "../UserData";
 import {FileEngine} from "../FileEngine";
 import {Buchung} from "../ClassesInterfacesEnums";
+import {DialogService} from "./dialog.service";
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,14 @@ export class DataService {
     } else {
       this.userData = this.fileEngine.getSavedUserData();
     }
-  }public createNewBuchung(buchung: Buchung) {
+  }
+  public createNewBuchung(buchung: Buchung) {
     this.userData.buchungen.alleBuchungen.push(buchung)
-    const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
+    let monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
+    if(monthIndex === -1) {
+      this.userData.generateNewMonth(buchung.date, this.userData.months[0].budget);
+      monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
+    }
     const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
       return week.days.find(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString());
     });

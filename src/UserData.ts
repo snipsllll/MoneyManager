@@ -17,7 +17,7 @@ export class UserData {
 
 
 
-  private generateNewMonth(date: Date, budget?: number){
+  public generateNewMonth(date: Date, budget?: number){
     if(budget === undefined){
       budget = 0;
     }
