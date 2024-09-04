@@ -11,7 +11,7 @@ export class DataService {
 
   userData: UserData;
   selectedTimeFilter = 'alle';
-  useTestData: boolean = true;
+  useTestData: boolean = false;
   download: boolean = true;
 
   private _fileEngine = new FileEngine(this.useTestData, this.download);
