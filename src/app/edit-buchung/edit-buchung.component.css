@@ -8,14 +8,6 @@
 .create-eintrag__back-button-wrapper {
   padding: 10px;
 }
-.create-eintrag__back-button {
-  border: 2px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-}
 
 .create-eintrag__content {
   flex-grow: 1;
