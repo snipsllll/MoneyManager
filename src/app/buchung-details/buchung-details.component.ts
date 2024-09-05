@@ -20,6 +20,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 export class BuchungDetailsComponent implements OnInit {
 
   buchung? = signal<Buchung | undefined>(undefined);
+  titelVorhanden = false;
 
   constructor(private dialogService: DialogService, private router: Router, private route: ActivatedRoute, private dataService: DataService) {
 
@@ -29,6 +30,9 @@ export class BuchungDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const buchungsId = +params.get('buchungsId')!;
       this.buchung?.set(this.dataService.getBuchungById(buchungsId));
+      if(this.buchung!()?.title !== null && this.buchung!()?.title !== undefined && this.buchung!()?.title !== '') {
+        this.titelVorhanden = true;
+      }
     });
   }
 

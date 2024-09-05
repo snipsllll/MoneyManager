@@ -6,8 +6,11 @@
   </div>
   <div class="create-eintrag__content" *ngIf="buchung !== undefined; else noEintrag">
     <div class="create-eintrag__top-content">
-      <div class="create-eintrag__title">
+      <div class="create-eintrag__title" *ngIf="titelVorhanden">
         {{buchung()?.title}}
+      </div>
+      <div class="create-eintrag__title-unbenannt" *ngIf="!titelVorhanden">
+        Unbenannt
       </div>
       <div class="eintrag-details__id-wrapper">
         <div>
@@ -78,72 +81,3 @@
     Error: No Eintrag provided!
   </div>
 </ng-template>
-<!--
-<div class="eintrag-details">
-  <div class="eintrag-details__back-button-wrapper">
-    <div class="eintrag-details__back-button" (click)="onBackClicked()">
-      <-
-    </div>
-  </div>
-  <div class="eintrag-details__content" *ngIf="buchung !== undefined; else noEintrag">
-    <div class="eintrag-details__top-content">
-      <div class="eintrag-details__title">
-        {{ buchung()?.title }}
-      </div>
-      <div class="eintrag-details__id-wrapper">
-        <div>
-          (ID:
-        </div>
-        <div class="eintrag-details__data eintrag-details__id-data">
-          {{ buchung()?.id }})
-        </div>
-      </div>
-      <hr>
-      <div class="eintrag-details__betrag-wrapper">
-        <div class="eintrag-details__label">
-          Betrag:
-        </div>
-        <div class="eintrag-details__data">
-          {{ buchung()?.betrag }}€
-        </div>
-      </div>
-      <div class="eintrag-details__datum-wrapper">
-        <div class="eintrag-details__label">
-          Datum:
-        </div>
-        <div class="eintrag-details__data">
-          {{ buchung()?.date!.toLocaleDateString() }}
-        </div>
-      </div>
-      <div class="eintrag-details__uhrzeit-wrapper">
-        <div class="eintrag-details__label">
-          Uhrzeit:
-        </div>
-        <div class="eintrag-details__data">
-          {{ buchung()?.time }}
-        </div>
-      </div>
-      <div class="eintrag-details__beschreibung-wrapper">
-        <div class="eintrag-details__label eintrag-details__beschreibung-label">
-          Beschreibung:
-        </div>
-        <div class="eintrag-details__data eintrag-details__beschreibung-data">
-          {{ buchung()?.beschreibung }}
-        </div>
-      </div>
-      <div class="eintrag-details__spacer-bottom">
-
-      </div>
-    </div>
-
-    <div class="eintrag-details__buttons-wrapper">
-      <div class="eintrag-details__button" (click)="onDeleteButtonClicked()">
-        delete
-      </div>
-      <div class="eintrag-details__button" (click)="onEditClicked()">
-        edit
-      </div>
-    </div>
-  </div>
-</div>
--->

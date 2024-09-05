@@ -1,7 +1,7 @@
 .eintraege-list {
   height: calc(100% - 10px);
   width: calc(100% - 20px);
-  padding: 0px 10px;
+  padding: 0 10px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
