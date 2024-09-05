@@ -4,3 +4,9 @@
   justify-content: space-between;
   padding: 10px;
 }
+
+.hr {
+  border: none;
+  height: 2px;
+  background-color: #404040;
+}

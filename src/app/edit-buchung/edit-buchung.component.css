@@ -23,6 +23,16 @@
   flex-direction: column;
 }
 
+.create-eintrag__back-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background-color: #070e2e;
+  border-radius: 100px;
+}
+
 .create-eintrag__top-content {
   flex-grow: 1;
   display: flex;
@@ -43,6 +53,8 @@
   background-color: #e5efff;
   border: none;
   border-bottom: black solid 1px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .create-eintrag__title-input {
