@@ -1,3 +1,68 @@
+<div class="create-eintrag">
+  <div class="create-eintrag__back-button-wrapper">
+    <div class="create-eintrag__back-button" (click)="onBackClicked()">
+      <-
+    </div>
+  </div>
+  @if(buchung() !== undefined){
+  <div class="create-eintrag__content">
+    <div class="create-eintrag__top-content">
+      <input type="text" [(ngModel)]="buchung()!.title" class="create-eintrag__title" autofocus placeholder="Titel">
+      <hr class="hr-title">
+      <div class="create-eintrag__betrag">
+        <div class="create-eintrag__betrag-warnung" *ngIf="false">
+          der Betrag darf nicht 0 betragen!
+        </div>
+        <div class="create-eintrag__betrag-wrapper">
+          <div class="create-eintrag__label">
+            Betrag:
+          </div>
+          <input type="number" [(ngModel)]="buchung()!.betrag" class="create-eintrag__data" placeholder="0.00€">
+        </div>
+      </div>
+
+      <div class="create-eintrag__datum-wrapper">
+        <div class="create-eintrag__label">
+          Datum:
+        </div>
+        <input type="date" [(ngModel)]="buchung()!.date" (change)="onDateChange($event)" class="create-eintrag__data">
+      </div>
+      <div class="create-eintrag__uhrzeit-wrapper">
+        <div class="create-eintrag__label">
+          Uhrzeit:
+        </div>
+        <input type="time" [(ngModel)]="buchung()!.time" (change)="onTimeChange($event)" class="create-eintrag__data">
+      </div>
+      <hr class="hr">
+      <div class="create-eintrag__beschreibung-wrapper">
+        <div class="create-eintrag__label create-eintrag__beschreibung-label">
+          Beschreibung:
+        </div>
+        <textarea [(ngModel)]="buchung()!.beschreibung" class="create-eintrag__data create-eintrag__beschreibung-data">
+
+        </textarea>
+      </div>
+    </div>
+    <div class="create-eintrag__spacer-bottom">
+
+    </div>
+
+    <div class="create-eintrag__buttons-wrapper">
+      <div class="create-eintrag__button" (click)="onCancelClicked()">
+        cancel
+      </div>
+      <div class="create-eintrag__button" (click)="onSaveClicked()">
+        save
+      </div>
+    </div>
+
+  </div>} @else {
+  <div class="edit-eintrag__no-eintrag">
+    Error: No Eintrag provided!
+  </div>
+}
+<!--
+</div>
 <div class="edit-eintrag">
   <div class="edit-eintrag__back-button-wrapper">
     <div class="edit-eintrag__back-button" (click)="onBackClicked()">
@@ -68,3 +133,4 @@
 <ng-template #noEintrag>
 
 </ng-template>
+-->

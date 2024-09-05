@@ -5,12 +5,14 @@ import {DataService} from "../data.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {DialogService} from "../dialog.service";
 import {Buchung} from "../../ClassesInterfacesEnums";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-buchung-details',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    ReactiveFormsModule
   ],
   templateUrl: './buchung-details.component.html',
   styleUrl: './buchung-details.component.css'
