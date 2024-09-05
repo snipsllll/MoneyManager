@@ -5,13 +5,16 @@
     <app-buchungen-list-day *ngFor="let day of days" [day]="day">
 
     </app-buchungen-list-day>
-    <div class="spacer">
-      .
-    </div>
-    @if(buchungen?.length === 0){
+
+    @if (buchungen?.length !== 0) {
+      <div class="spacer">
+        .
+      </div>
+    } @else {
       <div class="eintraege-list__keine-eintraege">
         noch keine Einträge vorhanden
       </div>
     }
+
   </div>
 </div>

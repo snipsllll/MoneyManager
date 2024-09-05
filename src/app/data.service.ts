@@ -11,15 +11,13 @@ export class DataService {
 
   userData: UserData;
   selectedTimeFilter = 'alle';
-  useTestData: boolean = false;
+  testData: DB = DB.none;
   download: boolean = true;
 
-  private _fileEngine = new FileEngine(this.useTestData, this.download);
+  private _fileEngine = new FileEngine(this.testData, this.download);
 
   constructor() {
-    this.useTestData
-      ? this.userData = this._fileEngine.userData
-      : this.userData = this._fileEngine.userData
+    this.userData = this._fileEngine.userData
   }
 
   public createNewBuchung(buchung: Buchung) {
@@ -143,4 +141,11 @@ export class DataService {
       this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen!.push(buchung);
     })
   }
+}
+
+enum DB {
+  short,
+  mid,
+  long,
+  none
 }
