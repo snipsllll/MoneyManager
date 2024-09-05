@@ -38,10 +38,6 @@ export class DataService {
     this.update();
   }
 
-  public getAlleBuchungen() {
-    return this.userData.buchungen.alleBuchungen;
-  }
-
   public getBuchungById(buchungId: number): Buchung | undefined {
     return this.userData.buchungen.alleBuchungen.find(x => x.id === buchungId);
   }
@@ -60,7 +56,7 @@ export class DataService {
 
   private createNewBuchungData(buchung: Buchung) {
     this.userData.buchungen.alleBuchungen.push(buchung);
-    this.updateBuchungenInMonths();
+    this.update();
   }
 
   private editBuchungData(buchung: Buchung){
@@ -72,7 +68,7 @@ export class DataService {
       return;
     }
     this.userData.buchungen.alleBuchungen[alleBuchungenBuchungIndex] = buchung;
-    this.updateBuchungenInMonths();
+    this.update();
   }
 
   private deleteBuchungData(buchungsId?: number) {
@@ -84,7 +80,7 @@ export class DataService {
       return;
     }
     this.userData.buchungen.alleBuchungen.splice(alleBuchungenBuchungIndex, 1);
-    this.updateBuchungenInMonths();
+    this.update();
   }
 
   private recalculateIstBudgets() {
@@ -93,34 +89,24 @@ export class DataService {
 
       month.weeks.forEach(week => {
         let weekAusgaben = 0;
-
         week.days.forEach(day => {
           let dayAusgaben = 0;
-
           day.buchungen?.forEach(buchung => {
             dayAusgaben += buchung.betrag ?? 0;
           });
-
-          // Calculate istBudget for the day
           day.istBudget = (day.budget ?? 0) - dayAusgaben;
-
-          weekAusgaben += dayAusgaben; // Accumulate for the week
+          weekAusgaben += dayAusgaben;
         });
-
-        // Calculate istBudget for the week
         week.istBudget = (week.budget ?? 0) - weekAusgaben;
-
-        monthAusgaben += weekAusgaben; // Accumulate for the month
+        monthAusgaben += weekAusgaben;
       });
-
-      // Calculate istBudget for the month
       month.istBudget = (month.budget ?? 0) - monthAusgaben;
     });
   }
 
   private update() {
-    this.recalculateIstBudgets();
     this.updateBuchungenInMonths();
+    this.recalculateIstBudgets();
     this._fileEngine.save();
   }
 

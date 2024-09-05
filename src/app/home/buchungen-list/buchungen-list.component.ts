@@ -20,7 +20,6 @@ import {BuchungenListDayComponent} from "../buchungen-list-day/buchungen-list-da
 })
 export class BuchungenListComponent implements OnInit{
 
-  @Input() buchungen?: Buchung[];
   date = new Date();
   days: Day[] = [];
 

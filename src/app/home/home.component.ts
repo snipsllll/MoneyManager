@@ -18,10 +18,8 @@ import {TopbarService} from "../topbar.service";
 })
 export class HomeComponent implements OnInit{
 
-  buchungen!: Buchung[];
-
   constructor(private router: Router, private dataService: DataService, private topbarService: TopbarService) {
-    this.buchungen = this.dataService.getAlleBuchungen();
+
   }
 
   ngOnInit() {
