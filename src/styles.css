@@ -13,3 +13,23 @@ all-centered {
   justify-content: center;
   align-items: center;
 }
+
+.floating-box {
+  background-color: #91bada;
+  border-radius: 20px;
+  padding: 20px 10px;
+  box-shadow: rgba(78, 78, 78, 0.75) 2px 2px 4px;
+  margin: 10px;
+  font-size: 18px;
+  color: #292929;
+}
+
+.fb-input {
+  height: 23px;
+  background-color: #e5efff;
+  border: none;
+  border-bottom: black solid 1px;
+  width: 130px;
+  text-align: end;
+  padding: 0;
+}

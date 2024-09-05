@@ -16,12 +16,12 @@ export class SideNavComponent {
 
   onHomeClicked(): void {
     this.router.navigate(['']);
-    this.topbarService.isSidenavVisible.set(false);
+    this.topbarService.isSlidIn.set(false);
   }
 
   onBudgetClicked(): void {
     this.router.navigate(['budget']);
-    this.topbarService.isSidenavVisible.set(false);
+    this.topbarService.isSlidIn.set(false);
   }
 
 }

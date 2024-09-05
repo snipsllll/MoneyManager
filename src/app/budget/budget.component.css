@@ -1,7 +1,6 @@
 .budget__element-wrapper {
   display: flex;
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
   justify-content: space-between;
-  padding: 20px;
-  font-size: 30px;
+  padding: 10px;
 }

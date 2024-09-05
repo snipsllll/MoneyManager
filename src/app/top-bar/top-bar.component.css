@@ -30,9 +30,9 @@
 
 .side-nav-wrapper {
   position: absolute;
-  bottom: calc(-94vh + 70px);
+  bottom: -100vh;
   left: 0;
-  height: calc(94vh - 70px);
+  height: 100vh;
   width: 200px;
   z-index: 20;
 }
