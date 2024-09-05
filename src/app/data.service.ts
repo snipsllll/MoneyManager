@@ -23,19 +23,16 @@ export class DataService {
   public createNewBuchung(buchung: Buchung) {
     buchung.id = this.getNextFreeBuchungsId();
     this.createNewBuchungData(buchung);
-    this.update();
   }
 
   public editBuchung(buchung: Buchung) {
     this.editBuchungData(buchung);
-    this.update();
   }
 
   public deleteBuchung(buchungsId?: number) {
     if (buchungsId) {
       this.deleteBuchungData(buchungsId)
     }
-    this.update();
   }
 
   public getBuchungById(buchungId: number): Buchung | undefined {
