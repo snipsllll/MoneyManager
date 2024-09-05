@@ -1,4 +1,4 @@
-<div class="buchungen-list-day">
+<div class="buchungen-list-day" *ngIf="day.buchungen && day.buchungen.length > 0">
   <div class="buchungen-list-day__date">
     <b>{{day.date.toLocaleDateString()}}</b>
   </div>
