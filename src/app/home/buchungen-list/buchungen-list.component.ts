@@ -1,9 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BuchungListelemComponent} from "../buchung-listelem/buchung-listelem.component";
 import {NgForOf} from "@angular/common";
-import {TimeFilterTopbarComponent} from "../../time-filter-topbar/time-filter-topbar.component";
 import {DataService} from "../../data.service";
-import {Buchung, Day} from "../../../ClassesInterfacesEnums";
+import {Day} from "../../../ClassesInterfacesEnums";
 import {BuchungenListDayComponent} from "../buchungen-list-day/buchungen-list-day.component";
 
 @Component({
@@ -12,7 +11,6 @@ import {BuchungenListDayComponent} from "../buchungen-list-day/buchungen-list-da
   imports: [
     BuchungListelemComponent,
     NgForOf,
-    TimeFilterTopbarComponent,
     BuchungenListDayComponent
   ],
   templateUrl: './buchungen-list.component.html',
