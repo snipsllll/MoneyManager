@@ -10,13 +10,13 @@
 .bld__box {
   padding: 10px;
   border-radius: 10px;
-  background-color: #d5d5d5;
+  background-color: #91bada;
 }
 
 .hr {
   width: calc(100% + 20px);
   margin-left: -10px;
-  background-color: #b1b1b1;
+  background-color: #a3a3a3;
   border: none;
-  height: 2px;
+  height: 1.5px;
 }

@@ -27,5 +27,6 @@ export class TopBarComponent implements OnInit{
   onMenuButtonClicked() {
     console.log(6724678234682376)
     this.topbarService.isSidenavVisible.set(!this.topbarService.isSidenavVisible());
+    this.topbarService.isSlidIn.set(!this.topbarService.isSlidIn());
   }
 }

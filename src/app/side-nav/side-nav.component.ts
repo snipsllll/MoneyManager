@@ -11,7 +11,7 @@ import {TopbarService} from "../topbar.service";
 })
 export class SideNavComponent {
 
-  constructor(private router: Router, private topbarService: TopbarService) {
+  constructor(private router: Router, public topbarService: TopbarService) {
   }
 
   onHomeClicked(): void {

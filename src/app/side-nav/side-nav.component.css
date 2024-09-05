@@ -1,7 +1,7 @@
 .side-nav {
   height: 100%;
   width: 100%;
-  background-color: #c6c6c6;
+  background-color: rgba(174, 174, 174, 0.95);
 }
 
 .side-nav__element {
@@ -18,4 +18,13 @@
   background-color: #bababa;
   padding: 0;
   margin: 0;
+}
+
+.slide-div {
+  transform: translateX(-100%); /* Start off-screen to the left */
+  transition: transform 0.2s ease-out; /* Smooth transition */
+}
+
+.slide-in {
+  transform: translateX(0); /* Move the div to its final position */
 }

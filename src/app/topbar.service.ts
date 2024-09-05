@@ -6,6 +6,7 @@ import {Injectable, signal} from '@angular/core';
 export class TopbarService {
   title = signal<string>('');
   isSidenavVisible = signal<boolean>(false);
+  isSlidIn = signal<boolean>(false);
 
   constructor() { }
 }

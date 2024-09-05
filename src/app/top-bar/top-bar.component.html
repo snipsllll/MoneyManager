@@ -8,11 +8,11 @@
     </div>
   </div>
 
-  <div *ngIf="topbarService.isSidenavVisible()">
+  <div>
     <div class="side-nav-wrapper">
       <app-side-nav></app-side-nav>
     </div>
-    <div class="side-nav-wrapper__background" (click)="onMenuButtonClicked()">
+    <div class="side-nav-wrapper__background" *ngIf="topbarService.isSlidIn()" (click)="onMenuButtonClicked()">
 
     </div>
   </div>

@@ -13,7 +13,9 @@
   width: calc(80vw - 20px);
   top: 300px;
   left: 10vw;
-  border: 2px solid black;
+  border: 2px solid #636363;
+  border-radius: 10px;
+  box-shadow: #404040 1px 1px 1px;
   padding: 10px;
   font-size: 20px;
   background-color: white;
@@ -40,6 +42,8 @@
   justify-content: center;
   align-items: center;
   padding: 5px;
+  border-radius: 5px;
+  background-color: #e8e8e8;
 }
 
 .confirm-dialog__cancel-button {
