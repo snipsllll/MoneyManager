@@ -23,13 +23,13 @@ export class DataService {
   }
 
   public createNewBuchung(buchung: Buchung) {
+    buchung.id = this.getNextFreeBuchungsId();
     this.createNewBuchungData(buchung);
     this.update();
   }
 
   public editBuchung(buchung: Buchung) {
-    this.deleteBuchungData(buchung.id);
-    this.createNewBuchungData(buchung);
+    this.editBuchungData(buchung);
     this.update();
   }
 
@@ -48,18 +48,6 @@ export class DataService {
     return this.userData.buchungen.alleBuchungen.find(x => x.id === buchungId);
   }
 
-  public getBuchungenByDay(date: Date) {
-    return this.userData.buchungen.alleBuchungen.filter(x => x.date.toLocaleDateString() === date.toLocaleDateString());
-  }
-
-  public getBuchungenForCurrentWeek() {
-    return this.filterThisWeek(this.userData.buchungen.alleBuchungen)
-  }
-
-  public getBuchungenForThisMonth() {
-    return this.filterThisMonth(this.userData.buchungen.alleBuchungen);
-  }
-
   private getNextFreeBuchungsId() {
     let freeId = 1;
     for (let i = 0; i < this.userData.buchungen.alleBuchungen.length; i++) {
@@ -72,50 +60,21 @@ export class DataService {
     return freeId;
   }
 
-  private getStartOfWeek(date: Date): Date {
-    const startOfWeek = new Date(date);
-    const day = startOfWeek.getDay();
-    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
-    startOfWeek.setDate(diff);
-    startOfWeek.setHours(0, 0, 0, 0);
-    return startOfWeek;
+  private createNewBuchungData(buchung: Buchung) {
+    this.userData.buchungen.alleBuchungen.push(buchung);
+    this.updateBuchungenInMonths();
   }
 
-  private getEndOfWeek(date: Date): Date {
-    const endOfWeek = new Date(this.getStartOfWeek(date));
-    endOfWeek.setDate(endOfWeek.getDate() + 6);
-    endOfWeek.setHours(23, 59, 59, 999);
-    return endOfWeek;
-  }
-
-  private filterThisWeek(buchungen: Buchung[]): Buchung[] {
-    const today = new Date();
-    const startOfWeek = this.getStartOfWeek(today);
-    const endOfWeek = this.getEndOfWeek(today);
-
-    return buchungen.filter(buchung => {
-      const buchungDate = buchung.date;
-      return buchungDate !== null && buchungDate >= startOfWeek && buchungDate <= endOfWeek;
-    });
-  }
-
-  private filterThisMonth(buchungen: Buchung[]): Buchung[] {
-    const today = new Date();
-    const startOfMonth = this.getStartOfMonth(today);
-    const endOfMonth = this.getEndOfMonth(today);
-
-    return buchungen.filter(buchung => {
-      const buchungDate = buchung.date;
-      return buchungDate !== null && buchungDate >= startOfMonth && buchungDate <= endOfMonth;
-    });
-  }
-
-  private getStartOfMonth(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth(), 1, 0, 0, 0, 0);
-  }
-
-  private getEndOfMonth(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+  private editBuchungData(buchung: Buchung){
+    if (!buchung) {
+      return;
+    }
+    const alleBuchungenBuchungIndex = this.userData.buchungen.alleBuchungen.findIndex(pBuchung => pBuchung.id === buchung.id);
+    if (alleBuchungenBuchungIndex === -1) {
+      return;
+    }
+    this.userData.buchungen.alleBuchungen[alleBuchungenBuchungIndex] = buchung;
+    this.updateBuchungenInMonths();
   }
 
   private deleteBuchungData(buchungsId?: number) {
@@ -126,19 +85,8 @@ export class DataService {
     if (alleBuchungenBuchungIndex === -1) {
       return;
     }
-    const buchungDate = this.userData.buchungen.alleBuchungen[alleBuchungenBuchungIndex].date;
     this.userData.buchungen.alleBuchungen.splice(alleBuchungenBuchungIndex, 1);
-    const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchungDate.getFullYear(), buchungDate.getMonth()).toLocaleDateString());
-    const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
-      return week.days.find(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString());
-    });
-
-    const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchungDate.toLocaleDateString())
-    const buchungIndex = this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.findIndex(pBuchung => pBuchung.id === buchungsId) ?? -1;
-
-    if (this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen !== undefined && buchungIndex !== -1) {
-      this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen.splice(buchungIndex, 1);
-    }
+    this.updateBuchungenInMonths();
   }
 
   private recalculateIstBudgets() {
@@ -172,26 +120,27 @@ export class DataService {
     });
   }
 
-  private createNewBuchungData(buchung: Buchung) {
-    this.userData.buchungen.alleBuchungen.push(buchung)
-    let monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
-    if (monthIndex === -1) {
-      this.userData.generateNewMonth(buchung.date, this.userData.months[0].budget);
-      monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(buchung.date.getFullYear(), buchung.date.getMonth()).toLocaleDateString());
-    }
-    const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
-      return week.days.find(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString());
-    });
-
-    const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
-
-    buchung.id = this.getNextFreeBuchungsId();
-
-    this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen?.push(buchung);
-  }
-
   private update() {
     this.recalculateIstBudgets();
+    this.updateBuchungenInMonths();
     this._fileEngine.save();
+  }
+
+  private updateBuchungenInMonths(){
+    this.userData.months.forEach(month => {
+      month.weeks.forEach(week => {
+        week.days.forEach(day => {
+          day.buchungen = [];
+        })
+      })
+    })
+    this.userData.buchungen.alleBuchungen.forEach(buchung => {
+      const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(2024, buchung.date.getMonth()).toLocaleDateString());
+      const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
+        return week.days.find(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString());
+      });
+      const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
+      this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen!.push(buchung);
+    })
   }
 }

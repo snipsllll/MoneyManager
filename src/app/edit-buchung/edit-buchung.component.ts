@@ -30,8 +30,11 @@ export class EditBuchungComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const buchungsId = +params.get('buchungsId')!;
       this.buchung?.set(this.dataService.getBuchungById(buchungsId));
+      console.log(this.buchung())
       this.oldBuchung = this.buchung();
     });
+    console.log(this.dataService.userData)
+    console.log(this.buchung())
   }
 
   onSaveClicked() {

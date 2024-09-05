@@ -36,7 +36,6 @@ export class BuchungenListComponent implements OnInit{
       })
     });
     this.orderByDateDesc();
-    console.log(this.days)
   }
 
   ngOnInit() {
