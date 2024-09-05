@@ -6,6 +6,7 @@ import {Injectable, signal} from '@angular/core';
 export class TopbarService {
   title = signal<string>('');
   isSlidIn = signal<boolean>(false);
+  dropDownSlidIn = signal<boolean>(false);
 
   constructor() { }
 }

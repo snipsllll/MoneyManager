@@ -27,4 +27,8 @@ export class TopBarComponent implements OnInit{
   onMenuButtonClicked() {
     this.topbarService.isSlidIn.set(!this.topbarService.isSlidIn());
   }
+
+  toggleDropdown(){
+    this.topbarService.dropDownSlidIn.set(!this.topbarService.dropDownSlidIn());
+  }
 }
