@@ -13,6 +13,7 @@ export class FileEngine {
     this.download = download;
     if (this.useTestData) {
       this.userData = this.getTestData();
+      this.save();
     } else {
       this.userData = this.getSavedUserData();
     }

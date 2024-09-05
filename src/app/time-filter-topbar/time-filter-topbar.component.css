@@ -19,3 +19,13 @@
 .time-filter-tb__active {
   background-color: lightgrey;
 }
+
+.slide-div {
+   transform: translateX(-100%); /* Start off-screen to the left */
+   transition: transform 0.2s ease-out; /* Smooth transition */
+ }
+
+.slide-in {
+  transform: translateX(0); /* Move the div to its final position */
+}
+

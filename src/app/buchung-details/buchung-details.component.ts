@@ -5,12 +5,14 @@ import {DataService} from "../data.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {DialogService} from "../dialog.service";
 import {Buchung} from "../../ClassesInterfacesEnums";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-buchung-details',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    ReactiveFormsModule
   ],
   templateUrl: './buchung-details.component.html',
   styleUrl: './buchung-details.component.css'
@@ -18,6 +20,7 @@ import {Buchung} from "../../ClassesInterfacesEnums";
 export class BuchungDetailsComponent implements OnInit {
 
   buchung? = signal<Buchung | undefined>(undefined);
+  titelVorhanden = false;
 
   constructor(private dialogService: DialogService, private router: Router, private route: ActivatedRoute, private dataService: DataService) {
 
@@ -27,6 +30,9 @@ export class BuchungDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const buchungsId = +params.get('buchungsId')!;
       this.buchung?.set(this.dataService.getBuchungById(buchungsId));
+      if(this.buchung!()?.title !== null && this.buchung!()?.title !== undefined && this.buchung!()?.title !== '') {
+        this.titelVorhanden = true;
+      }
     });
   }
 

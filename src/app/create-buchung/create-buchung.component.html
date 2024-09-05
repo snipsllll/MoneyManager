@@ -3,10 +3,26 @@
     <div class="create-eintrag__back-button" (click)="onBackClicked()">
       <-
     </div>
+    <div class="create-eintrag__budget">
+      <div class="ce__budget-eintrag">
+        monat: <b>79€</b>
+      </div>
+      <div class="ce__budget-eintrag">
+        woche: <b>30€</b>
+      </div>
+      <div class="ce__budget-eintrag">
+        heute: <b>9€</b>
+      </div>
+    </div>
+
+    <div class="create-eintrag__top-spacer" (click)="onBackClicked()">
+
+    </div>
   </div>
   <div class="create-eintrag__content">
     <div class="create-eintrag__top-content">
       <input type="text" [(ngModel)]="buchung.title" class="create-eintrag__title" autofocus placeholder="Titel">
+      <hr class="hr-title">
       <div class="create-eintrag__betrag">
         <div class="create-eintrag__betrag-warnung" *ngIf="showBetragWarning">
           der Betrag darf nicht 0 betragen!
@@ -15,7 +31,7 @@
           <div class="create-eintrag__label">
             Betrag:
           </div>
-          <input type="number" [(ngModel)]="buchung.betrag" class="create-eintrag__data">
+          <input type="number" [(ngModel)]="buchung.betrag" class="create-eintrag__data" placeholder="0.00€">
         </div>
       </div>
 
@@ -31,17 +47,18 @@
         </div>
         <input type="time" [(ngModel)]="buchung.time" (change)="onTimeChange($event)" class="create-eintrag__data">
       </div>
+      <hr class="hr">
       <div class="create-eintrag__beschreibung-wrapper">
         <div class="create-eintrag__label create-eintrag__beschreibung-label">
           Beschreibung:
         </div>
-        <textarea [(ngModel)]="buchung.beschreibung" class="create-eintrag__data create-eintrag__beschreibung-data" placeholder="Beschreibung...">
+        <textarea [(ngModel)]="buchung.beschreibung" class="create-eintrag__data create-eintrag__beschreibung-data">
 
         </textarea>
       </div>
-      <div class="create-eintrag__spacer-bottom">
+    </div>
+    <div class="create-eintrag__spacer-bottom">
 
-      </div>
     </div>
 
     <div class="create-eintrag__buttons-wrapper">

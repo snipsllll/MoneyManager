@@ -1,0 +1,22 @@
+.buchungen-list-day {
+  margin-bottom: 25px;
+  color: black;
+}
+
+.buchungen-list-day__date {
+  margin-bottom: 5px;
+}
+
+.bld__box {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #91bada;
+}
+
+.hr {
+  width: calc(100% + 20px);
+  margin-left: -10px;
+  background-color: #a3a3a3;
+  border: none;
+  height: 1.5px;
+}
