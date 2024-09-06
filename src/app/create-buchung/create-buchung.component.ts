@@ -40,8 +40,25 @@ export class CreateBuchungComponent {
 
   onSaveClicked() {
     if (this.buchung.betrag !== 0 && this.buchung.betrag !== null) {
-      this.dataService.createBuchung(this.buchung);
-      this.router.navigate(['/']);
+      if(this.dayBudget().dayIstBudget < this.buchung.betrag) {
+        const confirmDialogViewModel: ConfirmDialogViewModel = {
+          title: 'Betrag ist zu hoch',
+          message: 'Der Betrag überschreitet dein Budget für heute. Trotzdem fortfahren?',
+          onCancelClicked: () => {
+            this.dialogService.isConfirmDialogVisible = false;
+          },
+          onConfirmClicked: () => {
+            this.dataService.createBuchung(this.buchung);
+            this.dialogService.isConfirmDialogVisible = false;
+            this.router.navigate(['/']);
+          }
+        }
+        this.dialogService.showConfirmDialog(confirmDialogViewModel);
+      } else {
+        this.dataService.createBuchung(this.buchung);
+        this.router.navigate(['/']);
+      }
+
     } else {
       this.showBetragWarning = true;
     }
@@ -88,6 +105,8 @@ export class CreateBuchungComponent {
   onDateChange(event: any) {
     if(this.date)
       this.buchung!.date = new Date(this.date);
+
+    this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung.date)!);
   }
 
   onTimeChange(event: any) {

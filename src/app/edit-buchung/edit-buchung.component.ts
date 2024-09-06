@@ -5,7 +5,7 @@ import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
-import {Buchung} from "../../ClassesInterfacesEnums";
+import {Buchung, DayIstBudgets} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-edit-buchung',
@@ -22,6 +22,8 @@ export class EditBuchungComponent implements OnInit {
   buchung = signal<Buchung | undefined>(undefined);
   oldBuchung?: Buchung;
   date?: string;
+  dayBudget = signal<DayIstBudgets>({dayIstBudget: 0, weekIstBudget: 0, monthIstBudget: 0});
+  showBetragWarning = false;
 
   constructor(private router: Router, private dataService: DataService, private route: ActivatedRoute, public dialogService: DialogService) {
 
@@ -31,17 +33,36 @@ export class EditBuchungComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const buchungsId = +params.get('buchungsId')!;
       this.buchung?.set(this.dataService.getBuchungById(buchungsId));
-      console.log(this.buchung())
       this.oldBuchung = this.buchung();
       this.date = this.buchung()?.date.toISOString().slice(0, 10);
-    });
-    console.log(this.dataService.userData)
-    console.log(this.buchung())
+    })
+    this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung()!.date)!);
   }
 
   onSaveClicked() {
-    this.dataService.editBuchung(this.buchung!()!);
-    this.router.navigate(['/'])
+    if (this.buchung()!.betrag !== 0 && this.buchung()!.betrag !== null) {
+      if(this.dayBudget().dayIstBudget < this.buchung()!.betrag!) {
+        const confirmDialogViewModel: ConfirmDialogViewModel = {
+          title: 'Betrag ist zu hoch',
+          message: 'Der Betrag überschreitet dein Budget für heute. Trotzdem fortfahren?',
+          onCancelClicked: () => {
+            this.dialogService.isConfirmDialogVisible = false;
+          },
+          onConfirmClicked: () => {
+            this.dataService.editBuchung(this.buchung()!);
+            this.dialogService.isConfirmDialogVisible = false;
+            this.router.navigate(['/']);
+          }
+        }
+        this.dialogService.showConfirmDialog(confirmDialogViewModel);
+      } else {
+        this.dataService.editBuchung(this.buchung()!);
+        this.router.navigate(['/']);
+      }
+
+    } else {
+      this.showBetragWarning = true;
+    }
   }
 
   onCancelClicked() {
@@ -62,6 +83,7 @@ export class EditBuchungComponent implements OnInit {
   onDateChange(event: any) {
     if(this.date)
     this.buchung()!.date = new Date(this.date);
+    this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung()!.date)!);
   }
 
   onTimeChange(event: any) {

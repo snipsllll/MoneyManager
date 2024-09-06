@@ -1,6 +1,20 @@
 <div class="create-eintrag">
   <div class="create-eintrag__back-button-wrapper">
     <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()">
+    <div class="create-eintrag__budget">
+      <div class="ce__budget-eintrag">
+        monat: <b class="green" [class.red]="dayBudget().monthIstBudget < 0">{{ dayBudget().monthIstBudget }}€</b>
+      </div>
+      <div class="ce__budget-eintrag">
+        woche: <b class="green" [class.red]="dayBudget().weekIstBudget < 0">{{ dayBudget().weekIstBudget }}€</b>
+      </div>
+      <div class="ce__budget-eintrag">
+        tag: <b class="green" [class.red]="dayBudget().dayIstBudget < 0">{{dayBudget().dayIstBudget}}€</b>
+      </div>
+    </div>
+    <div class="create-eintrag__top-spacer" (click)="onBackClicked()">
+
+    </div>
   </div>
   @if (buchung() !== undefined) {
     <div class="create-eintrag__content">
