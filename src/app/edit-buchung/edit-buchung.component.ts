@@ -44,7 +44,7 @@ export class EditBuchungComponent implements OnInit {
       if(this.dayBudget().dayIstBudget < this.buchung()!.betrag!) {
         const confirmDialogViewModel: ConfirmDialogViewModel = {
           title: 'Betrag ist zu hoch',
-          message: 'Der Betrag überschreitet dein Budget für heute. Trotzdem fortfahren?',
+          message: `Der Betrag überschreitet dein Budget für ${this.buchung()!.date.toLocaleDateString() === new Date().toLocaleDateString() ? 'heute' : 'den ' + this.buchung()!.date.toLocaleDateString()}. Trotzdem fortfahren?`,
           onCancelClicked: () => {
             this.dialogService.isConfirmDialogVisible = false;
           },
