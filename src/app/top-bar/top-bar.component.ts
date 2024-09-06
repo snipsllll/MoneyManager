@@ -19,7 +19,7 @@ export class TopBarComponent implements OnInit{
   title?: string;
   monthIstBudget = computed(() => {
     console.log(this.dataService.updated())
-    return this.dataService.getDayIstBudgets(new Date())?.monthIstBudget;
+    return this.dataService.getDayIstBudgets(new Date());
   })
 
   constructor(private dataService: DataService, public topbarService: TopbarService, public sideNavService: SideNavService) {
