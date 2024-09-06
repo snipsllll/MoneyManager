@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Output, signal} from '@angular/core';
 import {UserData} from "../UserData";
 import {FileEngine} from "../FileEngine";
 import {Buchung, BudgetInfosForMonth, Day, DayIstBudgets, SavedData, Week} from "../ClassesInterfacesEnums";
@@ -12,6 +12,8 @@ export class DataService {
   userData!: UserData;
   testData: DB = DB.none;
   download: boolean = true;
+
+  updated= signal<number>(0);
 
   private _fileEngine = new FileEngine(this.testData, this.download);
 
@@ -39,6 +41,7 @@ export class DataService {
     month.istBudget = (month.budget ?? 0) - monthAusgaben;
 
     this.userData.months()[this.getIndexOfMonth(date)] = month;
+    this.sendUpdated();
   }
 
   recalcAllIstBudgets(){
@@ -59,7 +62,8 @@ export class DataService {
         monthAusgaben += weekAusgaben;
       });
       month.istBudget = (month.budget ?? 0) - monthAusgaben;
-    })
+    });
+    this.sendUpdated();
   }
 
   recalcBudgetsForMonth(date: Date){
@@ -73,6 +77,7 @@ export class DataService {
       week.budget = week.daysInWeek * (month.dailyBudget ?? 0);
     });
     this.userData.months()[this.getIndexOfMonth(date)] = month;
+    this.sendUpdated();
   }
 
   recalcAllBudgets(){
@@ -86,6 +91,7 @@ export class DataService {
         week.budget = week.daysInWeek * (month.dailyBudget ?? 0);
       });
     })
+    this.sendUpdated();
   }
 
   updateBuchungenForAllMonths(){
@@ -111,6 +117,7 @@ export class DataService {
       this.userData.months!()[monthIndex!]!.weeks![weekIndex!]!.days[dayIndex].buchungen!.push(buchung);
     });
     this.recalcAllIstBudgets();
+    this.sendUpdated();
   }
 
   editBuchung(buchung: Buchung){
@@ -124,6 +131,7 @@ export class DataService {
     this.userData.buchungen.alleBuchungen[buchungsIndexInAlleBuchungen] = buchung;
     this.updateBuchungenForAllMonths();
     this._fileEngine.save(this.convertToSavedData());
+    this.sendUpdated();
   }
 
   createBuchung(buchung: Buchung){
@@ -134,6 +142,7 @@ export class DataService {
     this.userData.buchungen.alleBuchungen.push(buchung);
     this.updateBuchungenForAllMonths();
     this._fileEngine.save(this.convertToSavedData());
+    this.sendUpdated();
   }
 
   deleteBuchung(buchungsId: number) {
@@ -144,6 +153,7 @@ export class DataService {
     this.userData.buchungen.alleBuchungen.splice(buchungsIndexInAlleBuchungen, 1);
     this.updateBuchungenForAllMonths();
     this._fileEngine.save(this.convertToSavedData());
+    this.sendUpdated();
   }
 
   createNewMonth(date: Date, totalBudget?: number, sparen?: number) {
@@ -217,6 +227,7 @@ export class DataService {
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
     this._fileEngine.save(this.convertToSavedData());
+    this.sendUpdated();
   }
 
   changeSparenForMonth(date: Date, sparen: number){
@@ -224,6 +235,7 @@ export class DataService {
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
     this._fileEngine.save(this.convertToSavedData());
+    this.sendUpdated();
   }
 
   changeTotalBudgetForMonth(date: Date, totalBudget: number){
@@ -231,6 +243,7 @@ export class DataService {
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
     this._fileEngine.save(this.convertToSavedData());
+    this.sendUpdated();
   }
 
   getDayIstBudgets(date: Date): DayIstBudgets | null {
@@ -392,6 +405,7 @@ export class DataService {
     savedData.savedMonths.forEach(month => {
       this.createNewMonth(month.date, month.totalBudget, month.sparen)
     })
+    this.sendUpdated();
   }
 
   private getNextFreeBuchungsId() {
@@ -404,6 +418,10 @@ export class DataService {
       }
     }
     return freeId;
+  }
+
+  private sendUpdated() {
+    this.updated.set(this.updated() + 1);
   }
 
   /*

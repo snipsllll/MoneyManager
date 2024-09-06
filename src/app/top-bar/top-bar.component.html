@@ -10,7 +10,7 @@
     </div>
     <div class="top-bar__right">
       <div class="top-bar__budget" (click)="toggleDropdown()">
-        600€
+        {{ monthIstBudget() }}€
       </div>
     </div>
     <div class="top-bar__dropdown-box" [class.top-bar__dropdown-box-slidin]="topbarService.dropDownSlidIn()" (click)="toggleDropdown()">
