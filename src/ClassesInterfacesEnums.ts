@@ -79,3 +79,8 @@ export enum Months {
   Novermber,
   Dezember
 }
+
+export enum SideNavElements {
+  home,
+  budget
+}

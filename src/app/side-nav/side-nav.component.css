@@ -32,3 +32,7 @@
 .slide-in {
   transform: translateX(0); /* Move the div to its final position */
 }
+
+.selected {
+  background-color: #989898;
+}
