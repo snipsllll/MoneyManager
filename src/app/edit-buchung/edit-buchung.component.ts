@@ -69,8 +69,8 @@ export class EditBuchungComponent implements OnInit {
 
   onCancelClicked() {
     const confirmDialogViewModel: ConfirmDialogViewModel = {
-      title: 'Cancel?',
-      message: 'Do you really want to cancel editing? All changes will be lost!',
+      title: 'Abbrechen?',
+      message: 'Willst du abbrechen? Alle Änderungen werden verworfen.',
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
       },
@@ -97,8 +97,8 @@ export class EditBuchungComponent implements OnInit {
 
   onBackClicked() {
     const confirmDialogViewModel: ConfirmDialogViewModel = {
-      title: 'Cancel?',
-      message: 'Do you really want to return home? All changes will be lost!',
+      title: 'Abbrechen?',
+      message: 'Willst du abbrechen? Alle Änderungen werden verworfen.',
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
       },

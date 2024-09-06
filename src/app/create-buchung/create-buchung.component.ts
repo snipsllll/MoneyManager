@@ -91,8 +91,8 @@ export class CreateBuchungComponent {
       return;
     }
     const confirmDialogViewModel: ConfirmDialogViewModel = {
-      title: 'Cancel?',
-      message: 'Do you really want to return to home? All changes will be lost!',
+      title: 'Abbrechen?',
+      message: 'Willst du verlassen? Alle Änderungen werden verworfen.',
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
       },
