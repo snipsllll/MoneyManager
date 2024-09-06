@@ -1,10 +1,8 @@
-import {UserData} from "./UserData";
-import {Buchung, SavedData} from "./ClassesInterfacesEnums";
+import {SavedData} from "./ClassesInterfacesEnums";
 
 export class FileEngine {
 
   fileName: string = 'savedText.txt';
-  userData!: UserData;
   useTestData = 0;
   download: boolean;
 
