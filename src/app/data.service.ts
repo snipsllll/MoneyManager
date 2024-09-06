@@ -19,7 +19,6 @@ export class DataService {
 
   constructor() {
     this.initializeUserData();
-    this.update();
   }
 
   recalcIstBudgetsForMonth(date: Date){
@@ -33,19 +32,20 @@ export class DataService {
         day.buchungen?.forEach(buchung => {
           dayAusgaben += buchung.betrag ?? 0;
         });
-        day.istBudget = (day.budget ?? 0) - dayAusgaben;
+        day.istBudget = +((day.budget ?? 0) - dayAusgaben).toFixed(2);
         weekAusgaben += dayAusgaben;
       });
-      week.istBudget = (week.budget ?? 0) - weekAusgaben;
+      week.istBudget = +((week.budget ?? 0) - weekAusgaben).toFixed(2);
       monthAusgaben += weekAusgaben;
     });
-    month.istBudget = (month.budget ?? 0) - monthAusgaben;
+    month.istBudget = +((month.budget ?? 0) - monthAusgaben).toFixed(2);
 
     this.userData.months()[this.getIndexOfMonth(date)] = month;
   }
 
   recalcAllIstBudgets(){
     this.userData.months().forEach(month => {
+      console.log(this.userData)
       let monthAusgaben = 0;
 
       month.weeks?.forEach(week => {
@@ -55,13 +55,13 @@ export class DataService {
           day.buchungen?.forEach(buchung => {
             dayAusgaben += buchung.betrag ?? 0;
           });
-          day.istBudget = (day.budget ?? 0) - dayAusgaben;
+          day.istBudget = +((day.budget ?? 0) - dayAusgaben).toFixed(2);
           weekAusgaben += dayAusgaben;
         });
-        week.istBudget = (week.budget ?? 0) - weekAusgaben;
+        week.istBudget = +((week.budget ?? 0) - weekAusgaben).toFixed(2);
         monthAusgaben += weekAusgaben;
       });
-      month.istBudget = (month.budget ?? 0) - monthAusgaben;
+      month.istBudget = +((month.budget ?? 0) - monthAusgaben).toFixed(2);
     });
   }
 
