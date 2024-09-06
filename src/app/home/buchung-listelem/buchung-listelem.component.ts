@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, signal} from '@angular/core';
+import {Component, Input, OnInit, signal} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConfirmDialogViewModel} from "../../ConfirmDialogViewModel";

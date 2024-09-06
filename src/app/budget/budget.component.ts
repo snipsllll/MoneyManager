@@ -33,40 +33,28 @@ export class BudgetComponent implements OnInit{
     switch(this.selectedMonthIndex()){
       case 0:
         return 'Januar';
-        break;
       case 1:
         return 'Februar';
-        break;
       case 2:
         return 'März';
-        break;
       case 3:
         return 'April';
-        break;
       case 4:
         return 'Mai';
-        break;
       case 5:
         return 'Juni';
-        break;
       case 6:
         return 'Juli';
-        break;
       case 7:
         return 'August';
-        break;
       case 8:
         return 'September';
-        break;
       case 9:
         return 'Oktober';
-        break;
       case 10:
         return 'November';
-        break;
       case 11:
         return 'Dezember';
-        break;
     }
     return '';
   });

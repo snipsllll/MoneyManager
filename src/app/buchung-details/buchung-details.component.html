@@ -1,6 +1,6 @@
 <div class="create-eintrag">
   <div class="create-eintrag__back-button-wrapper">
-    <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()">
+    <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()" alt="<-">
   </div>
   <div class="create-eintrag__content" *ngIf="buchung !== undefined; else noEintrag">
     <div class="create-eintrag__top-content">

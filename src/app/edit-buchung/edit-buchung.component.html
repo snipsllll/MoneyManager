@@ -1,6 +1,6 @@
 <div class="create-eintrag">
   <div class="create-eintrag__back-button-wrapper">
-    <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()">
+    <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()" alt="<-">
     <div class="create-eintrag__budget">
       <div class="ce__budget-eintrag">
         monat: <b class="green" [class.red]="this.dayBudget().dayIstBudget !== undefined && dayBudget().monthIstBudget! < 0">{{ dayBudget().monthIstBudget ?? '???' }}€</b>
@@ -37,7 +37,7 @@
           <div class="create-eintrag__label">
             Datum:
           </div>
-          <input type="date" [(ngModel)]="date" (change)="onDateChange($event)" class="create-eintrag__data">
+          <input type="date" [(ngModel)]="date" (change)="onDateChange()" class="create-eintrag__data">
         </div>
         <div class="create-eintrag__uhrzeit-wrapper">
           <div class="create-eintrag__label">

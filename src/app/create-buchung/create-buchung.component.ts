@@ -104,7 +104,7 @@ export class CreateBuchungComponent {
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
   }
 
-  onDateChange(event: any) {
+  onDateChange() {
     if(this.date)
       this.buchung!.date = new Date(this.date);
 
