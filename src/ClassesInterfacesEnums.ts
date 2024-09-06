@@ -41,9 +41,9 @@ export interface ItfUserData {
 }
 
 export interface DayIstBudgets {
-  monthIstBudget: number;
-  weekIstBudget: number;
-  dayIstBudget: number;
+  monthIstBudget?: number;
+  weekIstBudget?: number;
+  dayIstBudget?: number;
 }
 
 export interface BudgetInfosForMonth {
