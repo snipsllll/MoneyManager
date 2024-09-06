@@ -109,4 +109,8 @@ export class EditBuchungComponent implements OnInit {
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
   }
+
+  onBetragChanged() {
+    this.buchung()!.betrag = +(this.buchung()!.betrag!.toFixed(2));
+  }
 }

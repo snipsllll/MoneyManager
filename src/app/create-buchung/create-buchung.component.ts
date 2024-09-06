@@ -118,6 +118,10 @@ export class CreateBuchungComponent {
     this.buchung!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
   }
 
+  onBetragChanged() {
+    this.buchung.betrag = +(this.buchung.betrag!.toFixed(2));
+  }
+
   private isBuchungEmpty() {
     return (this.buchung.betrag === 0 && this.buchung.title === '' && this.buchung.beschreibung === '')
   }

@@ -29,7 +29,7 @@
             <div class="create-eintrag__label">
               Betrag:
             </div>
-            <input type="number" [(ngModel)]="buchung()!.betrag" class="create-eintrag__data" placeholder="0.00€">
+            <input type="number" [(ngModel)]="buchung()!.betrag" class="create-eintrag__data" placeholder="0.00€" (change)="onBetragChanged()">
           </div>
         </div>
 
