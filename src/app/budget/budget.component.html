@@ -1,5 +1,16 @@
 <div class="budget-wrapper">
   <app-top-bar></app-top-bar>
+  <div class="budget__month-select">
+    <div class="budget__month-left" (click)="onMonthPrevClicked()">
+      <
+    </div>
+    <div class="budget__month-center" (click)="test()">
+      {{selectedMonth()}}
+    </div>
+    <div class="budget__month-right" (click)="onMonthNextClicked()">
+      >
+    </div>
+  </div>
   <div class="budget floating-box">
     <div class="budget__top">
       <div class="budget__element-wrapper">
