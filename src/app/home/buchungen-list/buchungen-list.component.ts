@@ -24,7 +24,7 @@ export class BuchungenListComponent implements OnInit{
   constructor(private dataService: DataService){
     const months = this.dataService.userData.months;
     months.forEach(month => {
-      month.weeks.forEach(week => {
+      month.weeks?.forEach(week => {
         week.days.forEach(day => {
           if(day.buchungen!.length > 0){
             this.days.push(day);

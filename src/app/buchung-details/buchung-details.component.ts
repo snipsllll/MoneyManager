@@ -46,7 +46,7 @@ export class BuchungDetailsComponent implements OnInit {
       message: 'Willst du die Buchung wirklich löschen? Sie kann nicht wieder hergestellt werden!',
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.dataService.deleteBuchung(this.buchung!()!.id);
+        this.dataService.deleteBuchung(this.buchung!()!.id!);
         console.log(this.dataService.userData)
         this.router.navigate(['/'])
       },

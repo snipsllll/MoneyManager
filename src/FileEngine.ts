@@ -1,23 +1,76 @@
 import {UserData} from "./UserData";
-import {Buchung} from "./ClassesInterfacesEnums";
+import {Buchung, SavedData} from "./ClassesInterfacesEnums";
 
 export class FileEngine {
 
   fileName: string = 'savedText.txt';
-  useTestData = 0;
-  download = false;
   userData!: UserData;
+  useTestData = 0;
+  download: boolean;
 
   constructor(useTestData: number, download: boolean) {
     this.useTestData = useTestData;
     this.download = download;
-    if (this.useTestData !== 3) {
-      this.userData = this.getTestData();
-      this.save();
-    } else {
-      this.userData = this.getSavedUserData();
+  }
+
+  save(savedData: SavedData) {
+    const blob = new Blob([JSON.stringify(savedData)], {type: 'text/plain'});
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = this.fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+
+    try {
+      localStorage.setItem('savedText', JSON.stringify(savedData));
+    } catch (e) {
+      console.error('Fehler beim Speichern in localStorage:', e);
     }
   }
+
+  load(): SavedData {
+    if (this.useTestData !== 3) {
+      return this.getTestData();
+    } else {
+      try {
+      const savedText = localStorage.getItem('savedText');
+      if (savedText) {
+        return JSON.parse(savedText);
+      }
+    } catch (e) {
+      console.error('Fehler beim laden aus localStorage:', e);
+    }
+      return {
+        buchungen: [],
+        savedMonths: []
+      };
+    }
+  }
+
+  private getTestData(): SavedData {
+    return {
+      buchungen: [
+        {
+          date: new Date(),
+          id: 1,
+          title: 'test titel',
+          betrag: 2,
+          time: new Date().toLocaleTimeString(),
+          beschreibung: 'testbeschreibung'
+        }
+      ],
+      savedMonths: [
+        {
+          date: new Date(),
+          sparen: 100,
+          totalBudget: 400
+        }
+      ]
+    }
+  }
+
+  /*
 
   public save(): void {
     if (this.download) {
@@ -296,5 +349,5 @@ export class FileEngine {
         break;
     }
     return new UserData(400, testDataBuchungen);
-  }
+  }*/
 }
