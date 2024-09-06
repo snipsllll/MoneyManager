@@ -33,19 +33,30 @@ export class FileEngine {
     if (this.useTestData !== 3) {
       return this.getTestData();
     } else {
-      try {
+      return this.getSavedData();
+    }
+  }
+
+  private getSavedData() {
+    return JSON.parse(this.loadTextFromLocalStorage(), (key, value) => {
+      // Prüfen, ob der Wert ein ISO-8601 Datum ist
+      if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value)) {
+        return new Date(value); // Wenn ja, in ein Date-Objekt konvertieren
+      }
+      return value; // Ansonsten den Wert unverändert zurückgeben
+    });
+  }
+
+  private loadTextFromLocalStorage(): string {
+    try {
       const savedText = localStorage.getItem('savedText');
       if (savedText) {
-        return JSON.parse(savedText);
+        return savedText;
       }
     } catch (e) {
       console.error('Fehler beim laden aus localStorage:', e);
     }
-      return {
-        buchungen: [],
-        savedMonths: []
-      };
-    }
+    return '';
   }
 
   private getTestData(): SavedData {

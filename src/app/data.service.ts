@@ -10,7 +10,7 @@ import {Buchung, BudgetInfosForMonth, Day, DayIstBudgets, SavedData, Week} from 
 export class DataService {
 
   userData!: UserData;
-  testData: DB = DB.short;
+  testData: DB = DB.none;
   download: boolean = true;
 
   private _fileEngine = new FileEngine(this.testData, this.download);
@@ -20,7 +20,7 @@ export class DataService {
   }
 
   recalcIstBudgetsForMonth(date: Date){
-    const month = this.userData.months[this.getIndexOfMonth(date)];
+    const month = this.userData.months()[this.getIndexOfMonth(date)];
     let monthAusgaben = 0;
 
     month.weeks?.forEach(week => {
@@ -38,11 +38,11 @@ export class DataService {
     });
     month.istBudget = (month.budget ?? 0) - monthAusgaben;
 
-    this.userData.months[this.getIndexOfMonth(date)] = month;
+    this.userData.months()[this.getIndexOfMonth(date)] = month;
   }
 
   recalcAllIstBudgets(){
-    this.userData.months.forEach(month => {
+    this.userData.months().forEach(month => {
       let monthAusgaben = 0;
 
       month.weeks?.forEach(week => {
@@ -63,7 +63,7 @@ export class DataService {
   }
 
   recalcBudgetsForMonth(date: Date){
-    const month = this.userData.months[this.getIndexOfMonth(date)];
+    const month = this.userData.months()[this.getIndexOfMonth(date)];
     month.budget = month.totalBudget - month.sparen;
     month.dailyBudget = +(month.budget / (month.daysInMonth ?? 0)).toFixed;
     month.weeks?.forEach(week => {
@@ -72,11 +72,11 @@ export class DataService {
       });
       week.budget = week.daysInWeek * (month.dailyBudget ?? 0);
     });
-    this.userData.months[this.getIndexOfMonth(date)] = month;
+    this.userData.months()[this.getIndexOfMonth(date)] = month;
   }
 
   recalcAllBudgets(){
-    this.userData.months.forEach(month => {
+    this.userData.months().forEach(month => {
       month.budget = month.totalBudget - month.sparen;
       month.dailyBudget = +(month.budget / (month.daysInMonth ?? 0)).toFixed;
       month.weeks?.forEach(week => {
@@ -89,7 +89,7 @@ export class DataService {
   }
 
   updateBuchungenForAllMonths(){
-    this.userData.months.forEach(month => {
+    this.userData.months().forEach(month => {
       month.weeks?.forEach(week => {
         week.days.forEach(day => {
           day.buchungen = [];
@@ -97,20 +97,20 @@ export class DataService {
       })
     })
     this.userData.buchungen.alleBuchungen.forEach(buchung => {
-      const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(2024, buchung.date.getMonth()).toLocaleDateString());
+      const monthIndex = this.getIndexOfMonth(buchung.date);
       if(monthIndex === -1 || monthIndex === undefined) {
         return;
       }
-      const weekIndex = this.userData.months[monthIndex].weeks?.findIndex(week => {
+      const weekIndex = this.userData.months()[monthIndex].weeks?.findIndex(week => {
         return week.days.find(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString());
       });
       if(weekIndex === -1) {
         return;
       }
-      const dayIndex: number = this.userData.months![monthIndex!]!.weeks![weekIndex!]!.days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
-      this.userData.months![monthIndex!]!.weeks![weekIndex!]!.days[dayIndex].buchungen!.push(buchung);
+      const dayIndex: number = this.userData.months!()[monthIndex!]!.weeks![weekIndex!]!.days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
+      this.userData.months!()[monthIndex!]!.weeks![weekIndex!]!.days[dayIndex].buchungen!.push(buchung);
     });
-    this.recalcAllIstBudgets()
+    this.recalcAllIstBudgets();
   }
 
   editBuchung(buchung: Buchung){
@@ -123,6 +123,7 @@ export class DataService {
     }
     this.userData.buchungen.alleBuchungen[buchungsIndexInAlleBuchungen] = buchung;
     this.updateBuchungenForAllMonths();
+    this._fileEngine.save(this.convertToSavedData());
   }
 
   createBuchung(buchung: Buchung){
@@ -132,6 +133,7 @@ export class DataService {
     buchung.id = this.getNextFreeBuchungsId();
     this.userData.buchungen.alleBuchungen.push(buchung);
     this.updateBuchungenForAllMonths();
+    this._fileEngine.save(this.convertToSavedData());
   }
 
   deleteBuchung(buchungsId: number) {
@@ -141,11 +143,14 @@ export class DataService {
     }
     this.userData.buchungen.alleBuchungen.splice(buchungsIndexInAlleBuchungen, 1);
     this.updateBuchungenForAllMonths();
+    this._fileEngine.save(this.convertToSavedData());
   }
 
   createNewMonth(date: Date, totalBudget?: number, sparen?: number) {
-    const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const year = new Date(date).getFullYear();
+    const month = new Date(date).getMonth();
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0);
     const budget = (totalBudget ?? 0) - (sparen ?? 0);
 
     // Berechnung der Anzahl der Tage im Monat
@@ -171,7 +176,10 @@ export class DataService {
       const days: Day[] = [];
       for (let d = currentWeekStart.getDate(); d <= currentWeekEnd.getDate(); d++) {
         const dateForDay = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(), d)
-        const buchungenForDay = this.userData.buchungen.alleBuchungen.filter(buchung => buchung.date.toLocaleDateString() === dateForDay.toLocaleDateString());
+        const buchungenForDay = this.userData.buchungen.alleBuchungen.filter(buchung => {
+          const date = new Date(buchung.date);
+          return date.toLocaleDateString() === dateForDay.toLocaleDateString()
+        });
         days.push({ date: dateForDay, budget: budgetPerDay, istBudget: budgetPerDay, buchungen: buchungenForDay });
       }
 
@@ -193,7 +201,7 @@ export class DataService {
 
     const dailyBudget = +(budget / daysInMonth).toFixed(2);
 
-    this.userData.months.push( {
+    this.userData.months().push( {
       startDate: startDate,
       endDate: endDate,
       daysInMonth: daysInMonth,
@@ -212,13 +220,13 @@ export class DataService {
   }
 
   changeSparenForMonth(date: Date, sparen: number){
-    this.userData.months[this.getIndexOfMonth(date)].sparen = sparen;
+    this.userData.months()[this.getIndexOfMonth(date)].sparen = sparen;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
   }
 
   changeTotalBudgetForMonth(date: Date, totalBudget: number){
-    this.userData.months[this.getIndexOfMonth(date)].totalBudget = totalBudget;
+    this.userData.months()[this.getIndexOfMonth(date)].totalBudget = totalBudget;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
   }
@@ -228,19 +236,19 @@ export class DataService {
     if(monthIndex === -1){
       return null;
     }
-    const month = this.userData.months[monthIndex];
+    const month = this.userData.months()[monthIndex];
 
     const weekIndex = this.getIndexOfWeekInMonth(date);
     if(weekIndex === -1){
       return null;
     }
-    const week = this.userData.months[monthIndex].weeks![this.getIndexOfWeekInMonth(date)];
+    const week = this.userData.months()[monthIndex].weeks![this.getIndexOfWeekInMonth(date)];
 
     const dayIndex = this.getIndexOfDayInWeek(date);
     if(dayIndex === -1){
       return null;
     }
-    const day = this.userData.months[monthIndex].weeks![weekIndex].days![dayIndex];
+    const day = this.userData.months()[monthIndex].weeks![weekIndex].days![dayIndex];
 
     if(day.istBudget && week.istBudget && month.istBudget){
       return {
@@ -258,7 +266,7 @@ export class DataService {
     if(monthIndex === -1){
       return null;
     }
-    this.userData.months[monthIndex].weeks?.forEach(week => {
+    this.userData.months()[monthIndex].weeks?.forEach(week => {
       week.days.forEach(day => {
         day.buchungen?.forEach(buchung => buchungen.push(buchung));
       })
@@ -280,19 +288,19 @@ export class DataService {
     if(monthIndex === -1){
       return null;
     }
-    const month = this.userData.months[monthIndex];
+    const month = this.userData.months()[monthIndex];
 
     const weekIndex = this.getIndexOfWeekInMonth(date);
     if(weekIndex === -1){
       return null;
     }
-    const week = this.userData.months[monthIndex].weeks![this.getIndexOfWeekInMonth(date)];
+    const week = this.userData.months()[monthIndex].weeks![this.getIndexOfWeekInMonth(date)];
 
     const dayIndex = this.getIndexOfDayInWeek(date);
     if(dayIndex === -1){
       return null;
     }
-    const day = this.userData.months[monthIndex].weeks![weekIndex].days![dayIndex];
+    const day = this.userData.months()[monthIndex].weeks![weekIndex].days![dayIndex];
     return {
       budget: month.budget ?? 0,
       sparen: month.sparen,
@@ -307,8 +315,10 @@ export class DataService {
   }
 
   private getIndexOfMonth(date: Date) {
-    const monthStartDate = new Date(date.getFullYear(), date.getMonth());
-    return this.userData.months.findIndex(monat => monat.startDate.toLocaleDateString() === monthStartDate.toLocaleDateString())
+    const year = new Date(date).getFullYear();
+    const month = new Date(date).getMonth();
+    const monthStartDate = new Date(year, month);
+    return this.userData.months().findIndex(monat => monat.startDate.toLocaleDateString() === monthStartDate.toLocaleDateString())
   }
 
   private getIndexOfWeekInMonth(date: Date): number {
@@ -316,7 +326,7 @@ export class DataService {
     if(monthIndex === -1){
       return -1;
     }
-    return this.userData.months[this.getIndexOfMonth(date)].weeks?.findIndex(week => {
+    return this.userData.months()[this.getIndexOfMonth(date)].weeks?.findIndex(week => {
       week.days.find(day => day.date.toLocaleDateString() === date.toLocaleDateString());
     }) ?? -1;
   }
@@ -326,18 +336,18 @@ export class DataService {
     if(monthIndex === -1){
       return -1;
     }
-    if(this.userData.months[this.getIndexOfMonth(date)].weeks === undefined){
+    if(this.userData.months()[this.getIndexOfMonth(date)].weeks === undefined){
       return -1;
     }
     const weekIndex = this.getIndexOfWeekInMonth(date);
     if(weekIndex === -1 || weekIndex === undefined){
       return -1
     }
-    return this.userData.months[this.getIndexOfMonth(date)].weeks![weekIndex].days.findIndex(day => day.date.toLocaleDateString() === date.toLocaleDateString());
+    return this.userData.months()[this.getIndexOfMonth(date)].weeks![weekIndex].days.findIndex(day => day.date.toLocaleDateString() === date.toLocaleDateString());
   }
 
   private checkIfMonthExistsForDay(date: Date): boolean {
-    return this.userData.months.findIndex(month => month.startDate.getMonth() === date.getMonth()) !== -1;
+    return this.userData.months().findIndex(month => month.startDate.getMonth() === date.getMonth()) !== -1;
   }
 
   private getMonthIndexes(buchungen?: Buchung[]): number[] {
@@ -365,7 +375,7 @@ export class DataService {
 
     savedData.buchungen = this.userData.buchungen.alleBuchungen;
 
-    this.userData.months.forEach(month => {
+    this.userData.months().forEach(month => {
       savedData.savedMonths.push({
         date: month.startDate,
         totalBudget: month.totalBudget,
