@@ -82,7 +82,7 @@ export class DataService {
   recalcAllBudgets(){
     this.userData.months().forEach(month => {
       month.budget = month.totalBudget - month.sparen;
-      month.dailyBudget = +(month.budget / (month.daysInMonth ?? 0)).toFixed;
+      month.dailyBudget = +(month.budget / (month.daysInMonth ?? 0)).toFixed(2);
       month.weeks?.forEach(week => {
         week.days.forEach(day => {
           day.budget = month.dailyBudget;
