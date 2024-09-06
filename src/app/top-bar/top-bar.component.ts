@@ -35,6 +35,7 @@ export class TopBarComponent implements OnInit{
   }
 
   toggleDropdown(){
+    if(!this.topbarService.isDropDownDisabled)
     this.topbarService.dropDownSlidIn.set(!this.topbarService.dropDownSlidIn());
   }
 }

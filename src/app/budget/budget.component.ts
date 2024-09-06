@@ -77,6 +77,8 @@ export class BudgetComponent implements OnInit{
 
   ngOnInit() {
     this.topbarService.title.set('BUDGET');
+    this.topbarService.dropDownSlidIn.set(false);
+    this.topbarService.isDropDownDisabled = true;
     this.update();
   }
 
