@@ -47,7 +47,6 @@ export class BuchungDetailsComponent implements OnInit {
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
         this.dataService.deleteBuchung(this.buchung!()!.id!);
-        console.log(this.dataService.userData)
         this.router.navigate(['/'])
       },
       onCancelClicked: () => {

@@ -45,7 +45,6 @@ export class DataService {
 
   recalcAllIstBudgets(){
     this.userData.months().forEach(month => {
-      console.log(this.userData)
       let monthAusgaben = 0;
 
       month.weeks?.forEach(week => {

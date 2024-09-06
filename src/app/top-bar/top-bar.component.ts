@@ -18,7 +18,6 @@ import {DataService} from "../data.service";
 export class TopBarComponent implements OnInit{
   title?: string;
   monthIstBudget = computed(() => {
-    console.log(this.dataService.updated())
     return this.dataService.getDayIstBudgets(new Date());
   })
 

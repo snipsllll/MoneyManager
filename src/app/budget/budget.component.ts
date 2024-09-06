@@ -120,11 +120,6 @@ export class BudgetComponent implements OnInit{
     return new Date(this.selectedYear(), this.selectedMonthIndex(), 1);
   }
 
-  test() {
-    console.log(this.dataService.userData)
-    console.log(this.dataService.getDayIstBudgets(new Date()));
-  }
-
   private update() {
     this.data.set(this.dataService.getBudgetInfosForMonth(this.getDateForSelectedMonth()) ?? {
       budget: 0,
