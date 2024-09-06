@@ -3,13 +3,13 @@
       <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()">
     <div class="create-eintrag__budget">
       <div class="ce__budget-eintrag">
-        monat: <b>79€</b>
+        monat: <b>{{ dayBudget().monthIstBudget }}</b>
       </div>
       <div class="ce__budget-eintrag">
-        woche: <b>30€</b>
+        woche: <b>{{ dayBudget().weekIstBudget }}</b>
       </div>
       <div class="ce__budget-eintrag">
-        heute: <b>9€</b>
+        heute: <b>{{dayBudget().dayIstBudget}}</b>
       </div>
     </div>
 

@@ -117,7 +117,8 @@ export class BudgetComponent implements OnInit{
   }
 
   test() {
-    console.log(this.data);
+    console.log(this.dataService.userData)
+    console.log(this.dataService.getDayIstBudgets(new Date()));
   }
 
   private update() {

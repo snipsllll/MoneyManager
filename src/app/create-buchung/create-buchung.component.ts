@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {Router} from "@angular/router";
 import {DataService} from "../data.service";
-import {Buchung} from "../../ClassesInterfacesEnums";
+import {Buchung, DayIstBudgets} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-create-buchung',
@@ -22,6 +22,7 @@ export class CreateBuchungComponent {
   buchung!: Buchung;
   showBetragWarning = false;
   date?: string;
+  dayBudget = signal<DayIstBudgets>({dayIstBudget: 0, weekIstBudget: 0, monthIstBudget: 0});
 
   constructor(private dataService: DataService, public dialogService: DialogService, private router: Router) {
     const date = new Date();
@@ -33,6 +34,7 @@ export class CreateBuchungComponent {
       time: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
       beschreibung: ''
     };
+    this.dayBudget.set(this.dataService.getDayIstBudgets(date)!);
     this.date = this.buchung.date.toISOString().slice(0, 10);
   }
 

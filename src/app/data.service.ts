@@ -211,24 +211,26 @@ export class DataService {
       sparen: sparen ?? 0,
       dailyBudget: dailyBudget,
       totalBudget: totalBudget ?? 0
-
     });
 
     this.updateBuchungenForAllMonths();
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
+    this._fileEngine.save(this.convertToSavedData());
   }
 
   changeSparenForMonth(date: Date, sparen: number){
     this.userData.months()[this.getIndexOfMonth(date)].sparen = sparen;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
+    this._fileEngine.save(this.convertToSavedData());
   }
 
   changeTotalBudgetForMonth(date: Date, totalBudget: number){
     this.userData.months()[this.getIndexOfMonth(date)].totalBudget = totalBudget;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
+    this._fileEngine.save(this.convertToSavedData());
   }
 
   getDayIstBudgets(date: Date): DayIstBudgets | null {
@@ -315,9 +317,15 @@ export class DataService {
     if(monthIndex === -1){
       return -1;
     }
-    return this.userData.months()[this.getIndexOfMonth(date)].weeks?.findIndex(week => {
-      week.days.find(day => day.date.toLocaleDateString() === date.toLocaleDateString());
-    }) ?? -1;
+    const x = this.userData.months()[monthIndex].weeks?.findIndex(week => {
+      return week.days.find(day => day.date.toLocaleDateString() === date.toLocaleDateString());
+    });
+
+    if(x === undefined) {
+      console.log('week not found')
+      return -1;
+    }
+    return x;
   }
 
   private getIndexOfDayInWeek(date: Date) {
