@@ -19,6 +19,7 @@ export class DataService {
 
   constructor() {
     this.initializeUserData();
+    this.update();
   }
 
   recalcIstBudgetsForMonth(date: Date){
@@ -41,7 +42,6 @@ export class DataService {
     month.istBudget = (month.budget ?? 0) - monthAusgaben;
 
     this.userData.months()[this.getIndexOfMonth(date)] = month;
-    this.sendUpdated();
   }
 
   recalcAllIstBudgets(){
@@ -63,7 +63,6 @@ export class DataService {
       });
       month.istBudget = (month.budget ?? 0) - monthAusgaben;
     });
-    this.sendUpdated();
   }
 
   recalcBudgetsForMonth(date: Date){
@@ -117,7 +116,6 @@ export class DataService {
       this.userData.months!()[monthIndex!]!.weeks![weekIndex!]!.days[dayIndex].buchungen!.push(buchung);
     });
     this.recalcAllIstBudgets();
-    this.sendUpdated();
   }
 
   editBuchung(buchung: Buchung){
@@ -130,7 +128,6 @@ export class DataService {
     }
     this.userData.buchungen.alleBuchungen[buchungsIndexInAlleBuchungen] = buchung;
     this.updateBuchungenForAllMonths();
-    this.sendUpdated();
   }
 
   createBuchung(buchung: Buchung){
@@ -140,7 +137,6 @@ export class DataService {
     buchung.id = this.getNextFreeBuchungsId();
     this.userData.buchungen.alleBuchungen.push(buchung);
     this.updateBuchungenForAllMonths();
-    this.sendUpdated();
   }
 
   deleteBuchung(buchungsId: number) {
@@ -150,7 +146,6 @@ export class DataService {
     }
     this.userData.buchungen.alleBuchungen.splice(buchungsIndexInAlleBuchungen, 1);
     this.updateBuchungenForAllMonths();
-    this.sendUpdated();
   }
 
   createNewMonth(date: Date, totalBudget?: number, sparen?: number) {
@@ -223,7 +218,6 @@ export class DataService {
     this.updateBuchungenForAllMonths();
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
-    this.sendUpdated();
   }
 
   changeSparenForMonth(date: Date, sparen: number){
@@ -233,7 +227,6 @@ export class DataService {
     this.userData.months()[this.getIndexOfMonth(date)].sparen = sparen;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
-    this.sendUpdated();
   }
 
   changeTotalBudgetForMonth(date: Date, totalBudget: number){
@@ -243,7 +236,6 @@ export class DataService {
     this.userData.months()[this.getIndexOfMonth(date)].totalBudget = totalBudget;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
-    this.sendUpdated();
   }
 
   getDayIstBudgets(date: Date): DayIstBudgets | null {
@@ -316,6 +308,11 @@ export class DataService {
 
   getBuchungById(buchungsId: number) {
     return this.userData.buchungen.alleBuchungen.find(buchung => buchung.id === buchungsId);
+  }
+
+  update() {
+    this._fileEngine.save(this.getSavedData());
+    this.updated.set(this.updated() + 1);
   }
 
   private getIndexOfMonth(date: Date) {
@@ -405,7 +402,6 @@ export class DataService {
     savedData.savedMonths.forEach(month => {
       this.createNewMonth(month.date, month.totalBudget, month.sparen)
     })
-    this.sendUpdated();
   }
 
   private getNextFreeBuchungsId() {
@@ -419,109 +415,6 @@ export class DataService {
     }
     return freeId;
   }
-
-  private sendUpdated() {
-    this._fileEngine.save(this.getSavedData());
-    this.updated.set(this.updated() + 1);
-  }
-
-  /*
-
-  public createNewBuchung(buchung: Buchung) {
-    buchung.id = this.getNextFreeBuchungsId();
-    this.createNewBuchungData(buchung);
-  }
-
-  public editBuchung(buchung: Buchung) {
-    this.editBuchungData(buchung);
-  }
-
-  public deleteBuchung(buchungsId?: number) {
-    if (buchungsId) {
-      this.deleteBuchungData(buchungsId)
-    }
-  }
-
-  public getBuchungById(buchungId: number): Buchung | undefined {
-    return this.userData.buchungen.alleBuchungen.find(x => x.id === buchungId);
-  }
-
-
-
-  private createNewBuchungData(buchung: Buchung) {
-    this.userData.buchungen.alleBuchungen.push(buchung);
-    this.update();
-  }
-
-  private editBuchungData(buchung: Buchung){
-    if (!buchung) {
-      return;
-    }
-    const alleBuchungenBuchungIndex = this.userData.buchungen.alleBuchungen.findIndex(pBuchung => pBuchung.id === buchung.id);
-    if (alleBuchungenBuchungIndex === -1) {
-      return;
-    }
-    this.userData.buchungen.alleBuchungen[alleBuchungenBuchungIndex] = buchung;
-    this.update();
-  }
-
-  private deleteBuchungData(buchungsId?: number) {
-    if (!buchungsId) {
-      return;
-    }
-    const alleBuchungenBuchungIndex = this.userData.buchungen.alleBuchungen.findIndex(pBuchung => pBuchung.id === buchungsId);
-    if (alleBuchungenBuchungIndex === -1) {
-      return;
-    }
-    this.userData.buchungen.alleBuchungen.splice(alleBuchungenBuchungIndex, 1);
-    this.update();
-  }
-
-  private recalculateIstBudgets() {
-    this.userData.months.forEach(month => {
-      let monthAusgaben = 0;
-
-      month.weeks.forEach(week => {
-        let weekAusgaben = 0;
-        week.days.forEach(day => {
-          let dayAusgaben = 0;
-          day.buchungen?.forEach(buchung => {
-            dayAusgaben += buchung.betrag ?? 0;
-          });
-          day.istBudget = (day.budget ?? 0) - dayAusgaben;
-          weekAusgaben += dayAusgaben;
-        });
-        week.istBudget = (week.budget ?? 0) - weekAusgaben;
-        monthAusgaben += weekAusgaben;
-      });
-      month.istBudget = (month.budget ?? 0) - monthAusgaben;
-    });
-  }
-
-  private update() {
-    this.updateBuchungenInMonths();
-    this.recalculateIstBudgets();
-    this._fileEngine.save();
-  }
-
-  private updateBuchungenInMonths(){
-    this.userData.months.forEach(month => {
-      month.weeks.forEach(week => {
-        week.days.forEach(day => {
-          day.buchungen = [];
-        })
-      })
-    })
-    this.userData.buchungen.alleBuchungen.forEach(buchung => {
-      const monthIndex = this.userData.months.findIndex(month => month.startDate.toLocaleDateString() === new Date(2024, buchung.date.getMonth()).toLocaleDateString());
-      const weekIndex = this.userData.months[monthIndex].weeks.findIndex(week => {
-        return week.days.find(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString());
-      });
-      const dayIndex = this.userData.months[monthIndex].weeks[weekIndex].days.findIndex(day => day.date.toLocaleDateString() === buchung.date.toLocaleDateString())
-      this.userData.months[monthIndex].weeks[weekIndex].days[dayIndex].buchungen!.push(buchung);
-    })
-  }
-  */
 }
 
 enum DB {
