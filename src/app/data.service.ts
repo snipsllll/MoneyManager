@@ -77,7 +77,7 @@ export class DataService {
       week.budget = week.daysInWeek * (month.dailyBudget ?? 0);
     });
     this.userData.months()[this.getIndexOfMonth(date)] = month;
-    this.sendUpdated();
+    this.recalcIstBudgetsForMonth(date);
   }
 
   recalcAllBudgets(){
@@ -91,7 +91,7 @@ export class DataService {
         week.budget = week.daysInWeek * (month.dailyBudget ?? 0);
       });
     })
-    this.sendUpdated();
+    this.recalcAllIstBudgets();
   }
 
   updateBuchungenForAllMonths(){
@@ -130,7 +130,6 @@ export class DataService {
     }
     this.userData.buchungen.alleBuchungen[buchungsIndexInAlleBuchungen] = buchung;
     this.updateBuchungenForAllMonths();
-    this._fileEngine.save(this.convertToSavedData());
     this.sendUpdated();
   }
 
@@ -141,7 +140,6 @@ export class DataService {
     buchung.id = this.getNextFreeBuchungsId();
     this.userData.buchungen.alleBuchungen.push(buchung);
     this.updateBuchungenForAllMonths();
-    this._fileEngine.save(this.convertToSavedData());
     this.sendUpdated();
   }
 
@@ -152,7 +150,6 @@ export class DataService {
     }
     this.userData.buchungen.alleBuchungen.splice(buchungsIndexInAlleBuchungen, 1);
     this.updateBuchungenForAllMonths();
-    this._fileEngine.save(this.convertToSavedData());
     this.sendUpdated();
   }
 
@@ -226,7 +223,6 @@ export class DataService {
     this.updateBuchungenForAllMonths();
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
-    this._fileEngine.save(this.convertToSavedData());
     this.sendUpdated();
   }
 
@@ -234,7 +230,6 @@ export class DataService {
     this.userData.months()[this.getIndexOfMonth(date)].sparen = sparen;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
-    this._fileEngine.save(this.convertToSavedData());
     this.sendUpdated();
   }
 
@@ -242,7 +237,6 @@ export class DataService {
     this.userData.months()[this.getIndexOfMonth(date)].totalBudget = totalBudget;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
-    this._fileEngine.save(this.convertToSavedData());
     this.sendUpdated();
   }
 
@@ -377,7 +371,7 @@ export class DataService {
     return Array.from(monthIndexes);
   }
 
-  private convertToSavedData(): SavedData {
+  private getSavedData(): SavedData {
     const savedData: SavedData = {
       buchungen: [],
       savedMonths: []
@@ -421,6 +415,7 @@ export class DataService {
   }
 
   private sendUpdated() {
+    this._fileEngine.save(this.getSavedData());
     this.updated.set(this.updated() + 1);
   }
 
