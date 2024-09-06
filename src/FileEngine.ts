@@ -56,7 +56,7 @@ export class FileEngine {
     } catch (e) {
       console.error('Fehler beim laden aus localStorage:', e);
     }
-    return '';
+    return '{"buchungen":[],"savedMonths":[]}';
   }
 
   private getTestData(): SavedData {
