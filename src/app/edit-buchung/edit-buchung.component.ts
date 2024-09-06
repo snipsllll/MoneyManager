@@ -50,6 +50,7 @@ export class EditBuchungComponent implements OnInit {
           },
           onConfirmClicked: () => {
             this.dataService.editBuchung(this.buchung()!);
+            this.dataService.update();
             this.dialogService.isConfirmDialogVisible = false;
             this.router.navigate(['/']);
           }
@@ -57,6 +58,7 @@ export class EditBuchungComponent implements OnInit {
         this.dialogService.showConfirmDialog(confirmDialogViewModel);
       } else {
         this.dataService.editBuchung(this.buchung()!);
+        this.dataService.update();
         this.router.navigate(['/']);
       }
 
