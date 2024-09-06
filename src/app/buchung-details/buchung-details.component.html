@@ -1,13 +1,14 @@
-<div class="eintrag-details">
-  <div class="eintrag-details__back-button-wrapper">
-    <div class="eintrag-details__back-button" (click)="onBackClicked()">
-      <-
-    </div>
+<div class="create-eintrag">
+  <div class="create-eintrag__back-button-wrapper">
+    <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()">
   </div>
-  <div class="eintrag-details__content" *ngIf="buchung !== undefined; else noEintrag">
-    <div class="eintrag-details__top-content">
-      <div class="eintrag-details__title">
-        {{ buchung()?.title }}
+  <div class="create-eintrag__content" *ngIf="buchung !== undefined; else noEintrag">
+    <div class="create-eintrag__top-content">
+      <div class="create-eintrag__title" *ngIf="titelVorhanden">
+        {{buchung()?.title}}
+      </div>
+      <div class="create-eintrag__title-unbenannt" *ngIf="!titelVorhanden">
+        Unbenannt
       </div>
       <div class="eintrag-details__id-wrapper">
         <div>
@@ -17,54 +18,61 @@
           {{ buchung()?.id }})
         </div>
       </div>
-      <hr>
-      <div class="eintrag-details__betrag-wrapper">
-        <div class="eintrag-details__label">
-          Betrag:
-        </div>
-        <div class="eintrag-details__data">
-          {{ buchung()?.betrag }}€
+      <hr class="hr-title">
+      <div class="create-eintrag__betrag">
+        <div class="create-eintrag__betrag-wrapper">
+          <div class="create-eintrag__label">
+            Betrag:
+          </div>
+          <div class="create-eintrag__data">
+            {{buchung()?.betrag}}€
+          </div>
         </div>
       </div>
-      <div class="eintrag-details__datum-wrapper">
-        <div class="eintrag-details__label">
+
+      <div class="create-eintrag__datum-wrapper">
+        <div class="create-eintrag__label">
           Datum:
         </div>
-        <div class="eintrag-details__data">
-          {{ buchung()?.date!.toLocaleDateString() }}
+        <div class="create-eintrag__data">
+          {{buchung()!.date.toLocaleDateString()}}
         </div>
-      </div>
-      <div class="eintrag-details__uhrzeit-wrapper">
-        <div class="eintrag-details__label">
+        </div>
+      <div class="create-eintrag__uhrzeit-wrapper">
+        <div class="create-eintrag__label">
           Uhrzeit:
         </div>
-        <div class="eintrag-details__data">
-          {{ buchung()?.time }}
+        <div class="create-eintrag__data">
+          {{buchung()?.time}}
         </div>
-      </div>
-      <div class="eintrag-details__beschreibung-wrapper">
-        <div class="eintrag-details__label eintrag-details__beschreibung-label">
+        </div>
+      <hr class="hr">
+      <div class="create-eintrag__beschreibung-wrapper">
+        <div class="create-eintrag__label create-eintrag__beschreibung-label">
           Beschreibung:
         </div>
-        <div class="eintrag-details__data eintrag-details__beschreibung-data">
+        <div class="create-eintrag__data create-eintrag__beschreibung-data">
           {{ buchung()?.beschreibung }}
         </div>
       </div>
-      <div class="eintrag-details__spacer-bottom">
+    </div>
+    <div class="create-eintrag__spacer-bottom">
 
-      </div>
     </div>
 
-    <div class="eintrag-details__buttons-wrapper">
-      <div class="eintrag-details__button" (click)="onDeleteButtonClicked()">
+    <div class="create-eintrag__buttons-wrapper">
+      <div class="create-eintrag__button" (click)="onDeleteButtonClicked()">
         delete
       </div>
-      <div class="eintrag-details__button" (click)="onEditClicked()">
+      <div class="create-eintrag__button" (click)="onEditClicked()">
         edit
       </div>
     </div>
   </div>
+
 </div>
+
+
 
 <ng-template #noEintrag>
   <div class="eintrag-details__no-eintrag">

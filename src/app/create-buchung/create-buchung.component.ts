@@ -21,6 +21,7 @@ import {Buchung} from "../../ClassesInterfacesEnums";
 export class CreateBuchungComponent {
   buchung!: Buchung;
   showBetragWarning = false;
+  date?: string;
 
   constructor(private dataService: DataService, public dialogService: DialogService, private router: Router) {
     const date = new Date();
@@ -32,6 +33,7 @@ export class CreateBuchungComponent {
       time: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
       beschreibung: ''
     };
+    this.date = this.buchung.date.toISOString().slice(0, 10);
   }
 
   onSaveClicked() {
@@ -82,7 +84,8 @@ export class CreateBuchungComponent {
   }
 
   onDateChange(event: any) {
-    this.buchung!.date = new Date(event.target.value);
+    if(this.date)
+      this.buchung!.date = new Date(this.date);
   }
 
   onTimeChange(event: any) {

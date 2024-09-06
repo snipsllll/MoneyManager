@@ -1,13 +1,15 @@
 <div class="eintrag-listelem">
   <div class="eintrag-listelem__menu-button__left" (click)="onBuchungClicked(buchung.id!)">
     <div class="eintrag-listelem__betrag all-centered">
-      -{{buchung.betrag}}€
+      <b>-{{ buchung.betrag }}€</b>
     </div>
-    <div class="eintrag-listelem__trennlinie">
-      |
-    </div>
-    <div class="eintrag-listelem__title all-centered">
-      {{buchung.title}} ({{buchung.date.toLocaleDateString()}})
+    <div class="a">
+      <div class="eintrag-listelem__title all-centered">
+        <b>{{ buchung.title !== '' ? buchung.title : 'Unbenannt' }}</b>
+      </div>
+      <div class="eintrag-listelem__beschreibung">
+        {{ buchung.beschreibung }}
+      </div>
     </div>
   </div>
 
@@ -15,16 +17,17 @@
     ...
   </div>
 
-  @if(showMenu()){
+  @if (showMenu()) {
     <div class="eintrag-listelem__menu">
-      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item" (click)="onEditButtonClicked(buchung.id!)">
+      <div class="eintrag-listelem__edit-button all-centered eintrag-listelem__menu-item"
+           (click)="onEditButtonClicked(buchung.id!)">
         edit
       </div>
       <hr>
-      <div class="eintrag-listelem__edit-delete all-centered eintrag-listelem__menu-item" (click)="onDeleteButtonClicked()">
+      <div class="eintrag-listelem__edit-delete all-centered eintrag-listelem__menu-item"
+           (click)="onDeleteButtonClicked()">
         delete
       </div>
-
     </div>
     <div class="eintrag-listelem__menu-background" (click)="onMenuButtonClicked()">
 

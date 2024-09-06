@@ -21,6 +21,7 @@ export class EditBuchungComponent implements OnInit {
 
   buchung = signal<Buchung | undefined>(undefined);
   oldBuchung?: Buchung;
+  date?: string;
 
   constructor(private router: Router, private dataService: DataService, private route: ActivatedRoute, public dialogService: DialogService) {
 
@@ -30,8 +31,12 @@ export class EditBuchungComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const buchungsId = +params.get('buchungsId')!;
       this.buchung?.set(this.dataService.getBuchungById(buchungsId));
+      console.log(this.buchung())
       this.oldBuchung = this.buchung();
+      this.date = this.buchung()?.date.toISOString().slice(0, 10);
     });
+    console.log(this.dataService.userData)
+    console.log(this.buchung())
   }
 
   onSaveClicked() {
@@ -55,7 +60,8 @@ export class EditBuchungComponent implements OnInit {
   }
 
   onDateChange(event: any) {
-    this.buchung()!.date = new Date(event.target.value);
+    if(this.date)
+    this.buchung()!.date = new Date(this.date);
   }
 
   onTimeChange(event: any) {

@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BuchungListelemComponent} from "../buchung-listelem/buchung-listelem.component";
 import {NgForOf} from "@angular/common";
-import {TimeFilterTopbarComponent} from "../../time-filter-topbar/time-filter-topbar.component";
 import {DataService} from "../../data.service";
-import {Buchung} from "../../../ClassesInterfacesEnums";
+import {Day} from "../../../ClassesInterfacesEnums";
+import {BuchungenListDayComponent} from "../buchungen-list-day/buchungen-list-day.component";
 
 @Component({
   selector: 'app-buchungen-list',
@@ -11,18 +11,27 @@ import {Buchung} from "../../../ClassesInterfacesEnums";
   imports: [
     BuchungListelemComponent,
     NgForOf,
-    TimeFilterTopbarComponent
+    BuchungenListDayComponent
   ],
   templateUrl: './buchungen-list.component.html',
   styleUrl: './buchungen-list.component.css'
 })
 export class BuchungenListComponent implements OnInit{
 
-  @Input() buchungen?: Buchung[];
   date = new Date();
-  activeFilter = '';
+  days: Day[] = [];
 
   constructor(private dataService: DataService){
+    const months = this.dataService.userData.months;
+    months.forEach(month => {
+      month.weeks.forEach(week => {
+        week.days.forEach(day => {
+          if(day.buchungen!.length > 0){
+            this.days.push(day);
+          }
+        })
+      })
+    });
     this.orderByDateDesc();
   }
 
@@ -31,45 +40,7 @@ export class BuchungenListComponent implements OnInit{
   }
 
   orderByDateDesc() {
-    this.buchungen?.sort((a, b) => b.date.getTime() - a.date.getTime())
-  }
-
-  onHeuteClicked() {
-    this.activeFilter = 'heute';
-    this.buchungen = this.dataService.getBuchungenByDay(this.date);
-  }
-
-  onWocheClicked(){
-    this.activeFilter = 'woche';
-    this.buchungen = this.dataService.getBuchungenForCurrentWeek();
-  }
-
-  onMonatClicked() {
-    this.activeFilter = 'monat';
-    this.buchungen = this.dataService.getBuchungenForThisMonth();
-  }
-
-  onAlleClicked() {
-    this.activeFilter = 'alle';
-    this.buchungen = this.dataService.getAlleBuchungen();
-  }
-
-  onDelete() {
-    switch(this.activeFilter) {
-      case 'alle':
-        this.onAlleClicked();
-        break;
-      case 'heute':
-        this.onHeuteClicked();
-        break;
-      case 'woche':
-        this.onWocheClicked();
-        break;
-      case 'monat':
-        this.onMonatClicked();
-        break;
-    }
-    this.orderByDateDesc();
+    this.days?.sort((a, b) => b.date.getTime() - a.date.getTime())
   }
 
 }
