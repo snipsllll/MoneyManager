@@ -5,6 +5,14 @@
   flex-direction: column;
 }
 
+.red {
+  color: red !important;
+}
+
+.green {
+  color: green;
+}
+
 .create-eintrag__back-button-wrapper {
   display: flex;
   justify-content: space-between;

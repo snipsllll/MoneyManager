@@ -14,14 +14,14 @@
       </div>
     </div>
     <div class="top-bar__dropdown-box" [class.top-bar__dropdown-box-slidin]="topbarService.dropDownSlidIn()" (click)="toggleDropdown()">
-      <div class="drop-down__eintrag">
-        monat: {{monthIstBudget()?.monthIstBudget}}€
+      <div class="ce__budget-eintrag">
+        monat: <b class="green" [class.red]="monthIstBudget()!.monthIstBudget < 0">{{ monthIstBudget()?.monthIstBudget }}€</b>
       </div>
-      <div class="drop-down__eintrag">
-        woche: {{monthIstBudget()?.weekIstBudget}}€
+      <div class="ce__budget-eintrag">
+        woche: <b class="green" [class.red]="monthIstBudget()!.weekIstBudget < 0">{{ monthIstBudget()?.weekIstBudget }}€</b>
       </div>
-      <div class="drop-down__eintrag">
-        heute: {{monthIstBudget()?.dayIstBudget}}€
+      <div class="ce__budget-eintrag">
+        heute: <b class="green" [class.red]="monthIstBudget()!.dayIstBudget < 0">{{monthIstBudget()?.dayIstBudget}}€</b>
       </div>
     </div>
   </div>

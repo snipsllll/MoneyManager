@@ -58,6 +58,14 @@
   overflow: hidden;
 }
 
+.red {
+  color: red !important;
+}
+
+.green {
+  color: green;
+}
+
 .top-bar__dropdown-box-slidin {
   height: 24px;
   font-size: 12px;
