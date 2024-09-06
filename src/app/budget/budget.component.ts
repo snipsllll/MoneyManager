@@ -103,12 +103,12 @@ export class BudgetComponent implements OnInit{
   }
 
   onSparenChanged() {
-    //this.dataService.changeSparenForMonth(this.getDateForSelectedMonth(), this.data().sparen);
+    this.dataService.changeSparenForMonth(this.getDateForSelectedMonth(), this.data().sparen);
     this.update();
   }
 
   onTotalBudgetChanged() {
-    //this.dataService.changeTotalBudgetForMonth(this.getDateForSelectedMonth(), this.data().totalBudget);
+    this.dataService.changeTotalBudgetForMonth(this.getDateForSelectedMonth(), this.data().totalBudget);
     this.update();
   }
 

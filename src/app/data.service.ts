@@ -290,17 +290,6 @@ export class DataService {
     }
     const month = this.userData.months()[monthIndex];
 
-    const weekIndex = this.getIndexOfWeekInMonth(date);
-    if(weekIndex === -1){
-      return null;
-    }
-    const week = this.userData.months()[monthIndex].weeks![this.getIndexOfWeekInMonth(date)];
-
-    const dayIndex = this.getIndexOfDayInWeek(date);
-    if(dayIndex === -1){
-      return null;
-    }
-    const day = this.userData.months()[monthIndex].weeks![weekIndex].days![dayIndex];
     return {
       budget: month.budget ?? 0,
       sparen: month.sparen,
