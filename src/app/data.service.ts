@@ -227,6 +227,9 @@ export class DataService {
   }
 
   changeSparenForMonth(date: Date, sparen: number){
+    if(!this.checkIfMonthExistsForDay(date)){
+      this.createNewMonth(date);
+    }
     this.userData.months()[this.getIndexOfMonth(date)].sparen = sparen;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
@@ -234,6 +237,9 @@ export class DataService {
   }
 
   changeTotalBudgetForMonth(date: Date, totalBudget: number){
+    if(!this.checkIfMonthExistsForDay(date)){
+      this.createNewMonth(date);
+    }
     this.userData.months()[this.getIndexOfMonth(date)].totalBudget = totalBudget;
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
