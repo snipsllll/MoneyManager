@@ -1,6 +1,20 @@
 <div class="create-eintrag">
   <div class="create-eintrag__back-button-wrapper">
-    <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()">
+    <img src="assets/arrow-back.png" class="create-eintrag__back-button" (click)="onBackClicked()" alt="<-">
+    <div class="create-eintrag__budget">
+      <div class="ce__budget-eintrag">
+        monat: <b class="green" [class.red]="this.dayBudget().dayIstBudget !== undefined && dayBudget().monthIstBudget! < 0">{{ dayBudget().monthIstBudget ?? '???' }}€</b>
+      </div>
+      <div class="ce__budget-eintrag">
+        woche: <b class="green" [class.red]="this.dayBudget().weekIstBudget !== undefined && dayBudget().weekIstBudget! < 0">{{ dayBudget().weekIstBudget ?? '???' }}€</b>
+      </div>
+      <div class="ce__budget-eintrag">
+        tag: <b class="green" [class.red]="this.dayBudget().monthIstBudget !== undefined && dayBudget().dayIstBudget! < 0">{{dayBudget().dayIstBudget ?? '???' }}€</b>
+      </div>
+    </div>
+    <div class="create-eintrag__top-spacer" (click)="onBackClicked()">
+
+    </div>
   </div>
   @if (buchung() !== undefined) {
     <div class="create-eintrag__content">
@@ -15,7 +29,7 @@
             <div class="create-eintrag__label">
               Betrag:
             </div>
-            <input type="number" [(ngModel)]="buchung()!.betrag" class="create-eintrag__data" placeholder="0.00€">
+            <input type="number" [(ngModel)]="buchung()!.betrag" class="create-eintrag__data" placeholder="0.00€" (change)="onBetragChanged()">
           </div>
         </div>
 
@@ -23,7 +37,7 @@
           <div class="create-eintrag__label">
             Datum:
           </div>
-          <input type="date" [(ngModel)]="date" (change)="onDateChange($event)" class="create-eintrag__data">
+          <input type="date" [(ngModel)]="date" (change)="onDateChange()" class="create-eintrag__data">
         </div>
         <div class="create-eintrag__uhrzeit-wrapper">
           <div class="create-eintrag__label">
@@ -48,10 +62,10 @@
 
       <div class="create-eintrag__buttons-wrapper">
         <div class="create-eintrag__button" (click)="onCancelClicked()">
-          cancel
+          abbrechen
         </div>
         <div class="create-eintrag__button" (click)="onSaveClicked()">
-          save
+          speichern
         </div>
       </div>
 

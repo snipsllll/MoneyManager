@@ -10,11 +10,19 @@
     </div>
     <div class="top-bar__right">
       <div class="top-bar__budget" (click)="toggleDropdown()">
-        600€
+        {{ monthIstBudget()?.monthIstBudget }}€
       </div>
     </div>
     <div class="top-bar__dropdown-box" [class.top-bar__dropdown-box-slidin]="topbarService.dropDownSlidIn()" (click)="toggleDropdown()">
-      hkjdsahs
+      <div class="ce__budget-eintrag">
+        monat: <b class="green" [class.red]="monthIstBudget()!.monthIstBudget !== undefined && monthIstBudget()!.monthIstBudget! < 0">{{ monthIstBudget()?.monthIstBudget }}€</b>
+      </div>
+      <div class="ce__budget-eintrag">
+        woche: <b class="green" [class.red]="monthIstBudget()!.weekIstBudget !== undefined && monthIstBudget()!.weekIstBudget! < 0">{{ monthIstBudget()?.weekIstBudget }}€</b>
+      </div>
+      <div class="ce__budget-eintrag">
+        heute: <b class="green" [class.red]="monthIstBudget()!.dayIstBudget !== undefined && monthIstBudget()!.dayIstBudget! < 0">{{monthIstBudget()?.dayIstBudget}}€</b>
+      </div>
     </div>
   </div>
   <div>

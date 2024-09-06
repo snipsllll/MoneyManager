@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, computed, OnInit} from '@angular/core';
 import {TopbarService} from "../topbar.service";
 import {SideNavService} from "../side-nav.service";
 import {NgIf} from "@angular/common";
 import {SideNavComponent} from "../side-nav/side-nav.component";
+import {DataService} from "../data.service";
 
 @Component({
   selector: 'app-top-bar',
@@ -16,8 +17,12 @@ import {SideNavComponent} from "../side-nav/side-nav.component";
 })
 export class TopBarComponent implements OnInit{
   title?: string;
+  monthIstBudget = computed(() => {
+    return this.dataService.getDayIstBudgets(new Date());
+  })
 
-  constructor(public topbarService: TopbarService, public sideNavService: SideNavService) {
+  constructor(private dataService: DataService, public topbarService: TopbarService, public sideNavService: SideNavService) {
+
   }
 
   ngOnInit() {
@@ -29,6 +34,7 @@ export class TopBarComponent implements OnInit{
   }
 
   toggleDropdown(){
+    if(!this.topbarService.isDropDownDisabled)
     this.topbarService.dropDownSlidIn.set(!this.topbarService.dropDownSlidIn());
   }
 }
