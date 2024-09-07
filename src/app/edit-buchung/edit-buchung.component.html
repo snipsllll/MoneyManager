@@ -19,10 +19,10 @@
   @if (buchung() !== undefined) {
     <div class="create-eintrag__content">
       <div class="create-eintrag__top-content">
-        <input type="text" [(ngModel)]="buchung()!.title" class="create-eintrag__title" autofocus placeholder="Titel">
+        <input type="text" [(ngModel)]="buchung()!.title" class="create-eintrag__title" autofocus placeholder="Titel" (change)="onTitleChanged()">
         <hr class="hr-title">
         <div class="create-eintrag__betrag">
-          <div class="create-eintrag__betrag-warnung" *ngIf="false">
+          <div class="create-eintrag__betrag-warnung" *ngIf="showBetragWarning">
             der Betrag darf nicht 0 betragen!
           </div>
           <div class="create-eintrag__betrag-wrapper">
@@ -51,7 +51,7 @@
             Beschreibung:
           </div>
           <textarea [(ngModel)]="buchung()!.beschreibung"
-                    class="create-eintrag__data create-eintrag__beschreibung-data">
+                    class="create-eintrag__data create-eintrag__beschreibung-data" (change)="onBeschreibungChanged()">
 
         </textarea>
         </div>
@@ -64,7 +64,7 @@
         <div class="create-eintrag__button" (click)="onCancelClicked()">
           abbrechen
         </div>
-        <div class="create-eintrag__button" (click)="onSaveClicked()">
+        <div class="create-eintrag__button" [class.disabled]="saveButtonDisabled()" (click)="onSaveClicked()">
           speichern
         </div>
       </div>
