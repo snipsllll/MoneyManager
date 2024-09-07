@@ -90,5 +90,6 @@ export enum Sites {
   budget,
   createBuchung,
   editBuchung,
-  buchungDetails
+  buchungDetails,
+  fixKosten
 }
