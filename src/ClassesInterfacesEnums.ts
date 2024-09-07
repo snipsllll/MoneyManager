@@ -57,12 +57,20 @@ export interface BudgetInfosForMonth {
 export interface SavedData {
   buchungen: Buchung[];
   savedMonths: SavedMonth[];
+  fixKosten: FixKostenEintrag[];
 }
 
 export interface SavedMonth {
   date: Date;
   totalBudget: number;
   sparen: number;
+}
+
+export interface FixKostenEintrag {
+  betrag: number;
+  title: string;
+  beschreibung?: string;
+  periode?: null; //TODO Noch machen
 }
 
 export enum Months {

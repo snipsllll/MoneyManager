@@ -10,7 +10,7 @@ import {Buchung, BudgetInfosForMonth, Day, DayIstBudgets, SavedData, Week} from 
 export class DataService {
 
   userData!: UserData;
-  testData: DB = DB.none;
+  testData: DB = DB.long;
   download: boolean = true;
 
   updated = signal<number>(0);
@@ -375,10 +375,12 @@ export class DataService {
   private getSavedData(): SavedData {
     const savedData: SavedData = {
       buchungen: [],
-      savedMonths: []
+      savedMonths: [],
+      fixKosten: []
     }
 
     savedData.buchungen = this.userData.buchungen.alleBuchungen;
+    savedData.fixKosten = this.userData.fixKosten;
 
     this.userData.months().forEach(month => {
       savedData.savedMonths.push({
@@ -395,7 +397,9 @@ export class DataService {
     const savedData = this._fileEngine.load();
 
     //Converting SavedData to UserData
-    this.userData = new UserData(savedData.buchungen);
+    this.userData = new UserData();
+    this.userData.buchungen.alleBuchungen = savedData.buchungen;
+    this.userData.fixKosten = savedData.fixKosten;
 
     savedData.savedMonths.forEach(month => {
       this.createNewMonth(month.date, month.totalBudget, month.sparen)

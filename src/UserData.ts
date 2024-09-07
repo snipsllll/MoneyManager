@@ -1,11 +1,12 @@
 import {Buchungen} from "./Buchungen";
-import {Buchung, Day, Month, Week} from "./ClassesInterfacesEnums";
+import {Buchung, Day, FixKostenEintrag, Month, Week} from "./ClassesInterfacesEnums";
 import {signal} from "@angular/core";
 
 export class UserData {
 
   public buchungen: Buchungen = new Buchungen();
   public months= signal<Month[]>([]);
+  public fixKosten: FixKostenEintrag[] = [];
 
   constructor(buchungen?: Buchung[]) {
     if(buchungen){

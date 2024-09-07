@@ -96,6 +96,12 @@ export class FileEngine {
               sparen: 100,
               totalBudget: 400
             }
+          ],
+          fixKosten : [
+            {
+              title: 'Internet',
+              betrag: 60
+            }
           ]
         }
       case 1:
@@ -147,6 +153,12 @@ export class FileEngine {
               date: new Date(),
               sparen: 100,
               totalBudget: 400
+            }
+          ],
+          fixKosten : [
+            {
+              title: 'Internet',
+              betrag: 60
             }
           ]
         }
@@ -224,12 +236,19 @@ export class FileEngine {
               sparen: 100,
               totalBudget: 400
             }
+          ],
+          fixKosten : [
+            {
+              title: 'Internet',
+              betrag: 60
+            }
           ]
         }
     }
     return {
       buchungen: [],
-      savedMonths: []
+      savedMonths: [],
+      fixKosten: []
     }
   }
 }
