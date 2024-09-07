@@ -400,6 +400,9 @@ export class DataService {
     savedData.savedMonths.forEach(month => {
       this.createNewMonth(month.date, month.totalBudget, month.sparen)
     })
+    if(this.testData !== 3){
+      this.update()
+    }
   }
 
   private getNextFreeBuchungsId() {
