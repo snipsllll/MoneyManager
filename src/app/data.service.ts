@@ -185,6 +185,8 @@ export class DataService {
       return;
     }
     this.userData.fixKosten.splice(index, 1);
+    this.recalcAllBudgets();
+    this.recalcAllIstBudgets();
     this.update();
   }
 

@@ -1,6 +1,10 @@
 import {Component, computed, EventEmitter, Input, Output, signal, WritableSignal} from '@angular/core';
 import {FixKostenEintrag} from "../../ClassesInterfacesEnums";
 import {NgIf} from "@angular/common";
+import {Data} from "@angular/router";
+import {DataService} from "../data.service";
+import {DialogService} from "../dialog.service";
+import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 
 @Component({
   selector: 'app-fix-kosten-eintrag-listelem',
@@ -21,6 +25,10 @@ export class FixKostenEintragListelemComponent {
   showMenu = signal<boolean>(false);
 
   @Output() onElementClicked = new EventEmitter();
+  @Output() update = new EventEmitter();
+
+  constructor(private dialogService: DialogService, private dataService: DataService) {
+  }
 
   onMenuClicked() {
     this.showMenu.set(!this.showMenu());
@@ -31,11 +39,24 @@ export class FixKostenEintragListelemComponent {
   }
 
   onLoeschenClicked() {
+    const dialogViewModel: ConfirmDialogViewModel = {
+      title: 'Fixkosten-Eintrag löschen?',
+      message: 'Willst du diesen Fixkosten-Eintrag löschen? Er kann danach nicht wieder hergestellt werden!',
+      onConfirmClicked: () => {
+        this.dataService.deleteFixKostenEintrag(this.fixKostenEintrag.id!);
+        this.update.emit();
+        this.dialogService.isConfirmDialogVisible = false;
+      },
+      onCancelClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+        this.showMenu.set(false);
+      }
+    }
+    this.dialogService.showConfirmDialog(dialogViewModel);
 
   }
 
   onEintragClicked() {
     this.onElementClicked.emit();
-    console.log(this.fixKostenEintrag)
   }
 }

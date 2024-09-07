@@ -1,16 +1,27 @@
 .fix-kosten__eintrag {
 }
 
+.floating-box {
+  padding: 0;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .fix-kosten__eintrag-top {
   display: flex;
   justify-content: space-between;
   position: relative;
+  width: 100%;
 }
 
 .fix-kosten__eintrag-left {
   display: flex;
   align-items: center;
   flex-grow: 1;
+  padding: 23px;
 }
 
 .fix-kosten__eintrag-right {
@@ -30,6 +41,7 @@
 
 .fix-kosten__eintrag-menu-button {
   margin-right: 10px;
+  padding: 10px;
 }
 
 .fix-kosten__eintrag-menu {
@@ -86,9 +98,10 @@
 .bottom-visible {
   color: black;
   height: 100px;
+  width: 90%;
   transition: height 0.2s ease-out;
   .hr {
-    margin: 10px 0;
+    margin: -5px 0 10px 0;
     background-color: #5c5c5c;
   }
   .fix-kosten__eintrag-beschreibung {

@@ -5,6 +5,7 @@ import {NgForOf} from "@angular/common";
 import {Data} from "@angular/router";
 import {DataService} from "../data.service";
 import {FixKostenEintragListelemComponent} from "../fix-kosten-eintrag-listelem/fix-kosten-eintrag-listelem.component";
+import {FixKostenEintrag} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-fix-kosten',
@@ -19,6 +20,7 @@ import {FixKostenEintragListelemComponent} from "../fix-kosten-eintrag-listelem/
 })
 export class FixKostenComponent implements OnInit{
 
+  elements = signal<FixKostenEintrag[]>([]);
   selectedElement = signal<number>(-1);
 
   constructor(private topbarService: TopbarService, public dataService: DataService) {
@@ -28,6 +30,7 @@ export class FixKostenComponent implements OnInit{
     this.topbarService.title.set('FIX KOSTEN');
     this.topbarService.dropDownSlidIn.set(false);
     this.topbarService.isDropDownDisabled = true;
+    this.elements.set(this.dataService.userData.fixKosten);
   }
 
   onPlusClicked() {
@@ -40,6 +43,10 @@ export class FixKostenComponent implements OnInit{
     } else {
       this.selectedElement.set(eintragId);
     }
+  }
+
+  update() {
+    this.elements.set(this.dataService.userData.fixKosten);
   }
 
 }
