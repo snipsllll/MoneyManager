@@ -6,6 +6,7 @@ import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
 import {Buchung, DayIstBudgets} from "../../ClassesInterfacesEnums";
+import {NavigationService} from "../navigation.service";
 
 @Component({
   selector: 'app-edit-buchung',
@@ -25,7 +26,7 @@ export class EditBuchungComponent implements OnInit {
   dayBudget = signal<DayIstBudgets>({dayIstBudget: 0, weekIstBudget: 0, monthIstBudget: 0});
   showBetragWarning = false;
 
-  constructor(private router: Router, private dataService: DataService, private route: ActivatedRoute, public dialogService: DialogService) {
+  constructor(private navigationService: NavigationService, private router: Router, private dataService: DataService, private route: ActivatedRoute, public dialogService: DialogService) {
 
   }
 
@@ -76,7 +77,7 @@ export class EditBuchungComponent implements OnInit {
       },
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.router.navigate(['/buchungDetails', this.buchung!()!.id]);
+        this.router.navigate([this.navigationService.getBackRoute()]);
       }
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
@@ -104,7 +105,7 @@ export class EditBuchungComponent implements OnInit {
       },
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
-        this.router.navigate(['/'])
+        this.router.navigate([this.navigationService.getBackRoute()])
       }
     }
     this.dialogService.showConfirmDialog(confirmDialogViewModel);

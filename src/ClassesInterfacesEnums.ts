@@ -84,3 +84,11 @@ export enum SideNavElements {
   home,
   budget
 }
+
+export enum Sites {
+  home,
+  budget,
+  createBuchung,
+  editBuchung,
+  buchungDetails
+}
