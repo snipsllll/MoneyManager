@@ -5,7 +5,6 @@ import {NgIf} from "@angular/common";
 import {SideNavComponent} from "../side-nav/side-nav.component";
 import {DataService} from "../data.service";
 import {DayIstBudgetViewModel} from "../DayIstBudgetViewModel";
-import {Day} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-top-bar',
