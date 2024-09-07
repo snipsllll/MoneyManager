@@ -25,6 +25,7 @@ export class EditBuchungComponent implements OnInit {
   date?: string;
   dayBudget = signal<DayIstBudgets>({dayIstBudget: 0, weekIstBudget: 0, monthIstBudget: 0});
   showBetragWarning = false;
+  saveButtonDisabled = signal<boolean>(true);
 
   constructor(private navigationService: NavigationService, private router: Router, private dataService: DataService, private route: ActivatedRoute, public dialogService: DialogService) {
 
@@ -98,6 +99,7 @@ export class EditBuchungComponent implements OnInit {
     if (this.date)
       this.buchung()!.date = new Date(this.date);
     this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung()!.date)!);
+    this.saveButtonDisabled.set(this.isSaveAble());
   }
 
   onTimeChange(event: any) {
@@ -105,6 +107,7 @@ export class EditBuchungComponent implements OnInit {
     const date = new Date();
     date.setHours(+hours, +minutes);
     this.buchung()!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+    this.saveButtonDisabled.set(this.isSaveAble());
   }
 
   onBackClicked() {
@@ -127,10 +130,25 @@ export class EditBuchungComponent implements OnInit {
   }
 
   onBetragChanged() {
-    this.buchung()!.betrag = +(this.buchung()!.betrag!.toFixed(2));
+    if(this.buchung()!.betrag !== null) {
+      this.buchung()!.betrag = +(this.buchung()!.betrag!.toFixed(2));
+    }
+    this.saveButtonDisabled.set(this.isSaveAble());
+  }
+
+  onTitleChanged() {
+    this.saveButtonDisabled.set(this.isSaveAble());
+  }
+
+  onBeschreibungChanged() {
+    this.saveButtonDisabled.set(this.isSaveAble());
   }
 
   private hasBuchungChanged() {
     return !(this.buchung()!.betrag === this.oldBuchung?.betrag && this.buchung()!.title === this.oldBuchung?.title && this.buchung()!.beschreibung === this.oldBuchung?.beschreibung && this.buchung()!.date.getDate() === this.oldBuchung.date.getDate() && this.buchung()!.time === this.oldBuchung.time)
+  }
+
+  private isSaveAble() {
+    return (this.buchung()!.betrag === null || this.buchung()!.betrag === 0) && this.hasBuchungChanged();
   }
 }
