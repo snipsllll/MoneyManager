@@ -258,7 +258,8 @@ export class FileEngine {
             {
               title: 'DE-Ticket',
               betrag: 49,
-              id: 4
+              id: 4,
+              beschreibung: 'ztuioezfcuisonchofg'
             }
           ]
         }

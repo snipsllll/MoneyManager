@@ -1,25 +1,39 @@
 <div class="fix-kosten__eintrag floating-box">
-  <div class="fix-kosten__eintrag-left" (click)="onEintragClicked()">
-    <div class="fix-kosten__eintrag-betrag">
-      <b>-{{ fixKostenEintrag.betrag }}€</b>
+  <div class="fix-kosten__eintrag-top">
+    <div class="fix-kosten__eintrag-left" (click)="onEintragClicked()">
+      <div class="fix-kosten__eintrag-betrag">
+        <b>-{{ fixKostenEintrag.betrag }}€</b>
+      </div>
+      <div class="fix-kosten__eintrag-title">
+        {{ fixKostenEintrag.title }}
+      </div>
     </div>
-    <div class="fix-kosten__eintrag-title">
-      {{ fixKostenEintrag.title }}
+    <div class="fix-kosten__eintrag-right">
+      <div class="fix-kosten__eintrag-menu-button" (click)="onMenuClicked()">
+        ...
+      </div>
+    </div>
+    <div class="fix-kosten__eintrag-menu" *ngIf="showMenu()">
+      <div class="fix-kosten__eintrag-menu-element" (click)="onBearbeitenClicked()">
+        bearbeiten
+      </div>
+      <hr class="hr">
+      <div class="fix-kosten__eintrag-menu-element" (click)="onLoeschenClicked()">
+        löschen
+      </div>
     </div>
   </div>
-  <div class="fix-kosten__eintrag-right">
-    <div class="fix-kosten__eintrag-menu-button" (click)="onMenuClicked()">
-      ...
-    </div>
-  </div>
-  <div class="fix-kosten__eintrag-menu" *ngIf="showMenu()">
-    <div class="fix-kosten__eintrag-menu-element" (click)="onBearbeitenClicked()">
-      bearbeiten
-    </div>
+  <div class="fix-kosten__eintrag-bottom" [class.bottom-visible]="isSelected()" (click)="onEintragClicked()">
     <hr class="hr">
-    <div class="fix-kosten__eintrag-menu-element" (click)="onLoeschenClicked()">
-      löschen
-    </div>
+    @if(fixKostenEintrag.beschreibung && fixKostenEintrag.beschreibung !== '') {
+      <div class="fix-kosten__eintrag-beschreibung">
+        {{ fixKostenEintrag.beschreibung }}
+      </div>
+    } @else {
+      <div class="fix-kosten__eintrag-beschreibung-empty">
+        keine Beschreibung
+      </div>
+    }
   </div>
 </div>
 

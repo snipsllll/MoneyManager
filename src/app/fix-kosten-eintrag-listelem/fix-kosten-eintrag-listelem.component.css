@@ -1,4 +1,7 @@
 .fix-kosten__eintrag {
+}
+
+.fix-kosten__eintrag-top {
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -59,4 +62,40 @@
 
 .hr {
   margin: 0;
+  border: none;
+  background-color: black;
+  height: 2px;
+}
+
+.fix-kosten__eintrag-bottom {
+  height: 0;
+  color: transparent;
+  transition: height 0.2s ease-out;
+  .hr {
+    background-color: transparent;
+  }
+  .fix-kosten__eintrag-beschreibung {
+    color: transparent;
+   }
+
+  .fix-kosten__eintrag-beschreibung-empty {
+    color: transparent;
+  }
+}
+
+.bottom-visible {
+  color: black;
+  height: 100px;
+  transition: height 0.2s ease-out;
+  .hr {
+    margin: 10px 0;
+    background-color: #5c5c5c;
+  }
+  .fix-kosten__eintrag-beschreibung {
+    color: black;
+  }
+
+  .fix-kosten__eintrag-beschreibung-empty {
+    color: #636363;
+  }
 }

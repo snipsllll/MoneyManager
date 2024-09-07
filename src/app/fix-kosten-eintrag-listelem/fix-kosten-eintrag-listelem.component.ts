@@ -1,4 +1,4 @@
-import {Component, Input, signal} from '@angular/core';
+import {Component, computed, EventEmitter, Input, Output, signal, WritableSignal} from '@angular/core';
 import {FixKostenEintrag} from "../../ClassesInterfacesEnums";
 import {NgIf} from "@angular/common";
 
@@ -13,22 +13,29 @@ import {NgIf} from "@angular/common";
 })
 export class FixKostenEintragListelemComponent {
   @Input() fixKostenEintrag!: FixKostenEintrag;
+  @Input() selectedElementId!: WritableSignal<number>;
+
+  isSelected = computed(() => {
+    return this.selectedElementId() === this.fixKostenEintrag.id;
+  })
   showMenu = signal<boolean>(false);
 
+  @Output() onElementClicked = new EventEmitter();
 
   onMenuClicked() {
     this.showMenu.set(!this.showMenu());
   }
 
   onBearbeitenClicked() {
-    console.log(2)
+
   }
 
   onLoeschenClicked() {
-    console.log(3)
+
   }
 
   onEintragClicked() {
-    console.log(4)
+    this.onElementClicked.emit();
+    console.log(this.fixKostenEintrag)
   }
 }

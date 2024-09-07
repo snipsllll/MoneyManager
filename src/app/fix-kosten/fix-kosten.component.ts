@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {TopBarComponent} from "../top-bar/top-bar.component";
 import {TopbarService} from "../topbar.service";
 import {NgForOf} from "@angular/common";
@@ -19,6 +19,8 @@ import {FixKostenEintragListelemComponent} from "../fix-kosten-eintrag-listelem/
 })
 export class FixKostenComponent implements OnInit{
 
+  selectedElement = signal<number>(-1);
+
   constructor(private topbarService: TopbarService, public dataService: DataService) {
   }
 
@@ -30,6 +32,14 @@ export class FixKostenComponent implements OnInit{
 
   onPlusClicked() {
 
+  }
+
+  onElementClicked(eintragId: number) {
+    if(this.selectedElement() === eintragId){
+      this.selectedElement.set(-1)
+    } else {
+      this.selectedElement.set(eintragId);
+    }
   }
 
 }
