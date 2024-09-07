@@ -101,6 +101,9 @@ export class DataService {
       })
     })
     this.userData.buchungen.alleBuchungen.forEach(buchung => {
+      if(!this.checkIfMonthExistsForDay(buchung.date)){
+        this.createNewMonth(buchung.date);
+      }
       const monthIndex = this.getIndexOfMonth(buchung.date);
       if (monthIndex === -1 || monthIndex === undefined) {
         return;
@@ -165,12 +168,11 @@ export class DataService {
 
     // Schleife durch die Wochen des Monats
     while (currentWeekStart <= endDate) {
-      const currentWeekEnd = new Date(currentWeekStart);
-      currentWeekEnd.setDate(currentWeekStart.getDate() + (6 - currentWeekStart.getDay()));
+      let currentWeekEnd = this.getSunday(currentWeekStart);
 
       // Sicherstellen, dass das Enddatum nicht über das Monatsende hinausgeht
       if (currentWeekEnd > endDate) {
-        currentWeekEnd.setDate(endDate.getDate());
+        currentWeekEnd = endDate;
       }
 
       // Array von Day-Objekten für die aktuelle Woche erstellen
@@ -196,8 +198,7 @@ export class DataService {
       });
 
       // Startdatum der nächsten Woche setzen
-      currentWeekStart = new Date(currentWeekEnd);
-      currentWeekStart.setDate(currentWeekStart.getDate() + 1);
+      currentWeekStart = this.getNextMonday(currentWeekStart);
     }
 
     const dailyBudget = +(budget / daysInMonth).toFixed(2);
@@ -217,6 +218,7 @@ export class DataService {
     this.updateBuchungenForAllMonths();
     this.recalcBudgetsForMonth(date);
     this.recalcIstBudgetsForMonth(date);
+    console.log(this.userData)
   }
 
   changeSparenForMonth(date: Date, sparen: number) {
@@ -256,14 +258,11 @@ export class DataService {
     }
     const day = this.userData.months()[monthIndex].weeks![weekIndex].days![dayIndex];
 
-    if (day.istBudget && week.istBudget && month.istBudget) {
-      return {
-        dayIstBudget: day.istBudget,
-        weekIstBudget: week.istBudget,
-        monthIstBudget: month.istBudget
-      }
+    return {
+      dayIstBudget: day.istBudget ?? undefined,
+      weekIstBudget: week.istBudget ?? undefined,
+      monthIstBudget: month.istBudget ?? undefined
     }
-    return null;
   }
 
   getAllBuchungenForMonth(date: Date): Buchung[] | null {
@@ -401,6 +400,9 @@ export class DataService {
     savedData.savedMonths.forEach(month => {
       this.createNewMonth(month.date, month.totalBudget, month.sparen)
     })
+    if(this.testData !== 3){
+      this.update()
+    }
   }
 
   private getNextFreeBuchungsId() {
@@ -413,6 +415,56 @@ export class DataService {
       }
     }
     return freeId;
+  }
+  private getMonday(inputDate: Date): Date {
+    // Clone the input date to avoid mutating the original date
+    const date = new Date(inputDate);
+
+    // Get the day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+    const dayOfWeek = date.getDay();
+
+    // Calculate the difference between the current day and Monday (day 1)
+    const diff = (dayOfWeek + 6) % 7; // This ensures Sunday goes back 6 days, Monday stays at 0
+
+    // Set the date to the Monday of the current week
+    date.setDate(date.getDate() - diff);
+
+    // Return the Monday date
+    return date;
+  }
+
+  private getSunday(inputDate: Date): Date {
+    // Clone the input date to avoid mutating the original date
+    const date = new Date(inputDate);
+
+    // Get the day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+    const dayOfWeek = date.getDay();
+
+    // Calculate the difference to reach Sunday (day 0)
+    const diff = 7 - dayOfWeek; // If it's already Sunday, the diff will be 7
+
+    // Set the date to the upcoming Sunday
+    date.setDate(date.getDate() + (dayOfWeek === 0 ? 0 : diff));
+
+    // Return the Sunday date
+    return date;
+  }
+
+  private getNextMonday(date: Date): Date {
+    // Create a new date object to avoid mutating the original date
+    const result = new Date(date);
+
+    // Get the current day of the week (0 is Sunday, 1 is Monday, etc.)
+    const currentDay = result.getDay();
+
+    // Find the offset to the next Monday
+    const daysUntilNextMonday = (8 - currentDay) % 7 || 7;
+
+    // Set the date to the next Monday
+    result.setDate(result.getDate() + daysUntilNextMonday);
+
+    // Return the next Monday
+    return result;
   }
 }
 

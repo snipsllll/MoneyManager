@@ -10,18 +10,18 @@
     </div>
     <div class="top-bar__right">
       <div class="top-bar__budget" (click)="toggleDropdown()">
-        {{ monthIstBudget()?.monthIstBudget }}€
+        {{ monthIstBudget()?.month }}€
       </div>
     </div>
     <div class="top-bar__dropdown-box" [class.top-bar__dropdown-box-slidin]="topbarService.dropDownSlidIn()" (click)="toggleDropdown()">
       <div class="ce__budget-eintrag">
-        monat: <b class="green" [class.red]="monthIstBudget()!.monthIstBudget !== undefined && monthIstBudget()!.monthIstBudget! < 0">{{ monthIstBudget()?.monthIstBudget }}€</b>
+        monat: <b class="green" [class.red]="monthIstBudget()!.month !== undefined && +(monthIstBudget()!.month!) < 0">{{ monthIstBudget()?.month }}€</b>
       </div>
       <div class="ce__budget-eintrag">
-        woche: <b class="green" [class.red]="monthIstBudget()!.weekIstBudget !== undefined && monthIstBudget()!.weekIstBudget! < 0">{{ monthIstBudget()?.weekIstBudget }}€</b>
+        woche: <b class="green" [class.red]="monthIstBudget()!.week !== undefined && +(monthIstBudget()!.week!) < 0">{{ monthIstBudget()?.week }}€</b>
       </div>
       <div class="ce__budget-eintrag">
-        heute: <b class="green" [class.red]="monthIstBudget()!.dayIstBudget !== undefined && monthIstBudget()!.dayIstBudget! < 0">{{monthIstBudget()?.dayIstBudget}}€</b>
+        heute: <b class="green" [class.red]="monthIstBudget()!.day !== undefined && +(monthIstBudget()!.day!) < 0">{{monthIstBudget()?.day}}€</b>
       </div>
     </div>
   </div>
