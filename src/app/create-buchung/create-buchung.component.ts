@@ -20,6 +20,7 @@ import {Buchung, DayIstBudgets} from "../../ClassesInterfacesEnums";
 })
 export class CreateBuchungComponent {
   buchung!: Buchung;
+  oldBuchung!: Buchung;
   showBetragWarning = false;
   date?: string;
   dayBudget = signal<DayIstBudgets>({dayIstBudget: 0, weekIstBudget: 0, monthIstBudget: 0});
@@ -32,6 +33,13 @@ export class CreateBuchungComponent {
       betrag: null,
       date: date,
       time: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
+      beschreibung: ''
+    };
+    this.oldBuchung = {
+      title: '',
+      betrag: null,
+      date: new Date(this.buchung.date),
+      time: this.buchung.time,
       beschreibung: ''
     };
     this.dayBudget.set(this.dataService.getDayIstBudgets(date)!);
@@ -120,9 +128,11 @@ export class CreateBuchungComponent {
 
   onBetragChanged() {
     this.buchung.betrag = +(this.buchung.betrag!.toFixed(2));
+    console.log(this.buchung)
+    console.log(this.oldBuchung)
   }
 
   private isBuchungEmpty() {
-    return (this.buchung.betrag === 0 && this.buchung.title === '' && this.buchung.beschreibung === '')
+    return ((this.buchung.betrag === null || this.buchung.betrag === 0) && this.buchung.title === '' && this.buchung.beschreibung === '' && this.buchung.date.getDate() === this.oldBuchung.date.getDate() && this.buchung.time === this.oldBuchung.time)
   }
 }

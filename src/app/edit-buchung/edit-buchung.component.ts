@@ -34,7 +34,14 @@ export class EditBuchungComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const buchungsId = +params.get('buchungsId')!;
       this.buchung?.set(this.dataService.getBuchungById(buchungsId));
-      this.oldBuchung = this.buchung();
+      this.oldBuchung = {
+        date: new Date(this.buchung()!.date),
+        beschreibung: this.buchung()!.beschreibung,
+        betrag: this.buchung()!.betrag,
+        title: this.buchung()!.title,
+        time: this.buchung()!.time,
+        id: this.buchung()!.id
+      };
       this.date = this.buchung()?.date.toISOString().slice(0, 10);
     })
     this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung()!.date)!);
@@ -42,7 +49,7 @@ export class EditBuchungComponent implements OnInit {
 
   onSaveClicked() {
     if (this.buchung()!.betrag !== 0 && this.buchung()!.betrag !== null) {
-      if(this.dayBudget().dayIstBudget !== undefined && this.dayBudget().dayIstBudget! < this.buchung()!.betrag!) {
+      if (this.dayBudget().dayIstBudget !== undefined && this.dayBudget().dayIstBudget! < this.buchung()!.betrag!) {
         const confirmDialogViewModel: ConfirmDialogViewModel = {
           title: 'Betrag ist zu hoch',
           message: `Der Betrag überschreitet dein Budget für ${this.buchung()!.date.toLocaleDateString() === new Date().toLocaleDateString() ? 'heute' : 'den ' + this.buchung()!.date.toLocaleDateString()}. Trotzdem fortfahren?`,
@@ -69,6 +76,10 @@ export class EditBuchungComponent implements OnInit {
   }
 
   onCancelClicked() {
+    if (!this.hasBuchungChanged()) {
+      this.router.navigate([this.navigationService.getBackRoute()]);
+      return;
+    }
     const confirmDialogViewModel: ConfirmDialogViewModel = {
       title: 'Abbrechen?',
       message: 'Willst du abbrechen? Alle Änderungen werden verworfen.',
@@ -84,8 +95,8 @@ export class EditBuchungComponent implements OnInit {
   }
 
   onDateChange() {
-    if(this.date)
-    this.buchung()!.date = new Date(this.date);
+    if (this.date)
+      this.buchung()!.date = new Date(this.date);
     this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung()!.date)!);
   }
 
@@ -97,6 +108,10 @@ export class EditBuchungComponent implements OnInit {
   }
 
   onBackClicked() {
+    if (!this.hasBuchungChanged()) {
+      this.router.navigate([this.navigationService.getBackRoute()]);
+      return;
+    }
     const confirmDialogViewModel: ConfirmDialogViewModel = {
       title: 'Abbrechen?',
       message: 'Willst du abbrechen? Alle Änderungen werden verworfen.',
@@ -113,5 +128,9 @@ export class EditBuchungComponent implements OnInit {
 
   onBetragChanged() {
     this.buchung()!.betrag = +(this.buchung()!.betrag!.toFixed(2));
+  }
+
+  private hasBuchungChanged() {
+    return !(this.buchung()!.betrag === this.oldBuchung?.betrag && this.buchung()!.title === this.oldBuchung?.title && this.buchung()!.beschreibung === this.oldBuchung?.beschreibung && this.buchung()!.date.getDate() === this.oldBuchung.date.getDate() && this.buchung()!.time === this.oldBuchung.time)
   }
 }
