@@ -4,8 +4,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../data.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {DialogService} from "../dialog.service";
-import {Buchung} from "../../ClassesInterfacesEnums";
+import {Buchung, Sites} from "../../ClassesInterfacesEnums";
 import {ReactiveFormsModule} from "@angular/forms";
+import {NavigationService} from "../navigation.service";
 
 @Component({
   selector: 'app-buchung-details',
@@ -22,7 +23,7 @@ export class BuchungDetailsComponent implements OnInit {
   buchung? = signal<Buchung | undefined>(undefined);
   titelVorhanden = false;
 
-  constructor(private dialogService: DialogService, private router: Router, private route: ActivatedRoute, private dataService: DataService) {
+  constructor(private navigationService: NavigationService, private dialogService: DialogService, private router: Router, private route: ActivatedRoute, private dataService: DataService) {
 
   }
 
@@ -34,10 +35,11 @@ export class BuchungDetailsComponent implements OnInit {
         this.titelVorhanden = true;
       }
     });
+    this.navigationService.previousRoute = Sites.home;
   }
 
   onBackClicked() {
-    this.router.navigate(['/']);
+    this.router.navigate([this.navigationService.getBackRoute()]);
   }
 
   onDeleteButtonClicked() {
@@ -47,7 +49,7 @@ export class BuchungDetailsComponent implements OnInit {
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
         this.dataService.deleteBuchung(this.buchung!()!.id!);
-        this.router.navigate(['/'])
+        this.router.navigate([this.navigationService.getBackRoute()])
       },
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
@@ -58,5 +60,7 @@ export class BuchungDetailsComponent implements OnInit {
 
   onEditClicked() {
     this.router.navigate(['/editBuchung', this.buchung!()!.id]);
+    this.navigationService.previousRoute = Sites.buchungDetails;
+    this.navigationService.param = this.buchung!()!.id!.toString();
   }
 }

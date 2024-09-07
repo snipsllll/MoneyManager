@@ -31,8 +31,11 @@
   align-items: center;
   width: 50px;
   font-size: 40px;
-  margin-top: -4px;
-  margin-left: -3px;
+  border-radius: 10px;
+}
+
+.top-bar__nav-button:active {
+  background-color: #878787;
 }
 
 .top-bar__dropdown-box {
@@ -75,11 +78,20 @@
   transition: height 0.2s ease-out;
 }
 
+.top-bar__text-wrapper {
+  margin-top: 7px;
+  margin-left: 7px;
+}
+
 .top-bar__title {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 30px;
+}
+
+.top-bar__version {
+  font-size: 10px;
 }
 
 .side-nav-wrapper {
