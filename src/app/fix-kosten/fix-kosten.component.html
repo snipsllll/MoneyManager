@@ -1,1 +1,8 @@
 <app-top-bar></app-top-bar>
+<div *ngFor="let fixKostenEintrag of dataService.userData.fixKosten">
+
+</div>
+
+<div class="fix-kosten__add-button" (click)="onPlusClicked()">
+  +
+</div>
