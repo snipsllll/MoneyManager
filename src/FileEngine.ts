@@ -100,7 +100,8 @@ export class FileEngine {
           fixKosten : [
             {
               title: 'Internet',
-              betrag: 60
+              betrag: 60,
+              id: 1
             }
           ]
         }
@@ -158,7 +159,8 @@ export class FileEngine {
           fixKosten : [
             {
               title: 'Internet',
-              betrag: 60
+              betrag: 60,
+              id: 1
             }
           ]
         }
@@ -240,7 +242,8 @@ export class FileEngine {
           fixKosten : [
             {
               title: 'Internet',
-              betrag: 60
+              betrag: 60,
+              id: 1
             }
           ]
         }

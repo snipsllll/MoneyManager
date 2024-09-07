@@ -67,6 +67,7 @@ export interface SavedMonth {
 }
 
 export interface FixKostenEintrag {
+  id?: number;
   betrag: number;
   title: string;
   beschreibung?: string;

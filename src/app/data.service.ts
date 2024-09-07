@@ -1,7 +1,15 @@
 import {Injectable, signal} from '@angular/core';
 import {UserData} from "../UserData";
 import {FileEngine} from "../FileEngine";
-import {Buchung, BudgetInfosForMonth, Day, DayIstBudgets, SavedData, Week} from "../ClassesInterfacesEnums";
+import {
+  Buchung,
+  BudgetInfosForMonth,
+  Day,
+  DayIstBudgets,
+  FixKostenEintrag,
+  SavedData,
+  Week
+} from "../ClassesInterfacesEnums";
 
 @Injectable({
   providedIn: 'root'
@@ -80,7 +88,7 @@ export class DataService {
 
   recalcAllBudgets() {
     this.userData.months().forEach(month => {
-      month.budget = month.totalBudget - month.sparen;
+      month.budget = month.totalBudget - (month.sparen + this.getFixKostenSumme());
       month.dailyBudget = +(month.budget / (month.daysInMonth ?? 0)).toFixed(2);
       month.weeks?.forEach(week => {
         week.days.forEach(day => {
@@ -148,6 +156,36 @@ export class DataService {
     }
     this.userData.buchungen.alleBuchungen.splice(buchungsIndexInAlleBuchungen, 1);
     this.updateBuchungenForAllMonths();
+  }
+
+  createFixKostenEintrag(fixKostenEintrag: FixKostenEintrag) {
+    fixKostenEintrag.id = this.getNextFreeFixKostenId();
+    this.userData.fixKosten.push(fixKostenEintrag);
+    this.recalcAllBudgets();
+    this.update();
+  }
+
+  editFixKostenEintrag(fixKostenEintrag: FixKostenEintrag) {
+    if(!fixKostenEintrag.id)
+      return;
+    const index = this.getFixKostenIndex(fixKostenEintrag.id);
+    if(index === -1) {
+      console.error(`FixkostenEintrag für id: ${fixKostenEintrag.id} konnte nicht gefunden werden!`);
+      return;
+    }
+    this.userData.fixKosten[index] = fixKostenEintrag;
+    this.recalcAllBudgets();
+    this.update();
+  }
+
+  deleteFixKostenEintrag(id: number) {
+    const index = this.getFixKostenIndex(id);
+    if(index === -1) {
+      console.error(`FixkostenEintrag für id: ${id} konnte nicht gefunden werden!`);
+      return;
+    }
+    this.userData.fixKosten.splice(index, 1);
+    this.update();
   }
 
   createNewMonth(date: Date, totalBudget?: number, sparen?: number) {
@@ -308,6 +346,14 @@ export class DataService {
     return this.userData.buchungen.alleBuchungen.find(buchung => buchung.id === buchungsId);
   }
 
+  getFixKostenSumme() {
+    let summe = 0;
+    this.userData.fixKosten.forEach(eintrag => {
+      summe += eintrag.betrag;
+    })
+    return summe;
+  }
+
   update() {
     this._fileEngine.save(this.getSavedData());
     this.updated.set(this.updated() + 1);
@@ -404,6 +450,9 @@ export class DataService {
     savedData.savedMonths.forEach(month => {
       this.createNewMonth(month.date, month.totalBudget, month.sparen)
     })
+    this.recalcAllBudgets();
+    this.recalcAllIstBudgets();
+    this.updateBuchungenForAllMonths();
     if(this.testData !== 3){
       this.update()
     }
@@ -469,6 +518,22 @@ export class DataService {
 
     // Return the next Monday
     return result;
+  }
+
+  private getNextFreeFixKostenId() {
+    let freeId = 1;
+    for (let i = 0; i < this.userData.fixKosten.length; i++) {
+      if (this.userData.fixKosten.find(x => x.id === freeId) === undefined) {
+        return freeId;
+      } else {
+        freeId++;
+      }
+    }
+    return freeId;
+  }
+
+  private getFixKostenIndex(id: number) {
+    return this.userData.fixKosten.findIndex(eintrag => eintrag.id === id);
   }
 }
 
