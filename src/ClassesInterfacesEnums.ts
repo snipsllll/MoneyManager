@@ -82,7 +82,8 @@ export enum Months {
 
 export enum SideNavElements {
   home,
-  budget
+  budget,
+  fixkosten
 }
 
 export enum Sites {
