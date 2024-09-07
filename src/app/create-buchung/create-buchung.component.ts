@@ -49,27 +49,28 @@ export class CreateBuchungComponent {
 
   onSaveClicked() {
     if (this.buchung.betrag !== 0 && this.buchung.betrag !== null) {
-      if(this.dayBudget().dayIstBudget !== undefined && this.dayBudget().dayIstBudget! < this.buchung.betrag) {
-        const confirmDialogViewModel: ConfirmDialogViewModel = {
-          title: 'Betrag ist zu hoch',
-          message: `Der Betrag überschreitet dein Budget für ${this.buchung!.date.toLocaleDateString() === new Date().toLocaleDateString() ? 'heute' : 'den ' + this.buchung!.date.toLocaleDateString()}. Trotzdem fortfahren?`,
-          onCancelClicked: () => {
-            this.dialogService.isConfirmDialogVisible = false;
-          },
-          onConfirmClicked: () => {
-            this.dataService.createBuchung(this.buchung);
-            this.dataService.update();
-            this.dialogService.isConfirmDialogVisible = false;
-            this.router.navigate(['/']);
+      if (!this.saveButtonDisabled()) {
+        if (this.dayBudget().dayIstBudget !== undefined && this.dayBudget().dayIstBudget! < this.buchung.betrag) {
+          const confirmDialogViewModel: ConfirmDialogViewModel = {
+            title: 'Betrag ist zu hoch',
+            message: `Der Betrag überschreitet dein Budget für ${this.buchung!.date.toLocaleDateString() === new Date().toLocaleDateString() ? 'heute' : 'den ' + this.buchung!.date.toLocaleDateString()}. Trotzdem fortfahren?`,
+            onCancelClicked: () => {
+              this.dialogService.isConfirmDialogVisible = false;
+            },
+            onConfirmClicked: () => {
+              this.dataService.createBuchung(this.buchung);
+              this.dataService.update();
+              this.dialogService.isConfirmDialogVisible = false;
+              this.router.navigate(['/']);
+            }
           }
+          this.dialogService.showConfirmDialog(confirmDialogViewModel);
+        } else {
+          this.dataService.createBuchung(this.buchung);
+          this.dataService.update();
+          this.router.navigate(['/']);
         }
-        this.dialogService.showConfirmDialog(confirmDialogViewModel);
-      } else {
-        this.dataService.createBuchung(this.buchung);
-        this.dataService.update();
-        this.router.navigate(['/']);
       }
-
     } else {
       this.showBetragWarning = true;
     }
@@ -114,10 +115,14 @@ export class CreateBuchungComponent {
   }
 
   onDateChange() {
-    if(this.date)
+    if (this.date)
       this.buchung!.date = new Date(this.date);
 
-    this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung.date) ?? {monthIstBudget: undefined, dayIstBudget: undefined, weekIstBudget: undefined});
+    this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung.date) ?? {
+      monthIstBudget: undefined,
+      dayIstBudget: undefined,
+      weekIstBudget: undefined
+    });
     this.saveButtonDisabled.set(this.isSaveAble());
   }
 
@@ -130,7 +135,7 @@ export class CreateBuchungComponent {
   }
 
   onBetragChanged() {
-    if(this.buchung.betrag !== null) {
+    if (this.buchung.betrag !== null) {
       this.buchung.betrag = +(this.buchung.betrag!.toFixed(2));
     }
     this.saveButtonDisabled.set(this.isSaveAble());
