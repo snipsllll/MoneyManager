@@ -43,7 +43,12 @@ export class BuchungenListComponent implements OnInit{
   }
 
   orderByDateDesc(array: Day[]) {
-    return array.sort((a, b) => b.date.getTime() - a.date.getTime())
+    const rArray: Day[] = [];
+    array.forEach(day => {
+      day.buchungen?.sort((a, b) => b.date.getTime() - a.date.getTime())
+      rArray.push(day);
+    })
+    return rArray.sort((a, b) => b.date.getTime() - a.date.getTime())
   }
 
 }
