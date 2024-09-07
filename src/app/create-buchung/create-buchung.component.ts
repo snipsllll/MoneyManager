@@ -24,6 +24,7 @@ export class CreateBuchungComponent {
   showBetragWarning = false;
   date?: string;
   dayBudget = signal<DayIstBudgets>({dayIstBudget: 0, weekIstBudget: 0, monthIstBudget: 0});
+  saveButtonDisabled = signal<boolean>(true);
 
   constructor(private dataService: DataService, public dialogService: DialogService, private router: Router) {
     const date = new Date();
@@ -117,6 +118,7 @@ export class CreateBuchungComponent {
       this.buchung!.date = new Date(this.date);
 
     this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung.date) ?? {monthIstBudget: undefined, dayIstBudget: undefined, weekIstBudget: undefined});
+    this.saveButtonDisabled.set(this.isSaveAble());
   }
 
   onTimeChange(event: any) {
@@ -124,15 +126,29 @@ export class CreateBuchungComponent {
     const date = new Date();
     date.setHours(+hours, +minutes);
     this.buchung!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+    this.saveButtonDisabled.set(this.isSaveAble());
   }
 
   onBetragChanged() {
-    this.buchung.betrag = +(this.buchung.betrag!.toFixed(2));
-    console.log(this.buchung)
-    console.log(this.oldBuchung)
+    if(this.buchung.betrag !== null) {
+      this.buchung.betrag = +(this.buchung.betrag!.toFixed(2));
+    }
+    this.saveButtonDisabled.set(this.isSaveAble());
+  }
+
+  onTitleChanged() {
+    this.saveButtonDisabled.set(this.isSaveAble());
+  }
+
+  onBeschreibungChanged() {
+    this.saveButtonDisabled.set(this.isSaveAble());
   }
 
   private isBuchungEmpty() {
     return ((this.buchung.betrag === null || this.buchung.betrag === 0) && this.buchung.title === '' && this.buchung.beschreibung === '' && this.buchung.date.getDate() === this.oldBuchung.date.getDate() && this.buchung.time === this.oldBuchung.time)
+  }
+
+  private isSaveAble() {
+    return this.buchung.betrag === null || this.buchung.betrag === 0;
   }
 }
