@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {TopbarService} from "../topbar.service";
+import {SideNavElements} from "../../ClassesInterfacesEnums";
+import {SideNavService} from "../side-nav.service";
 
 @Component({
   selector: 'app-side-nav',
@@ -11,17 +13,21 @@ import {TopbarService} from "../topbar.service";
 })
 export class SideNavComponent {
 
-  constructor(private router: Router, public topbarService: TopbarService) {
+  constructor(private router: Router, public topbarService: TopbarService, public sideNavService: SideNavService) {
+
   }
 
   onHomeClicked(): void {
     this.router.navigate(['']);
     this.topbarService.isSlidIn.set(false);
+    this.sideNavService.selectedElement = SideNavElements.home;
   }
 
   onBudgetClicked(): void {
     this.router.navigate(['budget']);
     this.topbarService.isSlidIn.set(false);
+    this.sideNavService.selectedElement = SideNavElements.budget;
   }
 
+  protected readonly SideNavElements = SideNavElements;
 }

@@ -1,0 +1,16 @@
+.mm-button {
+  padding: 10px;
+  width: fit-content;
+  height: 19.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #79b0dd;
+  border-radius: 5px;
+  box-shadow: #454545 1px 1px 2px;
+  overflow: hidden;
+}
+
+.mm-button:active {
+  background-color: #5ea2da;
+}

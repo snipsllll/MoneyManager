@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
 import {Router} from "@angular/router";
 import {DataService} from "../data.service";
-import {Buchung} from "../../ClassesInterfacesEnums";
+import {Buchung, DayIstBudgets} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-create-buchung',
@@ -22,6 +22,7 @@ export class CreateBuchungComponent {
   buchung!: Buchung;
   showBetragWarning = false;
   date?: string;
+  dayBudget = signal<DayIstBudgets>({dayIstBudget: 0, weekIstBudget: 0, monthIstBudget: 0});
 
   constructor(private dataService: DataService, public dialogService: DialogService, private router: Router) {
     const date = new Date();
@@ -33,13 +34,33 @@ export class CreateBuchungComponent {
       time: date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'}),
       beschreibung: ''
     };
+    this.dayBudget.set(this.dataService.getDayIstBudgets(date)!);
     this.date = this.buchung.date.toISOString().slice(0, 10);
   }
 
   onSaveClicked() {
     if (this.buchung.betrag !== 0 && this.buchung.betrag !== null) {
-      this.dataService.createNewBuchung(this.buchung);
-      this.router.navigate(['/']);
+      if(this.dayBudget().dayIstBudget !== undefined && this.dayBudget().dayIstBudget! < this.buchung.betrag) {
+        const confirmDialogViewModel: ConfirmDialogViewModel = {
+          title: 'Betrag ist zu hoch',
+          message: `Der Betrag überschreitet dein Budget für ${this.buchung!.date.toLocaleDateString() === new Date().toLocaleDateString() ? 'heute' : 'den ' + this.buchung!.date.toLocaleDateString()}. Trotzdem fortfahren?`,
+          onCancelClicked: () => {
+            this.dialogService.isConfirmDialogVisible = false;
+          },
+          onConfirmClicked: () => {
+            this.dataService.createBuchung(this.buchung);
+            this.dataService.update();
+            this.dialogService.isConfirmDialogVisible = false;
+            this.router.navigate(['/']);
+          }
+        }
+        this.dialogService.showConfirmDialog(confirmDialogViewModel);
+      } else {
+        this.dataService.createBuchung(this.buchung);
+        this.dataService.update();
+        this.router.navigate(['/']);
+      }
+
     } else {
       this.showBetragWarning = true;
     }
@@ -70,8 +91,8 @@ export class CreateBuchungComponent {
       return;
     }
     const confirmDialogViewModel: ConfirmDialogViewModel = {
-      title: 'Cancel?',
-      message: 'Do you really want to return to home? All changes will be lost!',
+      title: 'Abbrechen?',
+      message: 'Willst du verlassen? Alle Änderungen werden verworfen.',
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
       },
@@ -83,9 +104,11 @@ export class CreateBuchungComponent {
     this.dialogService.showConfirmDialog(confirmDialogViewModel);
   }
 
-  onDateChange(event: any) {
+  onDateChange() {
     if(this.date)
       this.buchung!.date = new Date(this.date);
+
+    this.dayBudget.set(this.dataService.getDayIstBudgets(this.buchung.date) ?? {monthIstBudget: undefined, dayIstBudget: undefined, weekIstBudget: undefined});
   }
 
   onTimeChange(event: any) {
@@ -93,6 +116,10 @@ export class CreateBuchungComponent {
     const date = new Date();
     date.setHours(+hours, +minutes);
     this.buchung!.time = date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+  }
+
+  onBetragChanged() {
+    this.buchung.betrag = +(this.buchung.betrag!.toFixed(2));
   }
 
   private isBuchungEmpty() {

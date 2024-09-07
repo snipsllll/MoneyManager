@@ -5,6 +5,14 @@
   flex-direction: column;
 }
 
+.red {
+  color: red !important;
+}
+
+.green {
+  color: green;
+}
+
 .create-eintrag__back-button-wrapper {
   display: flex;
   justify-content: space-between;
@@ -19,7 +27,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px
+  padding: 10px;
+  font-size: 12px;
 }
 
 .create-eintrag__back-button {

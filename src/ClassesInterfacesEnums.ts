@@ -1,10 +1,13 @@
 export interface Month {
+  totalBudget: number;
+  sparen: number;
   startDate: Date;
-  endDate: Date;
-  daysInMonth: number;
-  budget: number;
-  istBudget: number;
-  weeks: Week[];
+  endDate?: Date;
+  daysInMonth?: number;
+  budget?: number;
+  istBudget?: number;
+  dailyBudget?: number;
+  weeks?: Week[];
 }
 
 export interface Week {
@@ -37,6 +40,31 @@ export interface ItfUserData {
   months: Month[]
 }
 
+export interface DayIstBudgets {
+  monthIstBudget?: number;
+  weekIstBudget?: number;
+  dayIstBudget?: number;
+}
+
+export interface BudgetInfosForMonth {
+  totalBudget: number;
+  sparen: number;
+  budget: number;
+  dayBudget: number;
+  istBudget?: number;
+}
+
+export interface SavedData {
+  buchungen: Buchung[];
+  savedMonths: SavedMonth[];
+}
+
+export interface SavedMonth {
+  date: Date;
+  totalBudget: number;
+  sparen: number;
+}
+
 export enum Months {
   Januar,
   Februar,
@@ -50,4 +78,9 @@ export enum Months {
   Oktober,
   Novermber,
   Dezember
+}
+
+export enum SideNavElements {
+  home,
+  budget
 }
