@@ -67,6 +67,7 @@ export class FileEngine {
     const day7 = new Date()
     const day8 = new Date()
     const day9 = new Date()
+    const day10 = new Date()
     day2.setDate(day1.getDate() - 1);
     day3.setDate(day1.getDate() - 2);
     day4.setDate(day1.getDate() - 3);
@@ -75,6 +76,7 @@ export class FileEngine {
     day7.setDate(day1.getDate() - 6);
     day8.setDate(day1.getDate() - 7);
     day9.setDate(day1.getDate() - 8);
+    day10.setDate(day1.getDate() - 31);
     switch (this.useTestData) {
       case 0:
         return {
@@ -206,6 +208,14 @@ export class FileEngine {
               betrag: 21,
               time: '12:03',
               beschreibung: 'testbeschreibung 7'
+            },
+            {
+              date: day10,
+              id: 8,
+              title: 'test titel 8',
+              betrag: 2,
+              time: '12:06',
+              beschreibung: 'testbeschreibung 8'
             }
           ],
           savedMonths: [

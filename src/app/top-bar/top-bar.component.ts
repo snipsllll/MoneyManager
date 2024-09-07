@@ -4,6 +4,8 @@ import {SideNavService} from "../side-nav.service";
 import {NgIf} from "@angular/common";
 import {SideNavComponent} from "../side-nav/side-nav.component";
 import {DataService} from "../data.service";
+import {DayIstBudgetViewModel} from "../DayIstBudgetViewModel";
+import {Day} from "../../ClassesInterfacesEnums";
 
 @Component({
   selector: 'app-top-bar',
@@ -18,7 +20,13 @@ import {DataService} from "../data.service";
 export class TopBarComponent implements OnInit{
   title?: string;
   monthIstBudget = computed(() => {
-    return this.dataService.getDayIstBudgets(new Date());
+    const x = this.dataService.getDayIstBudgets(new Date());
+    const y: DayIstBudgetViewModel = {
+      month: x?.monthIstBudget?.toString() ?? '???',
+      week: x?.weekIstBudget?.toString() ?? '???',
+      day: x?.dayIstBudget?.toString() ?? '???',
+    };
+    return y;
   })
 
   constructor(private dataService: DataService, public topbarService: TopbarService, public sideNavService: SideNavService) {
