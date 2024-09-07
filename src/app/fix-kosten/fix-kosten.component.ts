@@ -1,7 +1,7 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {TopBarComponent} from "../top-bar/top-bar.component";
 import {TopbarService} from "../topbar.service";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {Data} from "@angular/router";
 import {DataService} from "../data.service";
 import {FixKostenEintragListelemComponent} from "../fix-kosten-eintrag-listelem/fix-kosten-eintrag-listelem.component";
@@ -13,7 +13,8 @@ import {FixKostenEintrag} from "../../ClassesInterfacesEnums";
   imports: [
     TopBarComponent,
     NgForOf,
-    FixKostenEintragListelemComponent
+    FixKostenEintragListelemComponent,
+    NgIf
   ],
   templateUrl: './fix-kosten.component.html',
   styleUrl: './fix-kosten.component.css'
@@ -22,6 +23,8 @@ export class FixKostenComponent implements OnInit{
 
   elements = signal<FixKostenEintrag[]>([]);
   selectedElement = signal<number>(-1);
+  showCreateDialog = signal<boolean>(false);
+  showBetragWarnung = signal<boolean>(false);
 
   constructor(private topbarService: TopbarService, public dataService: DataService) {
   }
@@ -34,7 +37,7 @@ export class FixKostenComponent implements OnInit{
   }
 
   onPlusClicked() {
-
+    this.showCreateDialog.set(true);
   }
 
   onElementClicked(eintragId: number) {
@@ -47,6 +50,14 @@ export class FixKostenComponent implements OnInit{
 
   update() {
     this.elements.set(this.dataService.userData.fixKosten);
+  }
+
+  onCreateSpeichernClicked() {
+    this.showCreateDialog.set(false);
+  }
+
+  onCreateAbbrechenClicked() {
+    this.showCreateDialog.set(false);
   }
 
 }

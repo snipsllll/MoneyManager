@@ -5,12 +5,15 @@ import {Data} from "@angular/router";
 import {DataService} from "../data.service";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-fix-kosten-eintrag-listelem',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './fix-kosten-eintrag-listelem.component.html',
   styleUrl: './fix-kosten-eintrag-listelem.component.css'
@@ -23,6 +26,8 @@ export class FixKostenEintragListelemComponent {
     return this.selectedElementId() === this.fixKostenEintrag.id;
   })
   showMenu = signal<boolean>(false);
+  showEditDialog = signal<boolean>(false);
+  showBetragWarnung = signal<boolean>(false);
 
   @Output() onElementClicked = new EventEmitter();
   @Output() update = new EventEmitter();
@@ -35,7 +40,8 @@ export class FixKostenEintragListelemComponent {
   }
 
   onBearbeitenClicked() {
-
+    this.showEditDialog.set(true);
+    this.showMenu.set(false);
   }
 
   onLoeschenClicked() {
@@ -58,5 +64,13 @@ export class FixKostenEintragListelemComponent {
 
   onEintragClicked() {
     this.onElementClicked.emit();
+  }
+
+  onEditSpeichernClicked() {
+    this.showEditDialog.set(false);
+  }
+
+  onEditAbbrechenClicked() {
+    this.showEditDialog.set(false);
   }
 }
