@@ -26,7 +26,8 @@ export class BudgetComponent implements OnInit{
     dayBudget: 0,
     istBudget: 0,
     totalBudget: 0,
-    sparen: 0
+    sparen: 0,
+    fixKosten: 0
   });
 
   selectedMonth = computed(() =>{

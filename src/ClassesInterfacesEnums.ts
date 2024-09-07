@@ -52,6 +52,7 @@ export interface BudgetInfosForMonth {
   budget: number;
   dayBudget: number;
   istBudget?: number;
+  fixKosten?: number;
 }
 
 export interface SavedData {

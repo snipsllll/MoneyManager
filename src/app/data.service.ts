@@ -339,6 +339,7 @@ export class DataService {
       totalBudget: month.totalBudget,
       istBudget: month.istBudget,
       dayBudget: month.dailyBudget ?? 0,
+      fixKosten: this.getFixKostenSumme()
     }
   }
 
