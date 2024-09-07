@@ -16,7 +16,7 @@
   <div class="edit-dialog-wrapper">
     <div class="edit-dialog floating-box">
       <div class="create-eintrag__top-content">
-        <input type="text" class="create-eintrag__title" autofocus placeholder="Titel">
+        <input type="text" class="create-eintrag__title" autofocus placeholder="Titel" [(ngModel)]="newFixKostenEintrag.title">
         <hr class="hr-title">
         <div class="create-eintrag__betrag">
           <div class="create-eintrag__betrag-warnung" *ngIf="showBetragWarnung()">
@@ -26,7 +26,7 @@
             <div class="create-eintrag__label">
               Betrag:
             </div>
-            <input type="number" class="create-eintrag__data" placeholder="0.00€">
+            <input type="number" class="create-eintrag__data" placeholder="0.00€" [(ngModel)]="newFixKostenEintrag.betrag">
           </div>
         </div>
         <div class="create-eintrag__beschreibung-wrapper">
@@ -34,7 +34,7 @@
             Beschreibung:
           </div>
           <textarea
-            class="create-eintrag__data create-eintrag__beschreibung-data">
+            class="create-eintrag__data create-eintrag__beschreibung-data" [(ngModel)]="newFixKostenEintrag.beschreibung">
 
           </textarea>
         </div>

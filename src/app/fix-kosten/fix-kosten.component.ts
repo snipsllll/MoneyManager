@@ -2,10 +2,12 @@ import {Component, OnInit, signal} from '@angular/core';
 import {TopBarComponent} from "../top-bar/top-bar.component";
 import {TopbarService} from "../topbar.service";
 import {NgForOf, NgIf} from "@angular/common";
-import {Data} from "@angular/router";
 import {DataService} from "../data.service";
 import {FixKostenEintragListelemComponent} from "../fix-kosten-eintrag-listelem/fix-kosten-eintrag-listelem.component";
 import {FixKostenEintrag} from "../../ClassesInterfacesEnums";
+import {FormsModule} from "@angular/forms";
+import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
+import {DialogService} from "../dialog.service";
 
 @Component({
   selector: 'app-fix-kosten',
@@ -14,7 +16,8 @@ import {FixKostenEintrag} from "../../ClassesInterfacesEnums";
     TopBarComponent,
     NgForOf,
     FixKostenEintragListelemComponent,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './fix-kosten.component.html',
   styleUrl: './fix-kosten.component.css'
@@ -25,8 +28,9 @@ export class FixKostenComponent implements OnInit{
   selectedElement = signal<number>(-1);
   showCreateDialog = signal<boolean>(false);
   showBetragWarnung = signal<boolean>(false);
+  newFixKostenEintrag!: FixKostenEintrag;
 
-  constructor(private topbarService: TopbarService, public dataService: DataService) {
+  constructor(private dialogService: DialogService, private topbarService: TopbarService, public dataService: DataService) {
   }
 
   ngOnInit() {
@@ -34,6 +38,11 @@ export class FixKostenComponent implements OnInit{
     this.topbarService.dropDownSlidIn.set(false);
     this.topbarService.isDropDownDisabled = true;
     this.elements.set(this.dataService.userData.fixKosten);
+    this.newFixKostenEintrag = {
+      title: '',
+      betrag: 0,
+      beschreibung: ''
+    }
   }
 
   onPlusClicked() {
@@ -53,11 +62,40 @@ export class FixKostenComponent implements OnInit{
   }
 
   onCreateSpeichernClicked() {
-    this.showCreateDialog.set(false);
+    if(this.darfSpeichern()){
+      this.showCreateDialog.set(false);
+      this.dataService.createFixKostenEintrag(this.newFixKostenEintrag);
+      this.dataService.update();
+    } else {
+      this.showBetragWarnung.set(true);
+    }
   }
 
   onCreateAbbrechenClicked() {
+    if (this.isEmpty()){
     this.showCreateDialog.set(false);
+    return;
+  }
+    const dialogViewmodel: ConfirmDialogViewModel = {
+      title: 'Abbrechen?',
+      message: 'Willst du abbrechen? Alle Änderungen werden verworfen!',
+      onConfirmClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+        this.showCreateDialog.set(false);
+      },
+      onCancelClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+      }
+    }
+    this.dialogService.showConfirmDialog(dialogViewmodel);
+  }
+
+  darfSpeichern() {
+    return this.newFixKostenEintrag.betrag !== 0
+  }
+
+  isEmpty() {
+    return this.newFixKostenEintrag.betrag === 0 && this.newFixKostenEintrag.title === '' && this.newFixKostenEintrag.beschreibung === ''
   }
 
 }

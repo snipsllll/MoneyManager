@@ -1,7 +1,6 @@
-import {Component, computed, EventEmitter, Input, Output, signal, WritableSignal} from '@angular/core';
+import {Component, computed, EventEmitter, Input, OnInit, Output, signal, WritableSignal} from '@angular/core';
 import {FixKostenEintrag} from "../../ClassesInterfacesEnums";
 import {NgIf} from "@angular/common";
-import {Data} from "@angular/router";
 import {DataService} from "../data.service";
 import {DialogService} from "../dialog.service";
 import {ConfirmDialogViewModel} from "../ConfirmDialogViewModel";
@@ -18,7 +17,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   templateUrl: './fix-kosten-eintrag-listelem.component.html',
   styleUrl: './fix-kosten-eintrag-listelem.component.css'
 })
-export class FixKostenEintragListelemComponent {
+export class FixKostenEintragListelemComponent implements OnInit{
   @Input() fixKostenEintrag!: FixKostenEintrag;
   @Input() selectedElementId!: WritableSignal<number>;
 
@@ -28,11 +27,20 @@ export class FixKostenEintragListelemComponent {
   showMenu = signal<boolean>(false);
   showEditDialog = signal<boolean>(false);
   showBetragWarnung = signal<boolean>(false);
+  oldEintrag!: FixKostenEintrag;
 
   @Output() onElementClicked = new EventEmitter();
   @Output() update = new EventEmitter();
 
   constructor(private dialogService: DialogService, private dataService: DataService) {
+  }
+
+  ngOnInit() {
+    this.oldEintrag = {
+      betrag: this.fixKostenEintrag.betrag,
+      title: this.fixKostenEintrag.title,
+      beschreibung: this.fixKostenEintrag.beschreibung
+    }
   }
 
   onMenuClicked() {
@@ -59,7 +67,6 @@ export class FixKostenEintragListelemComponent {
       }
     }
     this.dialogService.showConfirmDialog(dialogViewModel);
-
   }
 
   onEintragClicked() {
@@ -68,9 +75,49 @@ export class FixKostenEintragListelemComponent {
 
   onEditSpeichernClicked() {
     this.showEditDialog.set(false);
+    this.dataService.editFixKostenEintrag(this.fixKostenEintrag);
+    this.dataService.update();
+    this.oldEintrag = {
+      betrag: this.fixKostenEintrag.betrag,
+      title: this.fixKostenEintrag.title,
+      beschreibung: this.fixKostenEintrag.beschreibung
+    }
   }
 
   onEditAbbrechenClicked() {
-    this.showEditDialog.set(false);
+    if (!this.hasEintragChanged()){
+      this.dialogService.isConfirmDialogVisible = false;
+      this.showEditDialog.set(false);
+      return;
+    }
+    const dialogViewmodel: ConfirmDialogViewModel = {
+      title: 'Abbrechen?',
+      message: 'Willst du abbrechen? Alle Änderungen werden verworfen!',
+      onConfirmClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+        this.showEditDialog.set(false);
+        this.fixKostenEintrag = this.oldEintrag;
+      },
+      onCancelClicked: () => {
+        this.dialogService.isConfirmDialogVisible = false;
+      }
+    }
+    this.dialogService.showConfirmDialog(dialogViewmodel);
+  }
+
+  onTitelChanged() {
+
+  }
+
+  onBetragChanged() {
+
+  }
+
+  onBeschreibungChanged() {
+
+  }
+
+  hasEintragChanged() {
+    return this.fixKostenEintrag.title !== this.oldEintrag.title || this.fixKostenEintrag.beschreibung !== this.oldEintrag.beschreibung || this.fixKostenEintrag.betrag !== this.oldEintrag.betrag;
   }
 }

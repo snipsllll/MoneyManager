@@ -261,7 +261,7 @@
   margin-left: 10px;
 }
 
-.create-eintrag__betrag-wrapper, .create-eintrag__datum-wrapper, .create-eintrag__uhrzeit-wrapper {
+.create-eintrag__betrag-wrapper {
   display: flex;
   justify-content: space-between;
   font-size: 20px;
@@ -292,7 +292,7 @@
 .create-eintrag__beschreibung-data {
   flex-grow: 1;
   width: calc(100% - 22px);
-  font-size: 18px;
+  font-size: 25px;
   text-align: start;
   border: 1px solid black;
   padding: 10px;
