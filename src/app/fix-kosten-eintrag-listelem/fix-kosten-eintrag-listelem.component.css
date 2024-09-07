@@ -1,0 +1,62 @@
+.fix-kosten__eintrag {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.fix-kosten__eintrag-left {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.fix-kosten__eintrag-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fix-kosten__eintrag-title {
+  margin-left: 10px;
+}
+
+.fix-kosten__eintrag-betrag {
+  font-size: 20px;
+  width: 70px;
+}
+
+.fix-kosten__eintrag-menu-button {
+  margin-right: 10px;
+}
+
+.fix-kosten__eintrag-menu {
+  position: absolute;
+  z-index: 20;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: black 1px 1px 2px;
+  right: 0;
+  bottom: -70px;
+}
+
+.fix-kosten__eintrag-menu-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  z-index: 20;
+}
+
+.fix-kosten__eintrag-menu-background {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 1;
+}
+
+.hr {
+  margin: 0;
+}

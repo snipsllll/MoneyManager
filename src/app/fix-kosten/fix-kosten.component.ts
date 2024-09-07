@@ -4,13 +4,15 @@ import {TopbarService} from "../topbar.service";
 import {NgForOf} from "@angular/common";
 import {Data} from "@angular/router";
 import {DataService} from "../data.service";
+import {FixKostenEintragListelemComponent} from "../fix-kosten-eintrag-listelem/fix-kosten-eintrag-listelem.component";
 
 @Component({
   selector: 'app-fix-kosten',
   standalone: true,
   imports: [
     TopBarComponent,
-    NgForOf
+    NgForOf,
+    FixKostenEintragListelemComponent
   ],
   templateUrl: './fix-kosten.component.html',
   styleUrl: './fix-kosten.component.css'

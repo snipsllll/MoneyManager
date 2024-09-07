@@ -244,6 +244,21 @@ export class FileEngine {
               title: 'Internet',
               betrag: 60,
               id: 1
+            },
+            {
+              title: 'Medis',
+              betrag: 20,
+              id: 2
+            },
+            {
+              title: 'Netflix',
+              betrag: 14,
+              id: 3
+            },
+            {
+              title: 'DE-Ticket',
+              betrag: 49,
+              id: 4
             }
           ]
         }
