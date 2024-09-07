@@ -74,7 +74,7 @@ export class DataService {
 
   recalcBudgetsForMonth(date: Date) {
     const month = this.userData.months()[this.getIndexOfMonth(date)];
-    month.budget = month.totalBudget - month.sparen;
+    month.budget = month.totalBudget - (month.sparen + this.getFixKostenSumme());
     month.dailyBudget = +(month.budget / (month.daysInMonth ?? 0)).toFixed(2);
     month.weeks?.forEach(week => {
       week.days.forEach(day => {
