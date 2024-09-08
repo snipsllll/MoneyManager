@@ -76,7 +76,7 @@ export class FixKostenEintragListelemComponent implements OnInit{
   onEditSpeichernClicked() {
     this.showEditDialog.set(false);
     this.dataService.editFixKostenEintrag(this.fixKostenEintrag);
-    this.dataService.update();
+    this.dataService.updateOld();
     this.oldEintrag = {
       betrag: this.fixKostenEintrag.betrag,
       title: this.fixKostenEintrag.title,

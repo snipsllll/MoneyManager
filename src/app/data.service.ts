@@ -29,6 +29,10 @@ export class DataService {
     this.initializeUserData();
   }
 
+  update() {
+
+  }
+
   recalcIstBudgetsForMonth(date: Date) {
     const month = this.userData.months()[this.getIndexOfMonth(date)];
     let monthAusgaben = 0;
@@ -162,7 +166,7 @@ export class DataService {
     fixKostenEintrag.id = this.getNextFreeFixKostenId();
     this.userData.fixKosten.push(fixKostenEintrag);
     this.recalcAllBudgets();
-    this.update();
+    this.updateOld();
   }
 
   editFixKostenEintrag(fixKostenEintrag: FixKostenEintrag) {
@@ -175,7 +179,7 @@ export class DataService {
     }
     this.userData.fixKosten[index] = fixKostenEintrag;
     this.recalcAllBudgets();
-    this.update();
+    this.updateOld();
   }
 
   deleteFixKostenEintrag(id: number) {
@@ -187,7 +191,7 @@ export class DataService {
     this.userData.fixKosten.splice(index, 1);
     this.recalcAllBudgets();
     this.recalcAllIstBudgets();
-    this.update();
+    this.updateOld();
   }
 
   createNewMonth(date: Date, totalBudget?: number, sparen?: number) {
@@ -357,7 +361,7 @@ export class DataService {
     return summe;
   }
 
-  update() {
+  updateOld() {
     this._fileEngine.save(this.getSavedData());
     this.updated.set(this.updated() + 1);
   }
@@ -457,7 +461,7 @@ export class DataService {
     this.recalcAllIstBudgets();
     this.updateBuchungenForAllMonths();
     if(this.testData !== 3){
-      this.update()
+      this.updateOld()
     }
   }
 

@@ -59,7 +59,7 @@ export class CreateBuchungComponent {
             },
             onConfirmClicked: () => {
               this.dataService.createBuchung(this.buchung);
-              this.dataService.update();
+              this.dataService.updateOld();
               this.dialogService.isConfirmDialogVisible = false;
               this.router.navigate(['/']);
             }
@@ -67,7 +67,7 @@ export class CreateBuchungComponent {
           this.dialogService.showConfirmDialog(confirmDialogViewModel);
         } else {
           this.dataService.createBuchung(this.buchung);
-          this.dataService.update();
+          this.dataService.updateOld();
           this.router.navigate(['/']);
         }
       }
