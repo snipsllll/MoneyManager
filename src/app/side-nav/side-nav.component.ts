@@ -29,5 +29,11 @@ export class SideNavComponent {
     this.sideNavService.selectedElement = SideNavElements.budget;
   }
 
+  onFixKostenClicked(): void {
+    this.router.navigate(['fixKosten']);
+    this.topbarService.isSlidIn.set(false);
+    this.sideNavService.selectedElement = SideNavElements.fixkosten;
+  }
+
   protected readonly SideNavElements = SideNavElements;
 }

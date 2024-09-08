@@ -25,6 +25,14 @@
         </div>
         <input type="number" class="budget__element-input fb-input" (change)="onSparenChanged()" [(ngModel)]="data().sparen">
       </div>
+      <div class="budget__element-wrapper">
+        <div class="budget__element-label">
+          mntl. Fix-Kosten:
+        </div>
+        <div class="budget__element-data">
+          {{data().fixKosten}}€
+        </div>
+      </div>
     </div>
     <hr class="hr">
     <div class="budget-bottom">

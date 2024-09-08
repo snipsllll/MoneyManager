@@ -44,4 +44,8 @@ export class TopBarComponent implements OnInit{
     if(!this.topbarService.isDropDownDisabled)
     this.topbarService.dropDownSlidIn.set(!this.topbarService.dropDownSlidIn());
   }
+
+  test() {
+    console.log(this.dataService.userData)
+  }
 }

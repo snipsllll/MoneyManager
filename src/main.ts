@@ -7,6 +7,7 @@ import {CreateBuchungComponent} from "./app/create-buchung/create-buchung.compon
 import {BuchungDetailsComponent} from "./app/buchung-details/buchung-details.component";
 import {provideZoneChangeDetection} from "@angular/core";
 import {BudgetComponent} from "./app/budget/budget.component";
+import {FixKostenComponent} from "./app/fix-kosten/fix-kosten.component";
 
 
 const routes: Routes = [
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path: 'buchungDetails/:buchungsId', component: BuchungDetailsComponent},
   {path: 'editBuchung/:buchungsId', component: EditBuchungComponent},
   {path: 'createBuchung', component: CreateBuchungComponent},
-  {path: 'budget', component: BudgetComponent}
+  {path: 'budget', component: BudgetComponent},
+  {path: 'fixKosten', component: FixKostenComponent}
 ];
 
 bootstrapApplication(AppComponent, {
