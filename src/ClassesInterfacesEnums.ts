@@ -1,6 +1,6 @@
 export interface Month {
-  totalBudget: number;
-  sparen: number;
+  totalBudget?: number;
+  sparen?: number;
   startDate: Date;
   endDate?: Date;
   daysInMonth?: number;
