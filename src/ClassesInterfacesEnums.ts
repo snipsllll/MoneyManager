@@ -76,7 +76,7 @@ export interface FixKostenEintrag {
 }
 
 export interface UpdateValues {
-  months: UpdateValuesForMonth;
+  months: UpdateValuesForMonth[];
 }
 
 export interface UpdateValuesForMonth {
