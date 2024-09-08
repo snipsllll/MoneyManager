@@ -39,3 +39,11 @@ all-centered {
   text-align: end;
   padding: 0;
 }
+
+.green {
+  color: green !important;
+}
+
+.red {
+  color: red;
+}
