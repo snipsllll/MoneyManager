@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {RouterModule, RouterOutlet} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import {HomeComponent} from "./home/home.component";
 import {ConfirmDialogComponent} from "./confirm-dialog/confirm-dialog.component";
 import {DialogService} from "./dialog.service";
@@ -16,9 +16,13 @@ import {TopBarComponent} from "./top-bar/top-bar.component";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'MoneyManager';
 
-  constructor(public dialogService: DialogService) {
+  constructor(private router: Router, public dialogService: DialogService) {
+  }
+
+  ngOnInit() {
+    this.router.navigate(['/'])
   }
 }
