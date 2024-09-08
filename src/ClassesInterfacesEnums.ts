@@ -75,6 +75,21 @@ export interface FixKostenEintrag {
   periode?: null; //TODO Noch machen
 }
 
+export interface UpdateValues {
+  months: UpdateValuesForMonth;
+}
+
+export interface UpdateValuesForMonth {
+  date: Date;
+  newBuchungen?: Buchung[];
+  deletedBuchungsIds?: number[];
+  editedBuchungen?: Buchung[];
+  newSparen?: number;
+  newTotalBudget?: number;
+  newMaxDayBudget?: number;
+  newFixkostenSumme?: number;
+}
+
 export enum Months {
   Januar,
   Februar,
