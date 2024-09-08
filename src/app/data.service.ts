@@ -18,7 +18,7 @@ import {
 export class DataService {
 
   userData!: UserData;
-  testData: DB = DB.long;
+  testData: DB = DB.none;
   download: boolean = true;
 
   updated = signal<number>(0);
