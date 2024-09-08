@@ -7,7 +7,7 @@ import {
   Day,
   DayIstBudgets,
   FixKostenEintrag,
-  SavedData,
+  SavedData, UpdateValues,
   Week
 } from "../ClassesInterfacesEnums";
 
@@ -29,8 +29,94 @@ export class DataService {
     this.initializeUserData();
   }
 
-  update() {
+  update(updateValues: UpdateValues) {
+    updateValues.months.forEach(month => {
+      //checken obs den monat schon gibt. Wenn nicht, dann neuen Monat erstellen
+      if(!this.checkIfMonthExistsForDay(month.date)){
+        this.createNewMonth(month.date);
+      }
 
+      //Wenn neue Buchungen angelegt wurden, dann neue Buchungen zu userData.buchungen.allebuchungen hinzufügen
+      if(month.newBuchungen !== undefined) {
+        month.newBuchungen.forEach(buchung => {
+          this.userData.buchungen.alleBuchungen.push(buchung);
+        })
+      }
+
+      //Wenn Buchungen gelöscht wurden, dann Buchungen aus userData.buchungen.alleBuchungen entfernen
+      if(month.deletedBuchungsIds !== undefined){
+        month.deletedBuchungsIds.forEach(buchungsId => {
+          this.userData.buchungen.alleBuchungen.splice(this.getIndexOfBuchungById(buchungsId), 1);
+        })
+      }
+
+      //Wenns bearbeitete Buchungen gibt, dann Buchungen in userData.buchungen.alleBuchungen anpassen
+      if(month.editedBuchungen !== undefined) {
+        month.editedBuchungen.forEach(buchung => {
+          this.userData.buchungen.alleBuchungen[this.getIndexOfBuchungById(buchung.id)] = buchung;
+        })
+      }
+
+      //Wenn sparen geändert wurde
+      if(month.newSparen !== undefined) {
+        this.userData.months()[this.getIndexOfMonth(month.date)].sparen = month.newSparen;
+      }
+
+      //Wenn totalBudget geändert wurde
+      if(month.newTotalBudget !== undefined) {
+        this.userData.months()[this.getIndexOfMonth(month.date)].totalBudget = month.newTotalBudget;
+      }
+
+      //Wenn maxDayBudget geändert wurde
+      if(month.newMaxDayBudget !== undefined) {
+        //TODO
+      }
+
+      //Wenn neue Fixkosteneinträge vorhanden, dann zu userData.fixKosten hinzufügen
+      if(month.newFixkostenEintraege !== undefined) {
+        month.newFixkostenEintraege.forEach(fixKostenEintrag => {
+          this.userData.fixKosten.push(fixKostenEintrag);
+        })
+      }
+
+      //Wenn FixkostenEinträge gelöscht wurden, dann aus userData.fixKosten entfernen
+      if(month.deletedFixkostenEintreageIds !== undefined) {
+        month.deletedFixkostenEintreageIds.forEach(fixKostenEintragsId => {
+          this.userData.fixKosten.splice(this.getFixKostenIndex(fixKostenEintragsId!),1);
+        })
+      }
+
+      //Wenn Fixkosteneinträge verändert wurden, dann in userData.fixKosten anpassen
+      if(month.newFixkostenEintraege !== undefined) {
+        month.newFixkostenEintraege.forEach(fixKostenEintrag => {
+          this.userData.fixKosten[this.getFixKostenIndex(fixKostenEintrag.id!)] = fixKostenEintrag;
+        })
+      }
+
+      //Buchungen in Monat zu den jeweiligen Tagen hinzufügen/updaten
+      this.updateBuchungenForMonth(month.date);
+
+
+      /*Weird and crazy stuff beginns here*/
+
+      this.calcDaysInMonthForMonth(month.date);
+
+      this.calcDailyBudgetForMonth(month.date);
+
+      this.calcBudgetsForAllDaysInMonth(month.date);
+
+      this.calcBudgetsForAllWeeksInMonth(month.date);
+
+      this.calcIstBudgetsForAllDaysInMonth(month.date);
+
+      this.calcIstBudgetsForAllWeeksInMonth(month.date);
+
+      this.calcIstBudgetForMonth(month.date);
+
+      //TODO this.calcLeftOverMoneyForMotnh(month.date);
+    });
+    this.save();
+    this.sendUpdateToComponents();
   }
 
   recalcIstBudgetsForMonth(date: Date) {
@@ -114,7 +200,7 @@ export class DataService {
     })
     this.userData.buchungen.alleBuchungen.forEach(buchung => {
       if(!this.checkIfMonthExistsForDay(buchung.date)){
-        this.createNewMonth(buchung.date);
+        this.createNewMonthOld(buchung.date);
       }
       const monthIndex = this.getIndexOfMonth(buchung.date);
       if (monthIndex === -1 || monthIndex === undefined) {
@@ -134,7 +220,7 @@ export class DataService {
 
   editBuchung(buchung: Buchung) {
     if (!this.checkIfMonthExistsForDay(buchung.date)) {
-      this.createNewMonth(buchung.date);
+      this.createNewMonthOld(buchung.date);
     }
     const buchungsIndexInAlleBuchungen = this.userData.buchungen.alleBuchungen.findIndex(pBuchung => pBuchung.id === buchung.id);
     if (buchungsIndexInAlleBuchungen === -1) {
@@ -146,7 +232,7 @@ export class DataService {
 
   createBuchung(buchung: Buchung) {
     if (!this.checkIfMonthExistsForDay(buchung.date)) {
-      this.createNewMonth(buchung.date);
+      this.createNewMonthOld(buchung.date);
     }
     buchung.id = this.getNextFreeBuchungsId();
     this.userData.buchungen.alleBuchungen.push(buchung);
@@ -194,7 +280,7 @@ export class DataService {
     this.updateOld();
   }
 
-  createNewMonth(date: Date, totalBudget?: number, sparen?: number) {
+  createNewMonthOld(date: Date, totalBudget?: number, sparen?: number) {
     const year = new Date(date).getFullYear();
     const month = new Date(date).getMonth();
     const startDate = new Date(year, month, 1);
@@ -267,7 +353,7 @@ export class DataService {
 
   changeSparenForMonth(date: Date, sparen: number) {
     if (!this.checkIfMonthExistsForDay(date)) {
-      this.createNewMonth(date);
+      this.createNewMonthOld(date);
     }
     this.userData.months()[this.getIndexOfMonth(date)].sparen = sparen;
     this.recalcBudgetsForMonth(date);
@@ -276,7 +362,7 @@ export class DataService {
 
   changeTotalBudgetForMonth(date: Date, totalBudget: number) {
     if (!this.checkIfMonthExistsForDay(date)) {
-      this.createNewMonth(date);
+      this.createNewMonthOld(date);
     }
     this.userData.months()[this.getIndexOfMonth(date)].totalBudget = totalBudget;
     this.recalcBudgetsForMonth(date);
@@ -455,7 +541,7 @@ export class DataService {
     this.userData.fixKosten = savedData.fixKosten;
 
     savedData.savedMonths.forEach(month => {
-      this.createNewMonth(month.date, month.totalBudget, month.sparen)
+      this.createNewMonthOld(month.date, month.totalBudget, month.sparen)
     })
     this.recalcAllBudgets();
     this.recalcAllIstBudgets();
@@ -541,6 +627,58 @@ export class DataService {
 
   private getFixKostenIndex(id: number) {
     return this.userData.fixKosten.findIndex(eintrag => eintrag.id === id);
+  }
+
+  private calcIstBudgetForMonth(date: Date) { //TODO
+
+  }
+
+  private calcIstBudgetsForAllWeeksInMonth(date: Date) { //TODO
+
+  }
+
+  private calcIstBudgetsForAllDaysInMonth(date: Date) { //TODO
+
+  }
+
+  private calcBudgetsForAllWeeksInMonth(date: Date) { //TODO
+
+  }
+
+  private calcBudgetsForAllDaysInMonth(date: Date) { //TODO
+
+  }
+
+  private calcDailyBudgetForMonth(date: Date) { //TODO
+
+  }
+
+  private calcDaysInMonthForMonth(date: Date) { //TODO
+
+  }
+
+  private updateBuchungenForMonth(date: Date) { //TODO testen
+    this.userData.months()[this.getIndexOfMonth(date)].weeks!.forEach(week => {
+      week.days.forEach(day => {
+        day.buchungen = this.userData.buchungen.alleBuchungen.filter(buchung => buchung.date.toLocaleDateString() === day.date.toLocaleDateString());
+      })
+    })
+  }
+
+  private getIndexOfBuchungById(id: number | undefined) { //TODO testen
+    return this.userData.buchungen.alleBuchungen.findIndex(buchung => buchung.id === id);
+  }
+
+  private createNewMonth(date: Date) { //TODO
+
+  }
+
+  private save() { //TODO testen
+    this._fileEngine.save(this.getSavedData());
+  }
+
+  private sendUpdateToComponents() { //TODO testen
+    this.updated.set(this.updated() + 1);
   }
 }
 
