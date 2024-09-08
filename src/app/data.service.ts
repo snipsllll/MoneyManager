@@ -103,6 +103,8 @@ export class DataService {
 
       this.calcDailyBudgetForMonth(month.date);
 
+      this.calcBudgetForMonth(month.date);
+
       this.calcBudgetsForAllDaysInMonth(month.date);
 
       this.calcBudgetsForAllWeeksInMonth(month.date);
@@ -654,9 +656,7 @@ export class DataService {
           this.logUndefinedError('day.istBudget', 'calcIstBudgetForAllWekksInMonth()');
           return;
         }
-        if(day.date.getDate() >= new Date().getDate()) {
-          weekIstBudget += day.istBudget;
-        }
+        weekIstBudget += day.istBudget;
       });
       week.istBudget = weekIstBudget;
     })
@@ -741,7 +741,7 @@ export class DataService {
       return;
     }
 
-    month.dailyBudget = +((month.totalBudget - (month.sparen ?? 0)) / month.daysInMonth).toFixed(2);
+    month.dailyBudget = +((month.totalBudget - (month.sparen ?? 0) - (this.getFixKostenSumme() ?? 0)) / month.daysInMonth).toFixed(2);
     /*Algorithm end*/
 
     this.setMonth(month);
@@ -775,7 +775,8 @@ export class DataService {
     return this.userData.buchungen.alleBuchungen.findIndex(buchung => buchung.id === id);
   }
 
-  private createNewMonth(date: Date) { //TODO
+  createNewMonth(date: Date) { //TODO
+    console.log(1)
     const startDate: Date = new Date(date.getFullYear(), date.getMonth(), 1);
     const endDate: Date = new Date(date.getFullYear(), date.getMonth() + 1, 0); //TODO testen
     const daysInMonth: number = endDate.getDate() - startDate.getDate();
@@ -784,18 +785,19 @@ export class DataService {
 
     let weekStartDate = startDate;
 
-    while(weekStartDate.getDate() < endDate.getDate()) {
-      let weekEndDate: Date = new Date(this.getNextMonday(weekStartDate).getDate() - 1);
+    while(weekStartDate.getDate() <= endDate.getDate() && weekStartDate.getMonth() <= endDate.getMonth()) {
+      let weekEndDate: Date = this.getSunday(weekStartDate);
+
+      if(weekEndDate.getMonth() > endDate.getMonth()){
+        weekEndDate = endDate;
+      }
+
       const daysInWeek = weekEndDate.getDate() - weekStartDate.getDate(); //TODO testen
       const days: Day[] = [];
 
-      let dayDate = weekStartDate;
-
-      while(dayDate < weekEndDate) {
-        days.push({
-          date: dayDate
-        });
-        dayDate = new Date(dayDate.getDate() + 1);
+      for (let d = weekStartDate.getDate(); d <= weekEndDate.getDate(); d++) {
+        const dateForDay = new Date(weekStartDate.getFullYear(), weekStartDate.getMonth(), d);
+        days.push({date: dateForDay});
       }
 
       weeks.push({
@@ -805,7 +807,7 @@ export class DataService {
         days: days
       });
 
-      weekStartDate = this.getNextMonday(weekEndDate);
+      weekStartDate = this.getNextMonday(weekStartDate);
     }
 
     const month: Month = {
@@ -856,6 +858,21 @@ export class DataService {
       return true;
     }
     return false;
+  }
+
+  private calcBudgetForMonth(date: Date) {
+    const month = this.getMonthByDate(date);
+
+    if(month.daysInMonth === undefined || month.totalBudget === undefined || month.dailyBudget === undefined) {
+      this.logUndefinedError('something', 'calcBubdgetForMonth()');
+      return;
+    }
+
+    /*Algorithm start*/
+    month.budget = +(month.dailyBudget * month.daysInMonth).toFixed(2);
+    /*Algorithm end*/
+
+    this.setMonth(month);
   }
 }
 
