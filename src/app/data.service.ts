@@ -642,7 +642,7 @@ export class DataService {
     month.istBudget = month.budget - this.getAusgabenSummeForMonth(date);
     /*Algorithm end*/
 
-    this.userData.months()[this.getIndexOfMonth(date)] = month;
+    this.setMonth(month);
   }
 
   private calcIstBudgetsForAllWeeksInMonth(date: Date) { //TODO testen
