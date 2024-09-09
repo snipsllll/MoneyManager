@@ -177,7 +177,11 @@ export class DataService {
 
       this.calcIstBudgetForMonth(month.startDate);
 
-      //TODO this.calcLeftOverMoneyForMotnh(month.date);
+      this.calcLeftOversForAllDaysInMonth(month.startDate);
+
+      this.calcLeftOversForAllWeeksInMonth(month.startDate);
+
+      this.calcLeftOversForMonth(month.startDate);
     });
     if(safeAfterUpdate === undefined || safeAfterUpdate === true){
       this.save();
@@ -634,6 +638,56 @@ export class DataService {
 
     /*Algorithm start*/
     month.budget = +(month.dailyBudget * month.daysInMonth).toFixed(2);
+    /*Algorithm end*/
+
+    this.setMonth(month);
+  }
+
+  private calcLeftOversForAllDaysInMonth(date: Date) {
+    const month = this.getMonthByDate(date);
+
+    /*Algorithm start*/
+    month.weeks?.forEach(week => {
+      week.days.forEach(day => {
+        day.leftOvers = day.istBudget;
+      })
+    })
+    /*Algorithm end*/
+
+    this.setMonth(month);
+  }
+
+  private calcLeftOversForAllWeeksInMonth(date: Date) {
+    const month = this.getMonthByDate(date);
+
+    /*Algorithm start*/
+    month.weeks?.forEach(week => {
+      let leftovers = 0;
+      week.days.forEach(day => {
+        if(day.date.getDate() < new Date().getDate()){
+          leftovers += day.leftOvers ?? 0;
+        }
+      })
+      week.leftOvers = leftovers;
+    })
+    /*Algorithm end*/
+
+    this.setMonth(month);
+  }
+
+  private calcLeftOversForMonth(date: Date) {
+    const month = this.getMonthByDate(date);
+
+    /*Algorithm start*/
+    let leftovers = 0;
+    month.weeks?.forEach(week => {
+      week.days.forEach(day => {
+        if(day.date.getDate() < new Date().getDate()){
+          leftovers += day.leftOvers ?? 0;
+        }
+      })
+    })
+    month.leftOvers = leftovers;
     /*Algorithm end*/
 
     this.setMonth(month);

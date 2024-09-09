@@ -8,6 +8,7 @@ export interface Month {
   istBudget?: number;
   dailyBudget?: number;
   weeks?: Week[];
+  leftOvers?: number;
 }
 
 export interface Week {
@@ -17,6 +18,7 @@ export interface Week {
   budget?: number;
   istBudget?: number;
   days: Day[];
+  leftOvers?: number;
 }
 
 export interface Day {
@@ -24,6 +26,7 @@ export interface Day {
   budget?: number;
   istBudget?: number;
   buchungen?: Buchung[];
+  leftOvers?: number;
 }
 
 export interface Buchung {
