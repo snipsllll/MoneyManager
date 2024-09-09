@@ -29,6 +29,9 @@ export class NavigationService {
       case Sites.createBuchung:
         route = '/createBuchung';
         break;
+      case Sites.fixKosten:
+        route = '/fixKosten';
+        break;
     }
     return route;
   }

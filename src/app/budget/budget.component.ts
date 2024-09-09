@@ -26,7 +26,8 @@ export class BudgetComponent implements OnInit{
     dayBudget: 0,
     istBudget: 0,
     totalBudget: 0,
-    sparen: 0
+    sparen: 0,
+    fixKosten: 0
   });
 
   selectedMonth = computed(() =>{
@@ -94,13 +95,11 @@ export class BudgetComponent implements OnInit{
 
   onSparenChanged() {
     this.dataService.changeSparenForMonth(this.getDateForSelectedMonth(), this.data().sparen);
-    this.dataService.update();
     this.update();
   }
 
   onTotalBudgetChanged() {
     this.dataService.changeTotalBudgetForMonth(this.getDateForSelectedMonth(), this.data().totalBudget);
-    this.dataService.update();
     this.update();
   }
 
@@ -114,7 +113,8 @@ export class BudgetComponent implements OnInit{
       dayBudget: 0,
       istBudget: 0,
       totalBudget: 0,
-      sparen: 0
+      sparen: 0,
+      fixKosten: this.dataService.getFixKostenSumme()
     });
   }
 }

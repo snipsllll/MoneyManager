@@ -1,6 +1,6 @@
 export interface Month {
-  totalBudget: number;
-  sparen: number;
+  totalBudget?: number;
+  sparen?: number;
   startDate: Date;
   endDate?: Date;
   daysInMonth?: number;
@@ -52,17 +52,44 @@ export interface BudgetInfosForMonth {
   budget: number;
   dayBudget: number;
   istBudget?: number;
+  fixKosten?: number;
 }
 
 export interface SavedData {
   buchungen: Buchung[];
   savedMonths: SavedMonth[];
+  fixKosten: FixKostenEintrag[];
 }
 
 export interface SavedMonth {
   date: Date;
   totalBudget: number;
   sparen: number;
+}
+
+export interface FixKostenEintrag {
+  id?: number;
+  betrag: number;
+  title: string;
+  beschreibung?: string;
+  periode?: null; //TODO Noch machen
+}
+
+export interface UpdateValues {
+  months?: UpdateValuesForMonth[];
+  newFixkostenEintraege?: FixKostenEintrag[];
+  deletedFixkostenEintreageIds?: number[];
+  editedFixKostenEintraege?: FixKostenEintrag[];
+  newBuchungen?: Buchung[];
+  deletedBuchungsIds?: number[];
+  editedBuchungen?: Buchung[];
+}
+
+export interface UpdateValuesForMonth {
+  date: Date;
+  newSparen?: number;
+  newTotalBudget?: number;
+  newMaxDayBudget?: number;
 }
 
 export enum Months {
@@ -82,7 +109,8 @@ export enum Months {
 
 export enum SideNavElements {
   home,
-  budget
+  budget,
+  fixkosten
 }
 
 export enum Sites {
@@ -90,5 +118,6 @@ export enum Sites {
   budget,
   createBuchung,
   editBuchung,
-  buchungDetails
+  buchungDetails,
+  fixKosten
 }

@@ -96,6 +96,13 @@ export class FileEngine {
               sparen: 100,
               totalBudget: 400
             }
+          ],
+          fixKosten : [
+            {
+              title: 'Internet',
+              betrag: 60,
+              id: 1
+            }
           ]
         }
       case 1:
@@ -147,6 +154,13 @@ export class FileEngine {
               date: new Date(),
               sparen: 100,
               totalBudget: 400
+            }
+          ],
+          fixKosten : [
+            {
+              title: 'Internet',
+              betrag: 60,
+              id: 1
             }
           ]
         }
@@ -224,12 +238,36 @@ export class FileEngine {
               sparen: 100,
               totalBudget: 400
             }
+          ],
+          fixKosten : [
+            {
+              title: 'Internet',
+              betrag: 60,
+              id: 1
+            },
+            {
+              title: 'Medis',
+              betrag: 20,
+              id: 2
+            },
+            {
+              title: 'Netflix',
+              betrag: 14,
+              id: 3
+            },
+            {
+              title: 'DE-Ticket',
+              betrag: 49,
+              id: 4,
+              beschreibung: 'ztuioezfcuisonchofg'
+            }
           ]
         }
     }
     return {
       buchungen: [],
-      savedMonths: []
+      savedMonths: [],
+      fixKosten: []
     }
   }
 }
