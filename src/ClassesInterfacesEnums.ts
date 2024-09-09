@@ -76,20 +76,20 @@ export interface FixKostenEintrag {
 }
 
 export interface UpdateValues {
-  months: UpdateValuesForMonth[];
+  months?: UpdateValuesForMonth[];
+  newFixkostenEintraege?: FixKostenEintrag[];
+  deletedFixkostenEintreageIds?: number[];
+  editedFixKostenEintraege?: FixKostenEintrag[];
+  newBuchungen?: Buchung[];
+  deletedBuchungsIds?: number[];
+  editedBuchungen?: Buchung[];
 }
 
 export interface UpdateValuesForMonth {
   date: Date;
-  newBuchungen?: Buchung[];
-  deletedBuchungsIds?: number[];
-  editedBuchungen?: Buchung[];
   newSparen?: number;
   newTotalBudget?: number;
   newMaxDayBudget?: number;
-  newFixkostenEintraege?: FixKostenEintrag[];
-  deletedFixkostenEintreageIds?: number[];
-  editedFixKostenEintraege?: FixKostenEintrag[];
 }
 
 export enum Months {
