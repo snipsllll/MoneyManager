@@ -19,6 +19,7 @@ import {DayIstBudgetViewModel} from "../DayIstBudgetViewModel";
 export class TopBarComponent implements OnInit{
   title?: string;
   monthIstBudget = computed(() => {
+    this.dataService.updated();
     const x = this.dataService.getDayIstBudgets(new Date());
     const y: DayIstBudgetViewModel = {
       month: x?.monthIstBudget?.toString() ?? '???',

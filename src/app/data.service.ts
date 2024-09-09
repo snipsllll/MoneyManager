@@ -68,7 +68,7 @@ export class DataService {
     })
   }
 
-  changeSparenForMonth(date: Date, sparen: number) {
+  changeSparenForMonth(date: Date, sparen: number, saveAfterUpdate?: boolean) {
     this.update({
       months: [
         {
@@ -76,10 +76,10 @@ export class DataService {
           newSparen: sparen
         }
       ]
-    })
+    }, saveAfterUpdate)
   }
 
-  changeTotalBudgetForMonth(date: Date, totalBudget: number) {
+  changeTotalBudgetForMonth(date: Date, totalBudget: number, saveAfterUpdate?: boolean) {
     this.update({
       months: [
         {
@@ -87,10 +87,10 @@ export class DataService {
           newTotalBudget: totalBudget
         }
       ]
-    })
+    }, saveAfterUpdate)
   }
 
-  update(updateValues?: UpdateValues) {
+  update(updateValues?: UpdateValues, safeAfterUpdate?: boolean) {
     if(updateValues) {
       //Wenn neue Fixkosteneinträge vorhanden, dann zu userData.fixKosten hinzufügen
       if(updateValues.newFixkostenEintraege !== undefined) {
@@ -179,7 +179,9 @@ export class DataService {
 
       //TODO this.calcLeftOverMoneyForMotnh(month.date);
     });
-    this.save();
+    if(safeAfterUpdate === undefined || safeAfterUpdate === true){
+      this.save();
+    }
     this.sendUpdateToComponents();
   }
 
@@ -316,8 +318,8 @@ export class DataService {
       if(!this.checkIfMonthExistsForDay(month.date)){
         this.createNewMonth(month.date);
       }
-      this.changeSparenForMonth(month.date, month.sparen);
-      this.changeTotalBudgetForMonth(month.date, month.totalBudget);
+      this.changeSparenForMonth(month.date, month.sparen, false);
+      this.changeTotalBudgetForMonth(month.date, month.totalBudget, false);
     });
 
     this.update();
