@@ -177,7 +177,11 @@ export class DataService {
 
       this.calcIstBudgetForMonth(month.startDate);
 
-      //TODO this.calcLeftOverMoneyForMotnh(month.date);
+      this.calcLeftOversForAllDaysInMonth(month.startDate);
+
+      this.calcLeftOversForAllWeeksInMonth(month.startDate);
+
+      this.calcLeftOversForMonth(month.startDate);
     });
     if(safeAfterUpdate === undefined || safeAfterUpdate === true){
       this.save();
@@ -637,6 +641,18 @@ export class DataService {
     /*Algorithm end*/
 
     this.setMonth(month);
+  }
+
+  private calcLeftOversForAllDaysInMonth(date: Date) {
+
+  }
+
+  private calcLeftOversForAllWeeksInMonth(date: Date) {
+
+  }
+
+  private calcLeftOversForMonth(date: Date) {
+
   }
 }
 
