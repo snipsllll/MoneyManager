@@ -64,8 +64,7 @@ export class FixKostenComponent implements OnInit{
   onCreateSpeichernClicked() {
     if(this.darfSpeichern()){
       this.showCreateDialog.set(false);
-      this.dataService.createFixKostenEintrag(this.newFixKostenEintrag);
-      this.dataService.update();
+      this.dataService.addFixKostenEintrag(this.newFixKostenEintrag);
     } else {
       this.showBetragWarnung.set(true);
     }

@@ -51,7 +51,6 @@ export class BuchungListelemComponent implements OnInit{
       onConfirmClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
         this.dataService.deleteBuchung(this.buchung.id!);
-        this.dataService.update();
       },
       onCancelClicked: () => {
         this.dialogService.isConfirmDialogVisible = false;
