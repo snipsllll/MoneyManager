@@ -18,7 +18,7 @@ import {
 export class DataService {
 
   userData!: UserData;
-  testData: DB = DB.none;
+  testData: DB = DB.short;
   download: boolean = true;
 
   updated = signal<number>(0);
@@ -443,6 +443,9 @@ export class DataService {
 
   getFixKostenSumme() {
     let summe = 0;
+    if(this.userData.fixKosten === undefined) {
+      this.userData.fixKosten = [];
+    }
     this.userData.fixKosten.forEach(eintrag => {
       summe += eintrag.betrag;
     })
