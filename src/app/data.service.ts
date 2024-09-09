@@ -314,7 +314,7 @@ export class DataService {
     this.userData.buchungen.alleBuchungen = savedData.buchungen;
     this.userData.fixKosten = savedData.fixKosten;
 
-    savedData.savedMonths.forEach(month => {
+    savedData.savedMonths?.forEach(month => {
       if(!this.checkIfMonthExistsForDay(month.date)){
         this.createNewMonth(month.date);
       }
@@ -322,7 +322,7 @@ export class DataService {
       this.changeTotalBudgetForMonth(month.date, month.totalBudget, false);
     });
 
-    this.update();
+    this.update({}, false);
   }
 
   private getNextFreeBuchungsId() {
