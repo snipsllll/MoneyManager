@@ -430,7 +430,7 @@ export class DataService {
         }
         weekIstBudget += day.istBudget;
       });
-      week.istBudget = weekIstBudget;
+      week.istBudget = +weekIstBudget.toFixed(2);
     })
     /*Algorithm end*/
 
@@ -451,7 +451,7 @@ export class DataService {
         day.buchungen?.forEach(buchung => {
           dayAusgaben += (buchung.betrag ?? 0);
         })
-        day.istBudget = day.budget - dayAusgaben;
+        day.istBudget = +(day.budget - dayAusgaben).toFixed(2);
       })
     })
     /*Algorithm end*/
@@ -473,7 +473,7 @@ export class DataService {
         this.logUndefinedError('week.daysInWeek', 'calcBudgetsForAllWeeksInMonth()');
         return;
       }
-      week.budget = week.daysInWeek * month.dailyBudget!;
+      week.budget = +(week.daysInWeek * month.dailyBudget!).toFixed(2);
     })
     /*Algorithm end*/
 
