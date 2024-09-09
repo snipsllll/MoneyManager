@@ -644,15 +644,53 @@ export class DataService {
   }
 
   private calcLeftOversForAllDaysInMonth(date: Date) {
+    const month = this.getMonthByDate(date);
 
+    /*Algorithm start*/
+    month.weeks?.forEach(week => {
+      week.days.forEach(day => {
+        day.leftOvers = day.istBudget;
+      })
+    })
+    /*Algorithm end*/
+
+    this.setMonth(month);
   }
 
   private calcLeftOversForAllWeeksInMonth(date: Date) {
+    const month = this.getMonthByDate(date);
 
+    /*Algorithm start*/
+    month.weeks?.forEach(week => {
+      let leftovers = 0;
+      week.days.forEach(day => {
+        if(day.date.getDate() < new Date().getDate()){
+          leftovers += day.leftOvers ?? 0;
+        }
+      })
+      week.leftOvers = leftovers;
+    })
+    /*Algorithm end*/
+
+    this.setMonth(month);
   }
 
   private calcLeftOversForMonth(date: Date) {
+    const month = this.getMonthByDate(date);
 
+    /*Algorithm start*/
+    let leftovers = 0;
+    month.weeks?.forEach(week => {
+      week.days.forEach(day => {
+        if(day.date.getDate() < new Date().getDate()){
+          leftovers += day.leftOvers ?? 0;
+        }
+      })
+    })
+    month.leftOvers = leftovers;
+    /*Algorithm end*/
+
+    this.setMonth(month);
   }
 }
 
